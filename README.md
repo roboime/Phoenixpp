@@ -1,5 +1,9 @@
 # SSL-Estimator
 
+## Componentes do grupo:
+21001 - Luckwu
+21413 - Horie
+
 ## Projeto de Decodificação e Estimativa de Informações do Programa SSL-Vision
 
 ### Descrição do Conceito
