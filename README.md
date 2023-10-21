@@ -20,3 +20,5 @@ O sistema terá as seguintes funções principais:
 A motivação por trás deste projeto é melhorar o desempenho e a eficácia da visão da equipe de robôs do Instituto Militar de Engenharia (RoboIME) na categoria Small Size League da RoboCup. O acesso a informações precisas e atualizadas sobre a posição e velocidade dos objetos no campo é fundamental para o sucesso da equipe. Isso irá permitir aprimorar o desempenho no jogo.
 
 Este projeto é essencial para iniciar um novo código mais rápido e eficiente em substituição ao atual código.
+
+![diagrama de classes](docs/img/screenshot01.jpg?raw=true "diagrama de classes")
