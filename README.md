@@ -21,4 +21,4 @@ A motivação por trás deste projeto é melhorar o desempenho e a eficácia da 
 
 Este projeto é essencial para iniciar um novo código mais rápido e eficiente em substituição ao atual código.
 
-![diagrama de classes](docs/img/screenshot01.jpg?raw=true "diagrama de classes")
+![diagrama de classes](docs/img/ssl_project.png?raw=true "diagrama de classes")
