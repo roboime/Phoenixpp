@@ -27,7 +27,8 @@ Este projeto é essencial para iniciar um novo código mais rápido e eficiente 
 ### grSim
 Primeiro vamos instalar o grSim, o qual é necessário para simular a visão fornecida pela competição. Basta seguir o tutorial do link: https://github.com/RoboCup-SSL/grSim/blob/master/INSTALL.md <br />
 ### Qt
-Para instalar e fazer um primeiro "Hello, world" basta seguir o tutorial: https://www.youtube.com/watch?v=sjApF6qnyUI&ab_channel=ProgrammingKnowledge <br />
+Para instalar use o tutorial: https://www.youtube.com/watch?v=mVKdomkl5Uk <br />
+E para fazer um primeiro "Hello, world" basta seguir o tutorial: https://www.youtube.com/watch?v=sjApF6qnyUI&ab_channel=ProgrammingKnowledge <br />
 
 ![diagrama de classes](docs/img/ssl_project.png?raw=true "diagrama de classes")
 ![fluxograma visao](docs/img/MultiObjectFilterFlowChart.png?raw=false "fluxograma visao")
