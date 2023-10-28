@@ -25,3 +25,9 @@ Este projeto é essencial para iniciar um novo código mais rápido e eficiente 
 ![fluxograma visao](docs/img/MultiObjectFilterFlowChart.png?raw=false "fluxograma visao")
 ![fluxograma kalman](docs/img/kalmanSteps.png?raw=false "fluxograma kalman")
 
+###Instalação
+#grSim
+Primeiro vamos instalar o grSim, o qual é necessário para simular a visão fornecida pela competição. Basta seguir o tutorial do link: https://github.com/RoboCup-SSL/grSim/blob/master/INSTALL.md <br />
+
+#Qt
+Para instalar e fazer um primeiro "Hello, world" basta seguir o tutorial: https://www.youtube.com/watch?v=sjApF6qnyUI&ab_channel=ProgrammingKnowledge <br />
