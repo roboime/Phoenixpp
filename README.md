@@ -30,6 +30,11 @@ Primeiro vamos instalar o grSim, o qual é necessário para simular a visão for
 Para instalar use o tutorial: https://www.youtube.com/watch?v=mVKdomkl5Uk <br />
 E para fazer um primeiro "Hello, world" basta seguir o tutorial: https://www.youtube.com/watch?v=sjApF6qnyUI&ab_channel=ProgrammingKnowledge <br />
 
+# Esboço da Interface Gráfica
+![esboco GUI](docs/img/EsboçoDaGUI?raw=true "esboco GUI")
+Representação gráfica do campo que irá conter os robôs e projeto inicial da interface lateral de parâmetros dos robôs.
+
 ![diagrama de classes](docs/img/ssl_project.png?raw=true "diagrama de classes")
 ![fluxograma visao](docs/img/MultiObjectFilterFlowChart.png?raw=false "fluxograma visao")
 ![fluxograma kalman](docs/img/kalmanSteps.png?raw=false "fluxograma kalman")
+
