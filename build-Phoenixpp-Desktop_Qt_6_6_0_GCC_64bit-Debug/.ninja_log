@@ -1,0 +1,26 @@
+# ninja log v5
+1	8	0	/home/luckwu/build-Phoenixpp-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/cmake.verify_globs	16329314f10e8164
+0	303	1699663863936597069	Phoenixpp_autogen/timestamp	831e2a58684abdc0
+0	303	1699663863936597069	Phoenixpp_autogen/mocs_compilation.cpp	831e2a58684abdc0
+0	303	1699663863936597069	/home/luckwu/build-Phoenixpp-Desktop_Qt_6_6_0_GCC_64bit-Debug/Phoenixpp_autogen/timestamp	831e2a58684abdc0
+0	303	1699663863936597069	/home/luckwu/build-Phoenixpp-Desktop_Qt_6_6_0_GCC_64bit-Debug/Phoenixpp_autogen/mocs_compilation.cpp	831e2a58684abdc0
+303	1836	1699663865468597541	CMakeFiles/Phoenixpp.dir/Phoenixpp_autogen/mocs_compilation.cpp.o	b734fbd55f108787
+303	1886	1699663865520597557	CMakeFiles/Phoenixpp.dir/main.cpp.o	163234c4e78c1415
+304	1937	1699663865572597574	CMakeFiles/Phoenixpp.dir/mainwindow.cpp.o	4bc6fff356bc6358
+1937	2327	1699663865956597694	Phoenixpp	8a4933f7a849fffc
+0	8	0	/home/luckwu/build-Phoenixpp-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/cmake.verify_globs	16329314f10e8164
+2	250	1699665204468236306	Phoenixpp_autogen/timestamp	831e2a58684abdc0
+2	250	1699665204468236306	Phoenixpp_autogen/mocs_compilation.cpp	831e2a58684abdc0
+2	250	1699665204468236306	/home/luckwu/build-Phoenixpp-Desktop_Qt_6_6_0_GCC_64bit-Debug/Phoenixpp_autogen/timestamp	831e2a58684abdc0
+2	250	1699665204468236306	/home/luckwu/build-Phoenixpp-Desktop_Qt_6_6_0_GCC_64bit-Debug/Phoenixpp_autogen/mocs_compilation.cpp	831e2a58684abdc0
+250	1656	1699665205876282925	CMakeFiles/Phoenixpp.dir/Phoenixpp_autogen/mocs_compilation.cpp.o	b734fbd55f108787
+250	1739	1699665205960285706	CMakeFiles/Phoenixpp.dir/main.cpp.o	163234c4e78c1415
+250	1872	1699665206092290071	CMakeFiles/Phoenixpp.dir/mainwindow.cpp.o	4bc6fff356bc6358
+1872	2235	1699665206452301972	Phoenixpp	8a4933f7a849fffc
+0	7	0	/home/luckwu/build-Phoenixpp-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/cmake.verify_globs	16329314f10e8164
+1	18	1699665261074056054	Phoenixpp_autogen/timestamp	831e2a58684abdc0
+1	18	1699665261074056054	Phoenixpp_autogen/mocs_compilation.cpp	831e2a58684abdc0
+1	18	1699665261074056054	/home/luckwu/build-Phoenixpp-Desktop_Qt_6_6_0_GCC_64bit-Debug/Phoenixpp_autogen/timestamp	831e2a58684abdc0
+1	18	1699665261074056054	/home/luckwu/build-Phoenixpp-Desktop_Qt_6_6_0_GCC_64bit-Debug/Phoenixpp_autogen/mocs_compilation.cpp	831e2a58684abdc0
+19	1609	1699665262666105737	CMakeFiles/Phoenixpp.dir/mainwindow.cpp.o	4bc6fff356bc6358
+1610	1976	1699665263030117090	Phoenixpp	8a4933f7a849fffc
