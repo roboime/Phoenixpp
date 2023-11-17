@@ -1,11 +1,26 @@
+// Robot.h
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include <QGraphicsPixmapItem>
+#include <QGraphicsItem>
+#include <QPixmap>
 
-class Robot : public QGraphicsPixmapItem {
+class Robot : public QGraphicsItem {
 public:
-    Robot(const QPixmap &pixmap, qreal diameter, qreal x, qreal y, QGraphicsItem *parent = nullptr);
+    Robot(int id, int team, qreal x, qreal y, qreal vx, qreal vy, qreal orientationX, qreal orientationY);
+
+    QRectF boundingRect() const override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+private:
+    int id;
+    int team;
+    qreal posX;
+    qreal posY;
+    qreal velX;
+    qreal velY;
+    qreal orientationX;
+    qreal orientationY;
 };
 
 #endif // ROBOT_H

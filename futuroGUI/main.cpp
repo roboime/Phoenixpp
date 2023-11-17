@@ -89,6 +89,27 @@ public:
         object->setPos((width() - scene->width()) / 2 + x, (height() - scene->height()) / 2 + y);
         scene->addItem(object);
     }
+    void addBolaToCenter(Ball *bola) {
+        float x = (scene->width() - bola->boundingRect().width()) / 2;
+        float y = (scene->height() - bola->boundingRect().height()) / 2;
+
+        // Ajuste a posição para o meio de campo
+        x += (scene->width() - bola->boundingRect().width()) / 4;
+
+        addObjectToField(bola, x, y);
+    }
+
+    void addRobosToSides(Robot *robot, int numRobos) {
+        float spacing = (scene->width() - 2 * robot->boundingRect().width()) / (numRobos + 1);
+
+        for (int i = 0; i < numRobos; ++i) {
+            float x = (i + 1) * spacing;
+            float y = (scene->height() - robot->boundingRect().height()) / 2;
+
+            Robot *newRobot = new Robot(i, 1, x, y, 1, 1, 1, 0); // Exemplo de criação de novo robô
+            addObjectToField(newRobot, x, y);
+        }
+    }
 
 private:
     QGraphicsScene *scene;
@@ -96,7 +117,6 @@ private:
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    Ball bola;
     // Obtenha o tamanho da tela
     QScreen *screen = a.primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -105,19 +125,18 @@ int main(int argc, char *argv[]) {
     float windowWidth = screenGeometry.width() * 0.8;
     float windowHeight = screenGeometry.height() * 0.8;
 
-    float fieldWidth = windowHeight * 0.8;  // Proporção do campo em relação à altura da tela
-    float robotDiameter = fieldWidth / 15.0; // Definir o diâmetro do robô
-
-    Robot robot(QPixmap("/home/luckwu/Desktop/Phoenixpp/img_src/tampasRobos/AzulVision.png"), robotDiameter, 50, 50);
-    // Substitua pelo caminho da imagem do robô e ajuste as coordenadas iniciais
-
     SoccerField soccerField(windowWidth, windowHeight);
+    Ball bola(windowWidth/2,windowHeight/2,2,1);
+
+    Robot robot(1,1,20,20,1,1,1,0);
+
+    soccerField.addBolaToCenter(&bola);
+    soccerField.addRobosToSides(&robot, 6); // Adiciona 6 robôs de cada lado
 
 
 
-    soccerField.addObjectToField(&bola, 0, 0);
-    soccerField.addObjectToField(&robot, 50, 50); // Exemplo de posição do robô
-
+    //soccerField.addObjectToField(&bola, 0, 0);
+    //soccerField.addObjectToField(&robot,50,50);
 
     soccerField.show();
 

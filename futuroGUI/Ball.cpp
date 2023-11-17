@@ -1,20 +1,22 @@
 #include "Ball.h"
-#include <QTimer>
-#include <QGraphicsScene>
+#include <QPainter>
 
-
-Ball::Ball()
+Ball::Ball(qreal x, qreal y, qreal vx, qreal vy)
+    : posX(x), posY(y), velX(vx), velY(vy)
 {
-    qreal ballCenterX = 0.0;
-    qreal ballCenterY = 0.0;
-    qreal ballRadius = 100.0;
-    //drew the ball
-    QGraphicsEllipseItem* ballItem = new QGraphicsEllipseItem(ballCenterX - ballRadius, ballCenterY - ballRadius, 2 * ballRadius, 2 * ballRadius);
-    ballItem->setBrush(QColor(255,165,0)); // Definir a cor de preenchimento da bola
-
-
+    setPos(x, y);
 }
 
-//void Ball:move(){
-//    setPos
-//}
+QRectF Ball::boundingRect() const
+{
+    return QRectF(-5, -5, 10, 10); // Ajuste conforme necessário
+}
+
+void Ball::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
+    painter->setBrush(QColor(255,165,0));
+    painter->drawEllipse(boundingRect());
+}
