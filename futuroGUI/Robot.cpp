@@ -42,5 +42,30 @@ void Robot::setVel(qreal newVelX, qreal newVelY)
     velY = newVelY;
 }
 
+qreal Robot::getPosX() const
+{
+    return posX;
+}
+
+qreal Robot::getPosY() const
+{
+    return posY;
+}
+
+qreal Robot::getVelX() const
+{
+    return velX;
+}
+
+qreal Robot::getVelY() const
+{
+    return velY;
+}
+
+qreal Robot::getOrientation() const
+{
+    return orientation;
+}
+
 
 

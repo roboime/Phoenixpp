@@ -1,4 +1,3 @@
-#include "mainwindow.h"
 #include "Ball.h"
 #include "Robot.h"
 #include <QApplication>
@@ -25,7 +24,7 @@ int main(int argc, char *argv[]) {
     SoccerField soccerField(windowWidth, windowHeight);
     Ball bola(windowWidth/2,windowHeight/2,2,1);
 
-    Robot robot(1,1,20,20,1,1,1);
+    Robot robot(0,0,0,0,0,0,0);
 
     soccerField.addBolaToCenter(&bola);
     soccerField.addRobosToSides(&robot, 6); // Adiciona 6 robôs de cada lado

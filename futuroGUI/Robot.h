@@ -21,6 +21,16 @@ public:
 
     qreal getVel() const;
 
+    qreal getPosX() const;
+
+    qreal getPosY() const;
+
+    qreal getVelX() const;
+
+    qreal getVelY() const;
+
+    qreal getOrientation() const;
+
 private:
     int id;
     int team;
