@@ -30,6 +30,9 @@ Primeiro vamos instalar o grSim, o qual é necessário para simular a visão for
 Para instalar use o tutorial: https://www.youtube.com/watch?v=mVKdomkl5Uk <br />
 E para fazer um primeiro "Hello, world" basta seguir o tutorial: https://www.youtube.com/watch?v=sjApF6qnyUI&ab_channel=ProgrammingKnowledge <br />
 
+#Últimas atualizações implementadas (editado 29/11/2023)
+Ainda é necessário conseguir colocar a informação dos robôs num vetor e ordená-los por ID, para posicionamento correto dos mesmos.
+
 # Esboço da Interface Gráfica
 ![esboco GUI](docs/img/EsboçoDaGUI.png?raw=true "esboco GUI")
 Representação gráfica do campo que irá conter os robôs e projeto inicial da interface lateral de parâmetros dos robôs.
