@@ -32,6 +32,7 @@ E para fazer um primeiro "Hello, world" basta seguir o tutorial: https://www.you
 
 #Últimas atualizações implementadas (editado 29/11/2023)
 Ainda é necessário conseguir colocar a informação dos robôs num vetor e ordená-los por ID, para posicionamento correto dos mesmos.
+![29/11/2023](docs/img/dev2023-11-29.png?raw=true "ultima atualizacao")
 
 # Esboço da Interface Gráfica
 ![esboco GUI](docs/img/EsboçoDaGUI.png?raw=true "esboco GUI")
