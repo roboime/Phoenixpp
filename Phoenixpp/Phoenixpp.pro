@@ -11,6 +11,9 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Ball.cpp \
+    Robot.cpp \
+    fieldClass/Field.cpp \
     main.cpp \
     target/game_event.pb.cc \
     target/grSim_Commands.pb.cc \
@@ -30,6 +33,9 @@ SOURCES += \
     widget.cpp
 
 HEADERS += \
+    Ball.h \
+    Robot.h \
+    fieldClass/Field.h \
     protobuf_files.h \
     target/game_event.pb.h \
     target/grSim_Commands.pb.h \

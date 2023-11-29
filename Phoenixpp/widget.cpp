@@ -79,7 +79,6 @@ void Widget::printRobotInfo(const SSL_DetectionRobot& robot) {
     ui->listWidget->addItem(robotInfo);
 }
 
-
 void Widget::printFrame(SSL_WrapperPacket wrapperPacket){
     SSL_DetectionFrame detection = wrapperPacket.detection();
     ui->listWidget->addItem("-----Received Wrapper Packet---------------------------------------------");
