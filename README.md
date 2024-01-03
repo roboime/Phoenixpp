@@ -21,6 +21,25 @@ A motivação por trás deste projeto é melhorar o desempenho e a eficácia da 
 
 Este projeto é essencial para iniciar um novo código mais rápido e eficiente em substituição ao atual código.
 
+
+
+# Instalação
+### grSim
+Primeiro vamos instalar o grSim, o qual é necessário para simular a visão fornecida pela competição. Basta seguir o tutorial do link: https://github.com/RoboCup-SSL/grSim/blob/master/INSTALL.md <br />
+### Qt
+Para instalar use o tutorial: https://www.youtube.com/watch?v=mVKdomkl5Uk <br />
+E para fazer um primeiro "Hello, world" basta seguir o tutorial: https://www.youtube.com/watch?v=sjApF6qnyUI&ab_channel=ProgrammingKnowledge <br />
+
+# Últimas atualizações implementadas
+![29/11/2023](docs/img/dev2023-11-29.png?raw=true "ultima atualizacao")
+## Atualizações futuras
+Ainda é necessário conseguir colocar a informação dos robôs num vetor e ordená-los por ID, para posicionamento correto dos mesmos.
+
+
+# Esboço da Interface Gráfica
+![esboco GUI](docs/img/EsboçoDaGUI.png?raw=true "esboco GUI")
+Representação gráfica do campo que irá conter os robôs e projeto inicial da interface lateral de parâmetros dos robôs.
+
 ![diagrama de classes](docs/img/ssl_project.png?raw=true "diagrama de classes")
 ![fluxograma visao](docs/img/MultiObjectFilterFlowChart.png?raw=false "fluxograma visao")
 ![fluxograma kalman](docs/img/kalmanSteps.png?raw=false "fluxograma kalman")
