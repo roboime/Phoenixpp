@@ -1,0 +1,7 @@
+add_executable(Phoenix main.cpp cli.cpp)
+target_include_directories(Phoenix PRIVATE ${CMAKE_SOURCE_DIR}/implementations/logic)
+target_include_directories(Phoenix PRIVATE ${CMAKE_SOURCE_DIR}/implementations/vision)
+target_link_libraries(Phoenix PRIVATE TestLogic)
+target_link_libraries(Phoenix PRIVATE TestVision)
+target_include_directories(Phoenix PRIVATE ${CMAKE_SOURCE_DIR}/utils/interfaces)
+target_include_directories(Phoenix PRIVATE ${CMAKE_SOURCE_DIR}/utils/structs)

@@ -1,0 +1,8 @@
+{
+    "ui" : "cli",
+    "vision" : "test",
+    "referee" : "none",
+    "feedback" : "none",
+    "logic" : "test",
+    "communicator" : "none"
+}
