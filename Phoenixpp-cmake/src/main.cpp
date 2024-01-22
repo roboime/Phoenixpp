@@ -1,6 +1,10 @@
 #include "cli.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <QCoreApplication>
+#include <QTcpServer>
+#include <QTcpSocket>
+#include "game_event.pb.h"
 
 using json = nlohmann::json;
 

@@ -6,9 +6,15 @@ cmake_policy(SET CMP0079 NEW)
 add_subdirectory(src)
 add_subdirectory(utils)
 add_subdirectory(implementations)
+add_subdirectory(proto)
+
+# adding Qt libraries
+find_package(Qt5 COMPONENTS Core Network REQUIRED)
+target_link_libraries(Phoenix PRIVATE Qt5::Core Qt5::Network)
 
 include(FetchContent)
 
+# fetching nlohmann/json
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 FetchContent_MakeAvailable(json)
 
