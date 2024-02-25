@@ -1,2 +1,2 @@
-add_subdirectory(interfaces)
-add_subdirectory(structs)
+add_subdirectory(components)
+add_subdirectory(messages)

@@ -6,27 +6,21 @@
 #include <memory>
 #include <mutex>
 #include <thread>
-#include "../../../utils/interfaces/logic.h"
-#include "../../../utils/interfaces/vision.h"
-#include "../../../utils/structs/robot_commands.h"
+#include <any>
+#include "../../../utils/components/base_component.h"
+#include "../../../utils/components/parameters_manager.h"
+#include "../../../utils/messages/robot_commands.h"
+#include "../../../utils/messages/environment.h"
 
 using namespace std;
 
-class TestLogic : public Logic {
+class TestLogic : public BaseComponent<RobotCommands> {
 private:
-    shared_ptr<Vision> vision_ptr;
-    atomic<bool>& stop;
-    mutex mtx;
-    RobotCommands commands;
-    RobotCommands execute(Environment& env);
-
 public:
-    TestLogic(std::shared_ptr<Vision> vision_ptr, std::atomic<bool>& stop);
-    void startLogic() override;
-    RobotCommands getRobotCommands() override;
-    void setVision(std::shared_ptr<Vision> newVision) override;
-    void setParameter(std::string key, std::any value) override;
-    ~TestLogic();
+    void start() override;
+    RobotCommands update() override;
+    TestLogic(atomic<bool>& stop, double fps);
+    ~TestLogic(){};
 };
 
 #endif // TEST_LOGIC_H

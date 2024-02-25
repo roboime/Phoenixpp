@@ -1,0 +1,7 @@
+add_library(Cli cli.h cli.cpp)
+target_include_directories(Cli PRIVATE ${CMAKE_SOURCE_DIR}/utils/components)
+target_include_directories(Cli PRIVATE ${CMAKE_SOURCE_DIR}/utils/messages)
+target_include_directories(Cli PRIVATE ${CMAKE_SOURCE_DIR}/src/factories/messages)
+set_target_properties(Cli PROPERTIES LINKER_LANGUAGE CXX)
+target_link_libraries(Cli PRIVATE nlohmann_json)
+target_link_libraries(Cli PRIVATE Components)

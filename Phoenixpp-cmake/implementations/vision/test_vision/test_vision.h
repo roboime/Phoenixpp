@@ -4,21 +4,15 @@
 #include <mutex>
 #include <atomic>
 #include <thread>
-#include "../../../utils/interfaces/vision.h"
-#include "../../../utils/structs/environment.h"
+#include "../../../utils/components/base_component.h"
+#include "../../../utils/messages/environment.h"
 
-class TestVision : public Vision {
-private:
-    std::mutex mtx;
-    Environment environment;
-    std::atomic<bool>& stop;
-
+class TestVision : public BaseComponent<Environment> {
 public:
-    TestVision(std::atomic<bool>& stop);
-    void startReceiving() override;
-    Environment getEnvironment() override;
-    void setFilter(std::string filter) override;
-    ~TestVision();
+    TestVision(std::atomic<bool>& stop, double fps);
+    Environment update() override;
+    void start() override;
+    ~TestVision(){};
 };
 
 #endif // TEST_VISION_H
