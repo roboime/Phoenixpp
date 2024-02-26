@@ -1,0 +1,7 @@
+In file included from /mnt/c/Users/ebert/Desktop/roboime/SSL-Estimator/Phoenixpp-cmake/utils/components/../../src/factories/component_factory.h:7,
+                 from /mnt/c/Users/ebert/Desktop/roboime/SSL-Estimator/Phoenixpp-cmake/utils/components/base_ui.h:9,
+                 from /mnt/c/Users/ebert/Desktop/roboime/SSL-Estimator/Phoenixpp-cmake/utils/components/base_ui.cpp:1:
+/mnt/c/Users/ebert/Desktop/roboime/SSL-Estimator/Phoenixpp-cmake/utils/components/../../src/factories/../../implementations/vision/udp_vision/udp_vision.h:8:10: fatal error: QUdpSocket: No such file or directory
+    8 | #include <QUdpSocket>
+      |          ^~~~~~~~~~~~
+compilation terminated.

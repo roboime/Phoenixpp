@@ -1,6 +1,6 @@
 {
     "ui" : "cli",
-    "vision" : "testVision",
+    "vision" : "udpVision",
     "referee" : "none",
     "feedback" : "none",
     "blueLogic" : "testLogic",

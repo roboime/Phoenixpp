@@ -1,9 +1,10 @@
 #ifndef COMPONENT_FACTORY_H
 #define COMPONENT_FACTORY_H
 #include <atomic>
-#include "../../utils/components/base_component.h"
-#include "../../implementations/logic/test_logic/test_logic.h"
-#include "../../implementations/vision/test_vision/test_vision.h"
+#include "../components/base_component.h"
+#include "../components/implementations/logic/test_logic/test_logic.h"
+#include "../components/implementations/vision/test_vision/test_vision.h"
+#include "../components/implementations/vision/udp_vision/udp_vision.h"
 
 class ComponentFactory {
 private:

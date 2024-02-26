@@ -5,8 +5,8 @@
 #include <mutex>
 #include <unordered_map>
 #include <utility>
-#include "base_component.h"
-#include "../../src/factories/component_factory.h"
+#include "../components/base_component.h"
+#include "../factories/component_factory.h"
 
 using namespace std;
 

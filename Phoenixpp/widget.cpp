@@ -2,6 +2,10 @@
 #include "widget.h"
 #include <chrono>
 #include <ctime>
+#include <iostream>
+#include <string>
+
+using namespace std;
 
 double Widget::GetTimeSec() {
     // Get the current time point
@@ -22,7 +26,7 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
     mSocket = new QUdpSocket(this);
-    if (!mSocket->bind(QHostAddress::AnyIPv4, 10020)) {
+    if (!mSocket->bind(QHostAddress::LocalHost, 10020)) {
         qDebug() << "Failed to bind:" << mSocket->errorString();
     }
     if (!mSocket->joinMulticastGroup(QHostAddress("224.5.23.2"))) {
@@ -40,6 +44,8 @@ Widget::Widget(QWidget *parent)
                 qDebug() << "Socket error:" << mSocket->errorString();
             } else {
                 char* in_buffer = datagram.data();
+                cout << string(in_buffer);
+                /*
                 int length = datagram.size();
                 SSL_WrapperPacket wrapperPacket;
                 if (wrapperPacket.ParseFromArray(in_buffer, length)) {
@@ -47,11 +53,12 @@ Widget::Widget(QWidget *parent)
                 } else {
                     qDebug() << "Failed to parse SSL_WrapperPacket";
                 }
+                */
             }
         }
     });
 }
-
+/*
 void Widget::printRobotInfo(const SSL_DetectionRobot& robot) {
     QString robotInfo;
     robotInfo += QString("CONF=%1 ").arg(robot.confidence(), 0, 'f', 2);
@@ -135,7 +142,7 @@ void Widget::printFrame(SSL_WrapperPacket wrapperPacket){
     }
 }
 
-
+*/
 Widget::~Widget()
 {
     mSocket->leaveMulticastGroup(QHostAddress("224.5.23.2"));

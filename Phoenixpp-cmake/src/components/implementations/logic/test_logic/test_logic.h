@@ -7,10 +7,10 @@
 #include <mutex>
 #include <thread>
 #include <any>
-#include "../../../utils/components/base_component.h"
-#include "../../../utils/components/parameters_manager.h"
-#include "../../../utils/messages/robot_commands.h"
-#include "../../../utils/messages/environment.h"
+#include "../../../base_component.h"
+#include "../../../parameters_manager.h"
+#include "../../../messages/robot_commands.h"
+#include "../../../messages/environment.h"
 
 using namespace std;
 

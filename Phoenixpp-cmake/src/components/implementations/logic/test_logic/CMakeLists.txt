@@ -1,0 +1,5 @@
+add_library(TestLogic test_logic.h test_logic.cpp)
+target_include_directories(TestLogic PRIVATE ${CMAKE_SOURCE_DIR}/src/components)
+target_include_directories(TestLogic PRIVATE ${CMAKE_SOURCE_DIR}/src/components/messages)
+target_link_libraries(TestLogic PUBLIC Components)
+target_link_libraries(TestLogic PUBLIC Messages)

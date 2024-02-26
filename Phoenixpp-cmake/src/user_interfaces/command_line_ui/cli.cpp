@@ -109,8 +109,9 @@ void Cli::showEnvironment(){
         if (!componentIsValid("vision")) return;
         env = components["vision"]->getMessage<Environment>();
     }
-    cout << "field lenght: " << env.field_lenght << endl;
-    cout << "field width: " << env.field_width << endl;
+    cout << env.rawData << "\n";
+    // cout << "field lenght: " << env.field_lenght << endl;
+    // cout << "field width: " << env.field_width << endl;
 }
 
 void Cli::showRobotCommands(){

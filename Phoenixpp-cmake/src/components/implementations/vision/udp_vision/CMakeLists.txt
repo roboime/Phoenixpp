@@ -1,0 +1,5 @@
+add_library(UdpVision udp_vision.h udp_vision.cpp)
+target_include_directories(TestVision PUBLIC ${CMAKE_SOURCE_DIR}/src/components)
+target_include_directories(TestVision PUBLIC ${CMAKE_SOURCE_DIR}/src/components/messages)
+target_link_libraries(UdpVision PUBLIC Components)
+target_link_libraries(UdpVision PUBLIC Messages)

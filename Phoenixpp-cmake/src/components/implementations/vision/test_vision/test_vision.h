@@ -4,8 +4,9 @@
 #include <mutex>
 #include <atomic>
 #include <thread>
-#include "../../../utils/components/base_component.h"
-#include "../../../utils/messages/environment.h"
+#include <random>
+#include "../../../base_component.h"
+#include "../../../messages/environment.h"
 
 class TestVision : public BaseComponent<Environment> {
 public:

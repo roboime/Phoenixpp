@@ -7,7 +7,11 @@
 #include <any>
 #include <mutex>
 #include <thread>
-#include "parameters_manager.h"
+#include "./parameters_manager.h"
+#include "./messages/environment.h"
+#include "./messages/referee_commands.h"
+#include "./messages/robot_commands.h"
+#include "./messages/robot_feedback_data.h"
 
 using namespace std;
 

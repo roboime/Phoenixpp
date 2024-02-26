@@ -1,9 +1,5 @@
 // BaseComponent.cpp
 #include "base_component.h"
-#include "../messages/environment.h"
-#include "../messages/referee_commands.h"
-#include "../messages/robot_commands.h"
-#include "../messages/robot_feedback_data.h"
 
 template <typename T>
 T AnyBaseComponent::getMessage() {

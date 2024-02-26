@@ -9,6 +9,7 @@ struct Ball{
 };
 
 struct Environment{
+    string rawData;
     double field_lenght;
     double field_width;
     Ball ball;

@@ -30,6 +30,9 @@ shared_ptr<AnyBaseComponent> ComponentFactory::createVisionComponent(string impl
     if (implementation == "testVision"){
         return make_shared<TestVision>(stop, fps);
     }
+    if (implementation == "udpVision"){
+        return make_shared<UdpVision>(stop, fps);
+    }
     else {
         return nullptr;
     }

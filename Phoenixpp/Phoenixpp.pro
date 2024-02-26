@@ -15,21 +15,21 @@ SOURCES += \
     Robot.cpp \
     fieldClass/Field.cpp \
     main.cpp \
-    target/game_event.pb.cc \
-    target/grSim_Commands.pb.cc \
-    target/grSim_Packet.pb.cc \
-    target/grSim_Replacement.pb.cc \
-    target/messages_robocup_ssl_detection.pb.cc \
-    target/messages_robocup_ssl_detection_tracked.pb.cc \
-    target/messages_robocup_ssl_geometry.pb.cc \
-    target/messages_robocup_ssl_geometry_legacy.pb.cc \
-    target/messages_robocup_ssl_refbox_log.pb.cc \
-    target/messages_robocup_ssl_wrapper.pb.cc \
-    target/messages_robocup_ssl_wrapper_legacy.pb.cc \
-    target/messages_robocup_ssl_wrapper_tracked.pb.cc \
-    target/rcon.pb.cc \
-    target/referee.pb.cc \
-    target/savestate.pb.cc \
+    #target/game_event.pb.cc \
+    #target/grSim_Commands.pb.cc \
+    #target/grSim_Packet.pb.cc \
+    #target/grSim_Replacement.pb.cc \
+    #target/messages_robocup_ssl_detection.pb.cc \
+    #target/messages_robocup_ssl_detection_tracked.pb.cc \
+    #target/messages_robocup_ssl_geometry.pb.cc \
+    #target/messages_robocup_ssl_geometry_legacy.pb.cc \
+    #target/messages_robocup_ssl_refbox_log.pb.cc \
+    #target/messages_robocup_ssl_wrapper.pb.cc \
+    #target/messages_robocup_ssl_wrapper_legacy.pb.cc \
+    #target/messages_robocup_ssl_wrapper_tracked.pb.cc \
+    #target/rcon.pb.cc \
+    #target/referee.pb.cc \
+    #target/savestate.pb.cc \
     widget.cpp
 
 HEADERS += \

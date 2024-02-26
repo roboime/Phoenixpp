@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QUdpSocket>
 #include <iostream>
-#include "protobuf_files.h"
+//#include "protobuf_files.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -20,12 +20,12 @@ public:
     double static GetTimeSec();
     Widget(QWidget *parent = nullptr);
     ~Widget();
-    void printFrame(SSL_WrapperPacket wrapperPacket);
-    void printRobotInfo(const SSL_DetectionRobot& robot);
+    //void printFrame(SSL_WrapperPacket wrapperPacket);
+    //void printRobotInfo(const SSL_DetectionRobot& robot);
 
 private:
     Ui::Widget *ui;
     QUdpSocket *mSocket;
-    SSL_WrapperPacket wrapperPacket;
+    //SSL_WrapperPacket wrapperPacket;
 };
 #endif // WIDGET_H

@@ -4,10 +4,8 @@
 #include <memory>
 #include <unordered_map>
 #include <nlohmann/json.hpp>
-#include "../../../utils/components/base_ui.h"
-#include "../../../src/factories/component_factory.h"
-#include "../../logic/test_logic/test_logic.h"
-#include "../../vision/test_vision/test_vision.h"
+#include "../base_ui.h"
+#include "../../factories/component_factory.h"
 
 using namespace std;
 using json = nlohmann::json;

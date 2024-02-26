@@ -11,13 +11,15 @@
 #include <QGraphicsEllipseItem>
 #include <QScreen>
 #include <QPixmap>
+#include <iostream>
 #include"fieldClass/Field.h"
 
+using namespace std;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
+    /*
     // Obtenha o tamanho da tela
     QScreen *screen = a.primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -35,9 +37,11 @@ int main(int argc, char *argv[])
     field.addRobosToSides(&robot, 6); // Adiciona 6 robôs de cada lado
 
     field.show();
-
+    */
 
     Widget w;
-    w.show();
+    char chr;
+    cin >> chr;
+    //w.show();
     return a.exec();
 }
