@@ -1,9 +1,11 @@
 {
-    "ui" : "cli",
-    "vision" : "udpVision",
+    "vision" : "grsimVision",
+    "filter" : "none",
     "referee" : "none",
     "feedback" : "none",
     "blueLogic" : "testLogic",
     "yellowLogic" : "testLogic",
+    "pathPlanning" : "none",
+    "navigation" : "none",
     "communicator" : "none"
 }

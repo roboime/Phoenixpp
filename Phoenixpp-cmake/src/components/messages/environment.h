@@ -8,11 +8,15 @@ struct Ball{
     double y;
 };
 
-struct Environment{
-    string rawData;
-    double field_lenght;
+struct Field{
+    double field_length;
     double field_width;
+};
+
+struct Environment{
+    bool received;
     Ball ball;
+    Field field;
 };
 
 #endif

@@ -4,7 +4,8 @@
 #include "../components/base_component.h"
 #include "../components/implementations/logic/test_logic/test_logic.h"
 #include "../components/implementations/vision/test_vision/test_vision.h"
-#include "../components/implementations/vision/udp_vision/udp_vision.h"
+#include "../components/implementations/vision/udp_vision/grsim_vision.h"
+#include "../components/implementations/vision/udp_vision/real_game_vision.h"
 
 class ComponentFactory {
 private:

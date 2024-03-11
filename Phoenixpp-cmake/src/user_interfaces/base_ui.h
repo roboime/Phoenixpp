@@ -12,14 +12,14 @@ using namespace std;
 
 class BaseUi {
 protected:
-    mutex mtx;
+    mutex component_mtx;
     atomic<bool> stop;
     double fps;
     unordered_map<string, shared_ptr<AnyBaseComponent>> components;
     ComponentFactory factory;
+    bool componentIsValid(string key);
 public:
     BaseUi(double fps);
-    bool componentIsValid(string key);
     void setComponent(string key, shared_ptr<AnyBaseComponent> new_component);
     void start();
     void loopComponent(string key, double fps);

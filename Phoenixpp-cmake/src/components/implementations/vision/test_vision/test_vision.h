@@ -11,9 +11,9 @@
 class TestVision : public BaseComponent<Environment> {
 public:
     TestVision(std::atomic<bool>& stop, double fps);
-    Environment update() override;
+    Environment update(Environment message) override;
     void start() override;
-    ~TestVision(){};
+    ~TestVision();
 };
 
 #endif // TEST_VISION_H

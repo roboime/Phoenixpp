@@ -6,8 +6,9 @@
 #include <unordered_map>
 #include <any>
 #include <mutex>
+#include <shared_mutex>
 #include <thread>
-#include "./parameters_manager.h"
+#include "../utils/parameters_manager.h"
 #include "./messages/environment.h"
 #include "./messages/referee_commands.h"
 #include "./messages/robot_commands.h"
@@ -36,7 +37,7 @@ template <typename T>
 class BaseComponent : public AnyBaseComponent{
 protected:
     T message;
-    mutex message_mtx;
+    shared_mutex message_mtx;
     mutex component_mtx;
     atomic<bool> &stop;
     unordered_map<string, shared_ptr<AnyBaseComponent>> components;
@@ -48,7 +49,7 @@ public:
     bool isComponentPresent(string key);
     T getMessage();
     void execute() override;
-    virtual T update() = 0;
+    virtual T update(T message) = 0;
     unordered_map<string, shared_ptr<AnyBaseComponent>> getComponents() override;
     void setComponent(string key, shared_ptr<AnyBaseComponent> newComponent) override;
     void setParameter(std::string key, std::any value) override;

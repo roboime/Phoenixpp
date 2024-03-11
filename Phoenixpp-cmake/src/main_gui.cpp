@@ -1,14 +1,12 @@
-#include "user_interfaces/command_line_ui/cli.h"
+#include "user_interfaces/graphical_ui/gui.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
-//#include "game_event.pb.h"
-// #include "../implementations/logic/test_logic/test_logic.h"
 
 using json = nlohmann::json;
 using namespace std;
 
-int main(){
+int main(int argc, char**argv){
     ifstream file("../configurations/main_settings.json");
     if (!file.is_open()) {
         cerr << "Error opening file" << endl;
@@ -17,13 +15,7 @@ int main(){
     json config;
     file >> config;
 
-    string ui = config["ui"];
-    if (ui == "cli"){
-        Cli cli(config, 70);
-        cli.start();
-    }
-    else{
-        cout << "unrecognized UI configuration";
-    }
+    Gui gui(config, 70);
+    gui.start();
     return 0;
 }

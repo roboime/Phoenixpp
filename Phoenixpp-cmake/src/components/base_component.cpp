@@ -17,16 +17,16 @@ BaseComponent<T>::BaseComponent(string component, atomic<bool>& stop, double fps
 
 template <typename T>
 void BaseComponent<T>::execute(){
-    T message = update();
+    T message = update(getMessage());
     {
-        std::lock_guard<std::mutex> lock(message_mtx);
+        unique_lock<shared_mutex> lock(message_mtx);
         this->message = message;
     }
 }
 
 template <typename T>
 T BaseComponent<T>::getMessage(){
-    std::lock_guard<std::mutex> lock(message_mtx);
+    shared_lock<shared_mutex> lock(message_mtx);
     return message;
 }
 template <typename T>
@@ -68,7 +68,12 @@ void BaseComponent<T>::loadParameters(){
 }
 template <typename T>
 BaseComponent<T>::~BaseComponent(){
+    cout << "destruindo base component" << endl;
+    for(auto &pair : components){
+        pair.second = nullptr;
+    }
     components.clear();
+    cout << "done base component" << endl;
 }
 template class BaseComponent<Environment>;
 template class BaseComponent<RefereeCommands>;

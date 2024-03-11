@@ -1,5 +1,5 @@
-#ifndef CLI_H
-#define CLI_H
+#ifndef GUI_H
+#define GUI_H
 #include <atomic>
 #include <memory>
 #include <unordered_map>
@@ -10,15 +10,13 @@
 using namespace std;
 using json = nlohmann::json;
 
-class Cli : public BaseUi{
+class Gui : public BaseUi{
 private:
     json config;
-    void showEnvironment();
-    void showRobotCommands();
 public:
-    Cli(json config, double fps);
+    Gui(json config, double fps);
     void execute() override;
-    ~Cli() {}
+    ~Gui();
 };
 
-#endif // CLI_H
+#endif // GUI_H

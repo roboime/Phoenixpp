@@ -9,16 +9,16 @@ shared_ptr<AnyBaseComponent> ComponentFactory::createComponent(string type, stri
     if(type == "vision"){
         return createVisionComponent(implementation, fps);
     }
-    if(type == "logic"){
+    else if(type == "logic"){
         return createLogicComponent(implementation, fps);
     }
-    if(type == "referee"){  
+    else if(type == "referee"){
         return createRefereeComponent(implementation, fps);
     }
-    if(type == "feedback"){
+    else if(type == "feedback"){
         return createFeedbackComponent(implementation, fps);
     }
-    if(type == "comunicator"){
+    else if(type == "comunicator"){
         return createCommunicatorComponent(implementation, fps);
     }
     else{
@@ -30,8 +30,11 @@ shared_ptr<AnyBaseComponent> ComponentFactory::createVisionComponent(string impl
     if (implementation == "testVision"){
         return make_shared<TestVision>(stop, fps);
     }
-    if (implementation == "udpVision"){
+    else if (implementation == "grsimVision"){
         return make_shared<UdpVision>(stop, fps);
+    }
+    else if (implementation == "realGameVision"){
+        return make_shared<RealGameVision>(stop, fps);
     }
     else {
         return nullptr;

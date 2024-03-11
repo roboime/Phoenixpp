@@ -9,6 +9,7 @@ BaseUi::BaseUi(double fps) : stop(false), fps(fps), factory(stop) {}
 void BaseUi::start(){
     vector<thread> threads;
     for (const auto& pair : components){
+        if (pair.second == nullptr) continue;
         threads.push_back(thread([this, &pair]() { loopComponent(pair.first, 70); }));
     }
     cerr << "number of threads: " << threads.size() << endl;
@@ -17,30 +18,47 @@ void BaseUi::start(){
         execute();
         this_thread::sleep_for(chrono::milliseconds(period));
     }
-     for (auto& thread : threads) {
-        thread.join();
+    {
+        lock_guard<mutex> lock(component_mtx);
+        components.clear();
+    }
+    for (auto& thread : threads) {
+        if(thread.joinable()) thread.join();
     }
 }
 
 void BaseUi::setComponent(string key, shared_ptr<AnyBaseComponent> new_component){
-    std::lock_guard<std::mutex> lock(mtx);
+    unique_lock<mutex> lock(component_mtx);
+    //cout << "ui component_mtx locked"<< e0ndl;
+    cout << "count: " << components[key].use_count() << endl;
+    if (!components.count(key)){
+        cerr << "component not found\n";
+        return;
+    }
+    cerr << "setting derived components of the old component into the new...\n";
+    // setting derived components of the old component into the new
+    if (components[key] != nullptr && new_component != nullptr){
+        for(auto& pair : components[key]->getComponents()){
+            new_component->setComponent(pair.first, pair.second);
+        }
+    }
+    cout << "count: " << components[key].use_count() << endl;
+    cerr << "updating component pointer in other components...\n";
+    // updating component pointer in other components
     for (const auto& pair : components){
-        if(pair.first != key && pair.second->isComponentPresent(key)){
-            cerr << "found one\n";
+        if(pair.first != key && pair.second != nullptr && pair.second->isComponentPresent(key)){
             pair.second->setComponent(key, new_component);
+            cout << "count: " << components[key].use_count() << endl;
         }
     }
-    if (new_component != nullptr){
-        // migrating derived components of the old component to the new
-        unordered_map<string, shared_ptr<AnyBaseComponent>> derivedComponents = components[key]->getComponents();
-        components[key] = new_component;
-        for(const auto& pair : derivedComponents){
-            components[key]->setComponent(pair.first, pair.second);
-        }
-    }
-    else{
-        components[key] = new_component;
-    }
+    cerr << "setting new component on map...\n";
+    cout << "count: " << components[key].use_count() << endl;
+    //components.erase(key);
+    components[key] = new_component;
+    cout << "count: " << components[key].use_count() << endl;
+    cerr << "setting done\n";
+    new_component->start();
+    //cout << "ui component_mtx unlocked"<< endl;
 }
 
 bool BaseUi::componentIsValid(string key){
@@ -48,19 +66,37 @@ bool BaseUi::componentIsValid(string key){
 }
 
 void BaseUi::loopComponent(string key, double fps){
+    unique_lock<mutex> lock(component_mtx);
+    //cout << "ui component_mtx locked"<< endl;
     if(components.count(key)){
         components[key]->start();
     }
-    long long period = (long long)(1000.0 / fps);
+    lock.unlock();
+    //cout << "ui component_mtx unlocked"<< endl;
+    long long period = fps > 0 || key != "vision" ? (long long)(1000.0 / fps) : 0;
+    auto start = chrono::high_resolution_clock::now();
+    auto end = chrono::high_resolution_clock::now();
+
     while (!stop.load()) {
         {
-            std::lock_guard<std::mutex> lock(mtx);
-            if(componentIsValid(key)){
-                components[key]->execute();
+            end = chrono::high_resolution_clock::now();
+            auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+            if(elapsed > period){
+                start = chrono::high_resolution_clock::now();
+                lock.lock();
+                //cout << "ui component_mtx locked"<< endl;
+                if(componentIsValid(key)){
+                    components[key]->execute();
+                }
+                else{
+                    cerr << "Component not valid\n";
+                }
+                lock.unlock();
+                //cout << "ui component_mtx unlocked"<< endl;
             }
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(period));
     }
+    cerr << "stop called looop component\n";
 }
 
 BaseUi::~BaseUi() {}
