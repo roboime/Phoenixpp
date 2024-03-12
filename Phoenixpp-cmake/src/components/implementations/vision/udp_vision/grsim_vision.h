@@ -8,14 +8,6 @@
 #include <iostream>
 #include <memory>
 #include <queue>
-#include "Poco/Net/DatagramSocket.h"
-#include "Poco/Net/MulticastSocket.h"
-#include "Poco/Net/SocketAddress.h"
-#include "Poco/Net/SocketReactor.h"
-#include "Poco/Net/SocketNotification.h"
-#include "Poco/Net/SocketAcceptor.h"
-#include "Poco/NObserver.h"
-#include "Poco/Observer.h"
 #include "../../../../../proto/protobuf_files.h"
 #include "../../../../utils/udp_receiver.h"
 #include "../../../base_component.h"

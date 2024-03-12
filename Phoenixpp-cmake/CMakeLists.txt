@@ -10,8 +10,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 # set(CMAKE_AUTOUIC ON)  # Enable automatic UIC (User Interface Compiler)
 # set(CMAKE_AUTORCC ON)  # Enable automatic RCC (Resource Compiler)
 
-add_subdirectory(src)
 add_subdirectory(proto)
+add_subdirectory(src)
 
 # adding Qt libraries
 # find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)

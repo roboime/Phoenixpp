@@ -38,7 +38,7 @@ void UdpReceiver::receivePacket() {
     while (!stop.load() && !stopReceiver.load()) {
         socketImpl = socket.impl();
         if (!socketImpl || !socketImpl->initialized()){
-            cerr << (bool)socketImpl << " " << socketImpl->initialized() << endl;
+            //cerr << (bool)socketImpl << " " << socketImpl->initialized() << endl;
             reconnect();
         }
         if (socket.available() >= 0){
