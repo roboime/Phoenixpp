@@ -5,7 +5,6 @@ UdpSender::UdpSender(atomic<bool>& stop, queue<pair<char*,int>> &bufferQueue, mu
     stop(stop), bufferQueue(bufferQueue), bufferQueue_mtx(bufferQueue_mtx), socket(Poco::Net::MulticastSocket()),
     transmitted(false), multicastAddress(multicastAddress), port(port), stopSender(false),
     bufferSizeMax(bufferSizeMax), queueSizeMax(queueSizeMax) {
-        buffer = new char[bufferSizeMax];
 }
 
 void UdpSender::start(){
@@ -63,6 +62,7 @@ void UdpSender::sendPacket() {
             transmitted.store(false);
             //cerr << "Error while receiving: " << e.displayText() << "\n";
         }
+        delete [] buffer; // deletando espaco alocado pelo udpCommunicator ao criar a mensagem
     }
     //reactor.stop();
     socket.close();
@@ -78,6 +78,5 @@ UdpSender::~UdpSender(){
     stopSender.store(true);
     if(receiveThread.joinable()) receiveThread.join();
     //if(reactorThread.joinable()) reactorThread.join();
-    delete [] buffer;
     cout << "done udp Sender" << endl;
 }

@@ -15,12 +15,15 @@
 
 class UdpCommunicator: public BaseComponent<RobotCommands>{
 private:
+    int bufferSizeMax;
+    int queueSizeMax;
     shared_ptr<UdpSender> udpSender;
     queue<pair<char*,int>> bufferQueue;
     mutex bufferQueue_mtx;
 public:
     UdpCommunicator(std::atomic<bool>& stop, double fps);
-    RobotCommands update(RobotCommands message) override;
+    RobotCommands update(RobotCommands robotCommands) override;
+    void execute() override;
     void start() override;
     ~UdpCommunicator();
 };

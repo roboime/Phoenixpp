@@ -55,5 +55,10 @@ shared_ptr<AnyBaseComponent> ComponentFactory::createFeedbackComponent(string im
     return nullptr;
 }
 shared_ptr<AnyBaseComponent> ComponentFactory::createCommunicatorComponent(string implementation, double fps){
-    return nullptr;
+    if (implementation == "udpCommunicator"){
+        return make_shared<UdpCommunicator>(stop, fps);
+    }
+    else {
+        return nullptr;
+    }
 }

@@ -2,5 +2,5 @@
     "multicastAddress" : "224.5.23.2",
     "port" : "20011",
     "bufferSizeMax" : 2048,
-    "queueSizeMax" : 1
+    "queueSizeMax" : 10
 }

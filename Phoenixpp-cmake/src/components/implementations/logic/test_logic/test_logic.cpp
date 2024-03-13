@@ -14,8 +14,16 @@ RobotCommands TestLogic::update(RobotCommands message){
         env = components["vision"]->getMessage<Environment>();
     }
     RobotCommands robotCommands;
-    robotCommands.vel_norm = (env.ball.x + env.ball.y)*env.field.field_length + env.field.field_width;
-    robotCommands.vel_tang = (env.ball.x + env.ball.y)*env.field.field_width + env.field.field_length;
+    robotCommands.timestamp = (double)(chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count());
+    robotCommands.isteamyellow = false;
+    RobotCommand command;
+
+    command.id = 0;
+    command.velangular = 1;
+    command.velnormal = 1;
+    command.veltangent = 1;
+    robotCommands.robotCommands.push_back(command);
+
     return robotCommands;
 }
 

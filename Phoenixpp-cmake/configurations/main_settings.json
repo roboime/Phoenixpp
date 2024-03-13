@@ -4,8 +4,8 @@
     "referee" : "none",
     "feedback" : "none",
     "blueLogic" : "testLogic",
-    "yellowLogic" : "testLogic",
+    "yellowLogic" : "none",
     "pathPlanning" : "none",
     "navigation" : "none",
-    "communicator" : "none"
+    "communicator" : "udpCommunicator"
 }

@@ -100,11 +100,9 @@ void Cli::showEnvironment(){
     Environment env;
     {
         lock_guard<mutex> lock(component_mtx);
-        cout << "ui component_mtx locked"<< endl;
         if (!componentIsValid("vision")) return;
         env = components["vision"]->getMessage<Environment>();
     }
-    cout << "ui component_mtx unlocked"<< endl;
     //cout << env.rawData << "\n";
     //cout << env.rawData.length() << "\n";
     cout << "received: " << env.received << endl;
@@ -118,11 +116,9 @@ void Cli::showRobotCommands(){
     RobotCommands robotCommands;
     {
         lock_guard<mutex> lock(component_mtx);
-        cout << "ui component_mtx locked"<< endl;
         if (!componentIsValid("blueLogic")) return;
         robotCommands = components["blueLogic"]->getMessage<RobotCommands>();
     }
-    cout << "ui component_mtx unlocked"<< endl;
-    cout << "vel_norm: " << robotCommands.vel_norm << endl;
-    cout << "vel_tang: " << robotCommands.vel_tang << endl;
+    cout << "timestamp: " << robotCommands.timestamp << endl;
+    //cout << "vel_tang: " << robotCommands.vel_tang << endl;
 }

@@ -6,6 +6,7 @@
 #include "../components/implementations/vision/test_vision/test_vision.h"
 #include "../components/implementations/vision/udp_vision/grsim_vision.h"
 #include "../components/implementations/vision/udp_vision/real_game_vision.h"
+#include "../components/implementations/communicator/udp_communicator/udp_communicator.h"
 
 class ComponentFactory {
 private:
