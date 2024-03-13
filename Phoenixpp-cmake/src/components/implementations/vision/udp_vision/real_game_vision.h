@@ -21,7 +21,7 @@
 #include "../../../base_component.h"
 #include "../../../messages/environment.h"
 
-class RealGameVision : public BaseComponent<Environment>{
+class RealGameVision : public TBaseComponent<Environment>{
 private:
     shared_ptr<UdpReceiver> udpReceiver;
     queue<pair<char*,int>> bufferQueue;

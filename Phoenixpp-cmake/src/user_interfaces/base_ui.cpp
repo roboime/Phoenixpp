@@ -27,7 +27,7 @@ void BaseUi::start(){
     }
 }
 
-void BaseUi::setComponent(string key, shared_ptr<AnyBaseComponent> new_component){
+void BaseUi::setComponent(string key, shared_ptr<BaseComponent> new_component){
     unique_lock<mutex> lock(component_mtx);
     //cout << "ui component_mtx locked"<< e0ndl;
     cout << "count: " << components[key].use_count() << endl;

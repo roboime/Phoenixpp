@@ -14,7 +14,7 @@
 
 using namespace std;
 
-class TestLogic : public BaseComponent<RobotCommands> {
+class TestLogic : public TBaseComponent<RobotCommands> {
 private:
 public:
     void start() override;

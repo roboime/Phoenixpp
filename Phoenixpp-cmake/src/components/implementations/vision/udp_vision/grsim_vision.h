@@ -13,7 +13,7 @@
 #include "../../../base_component.h"
 #include "../../../messages/environment.h"
 
-class UdpVision : public BaseComponent<Environment>{
+class UdpVision : public TBaseComponent<Environment>{
 private:
     shared_ptr<UdpReceiver> udpReceiver;
     queue<pair<char*,int>> bufferQueue;

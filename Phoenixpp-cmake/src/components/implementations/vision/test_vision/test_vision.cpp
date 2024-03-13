@@ -1,7 +1,7 @@
 #include "test_vision.h"
 #include <random>
 
-TestVision::TestVision(atomic<bool>& stop, double fps) : BaseComponent("testvision", stop, fps) {
+TestVision::TestVision(atomic<bool>& stop, double fps) : TBaseComponent("testvision", stop, fps) {
     message.field.field_length = 0;
 }
 

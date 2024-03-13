@@ -8,7 +8,7 @@
 #include "../../../base_component.h"
 #include "../../../messages/environment.h"
 
-class TestVision : public BaseComponent<Environment> {
+class TestVision : public TBaseComponent<Environment> {
 public:
     TestVision(std::atomic<bool>& stop, double fps);
     Environment update(Environment message) override;

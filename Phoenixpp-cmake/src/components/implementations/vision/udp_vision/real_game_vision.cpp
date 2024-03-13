@@ -1,6 +1,6 @@
 #include "real_game_vision.h"
 
-RealGameVision::RealGameVision(atomic<bool>& stop, double fps) : BaseComponent("realgamevision", stop, fps) {
+RealGameVision::RealGameVision(atomic<bool>& stop, double fps) : TBaseComponent("realgamevision", stop, fps) {
     parameters.load();
     string multicastAddress = any_cast<string>(parameters.get("multicastAddress"));
     string port = any_cast<string>(parameters.get("port"));

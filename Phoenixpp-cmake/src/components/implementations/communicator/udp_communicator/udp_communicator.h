@@ -13,7 +13,7 @@
 #include "../../../base_component.h"
 #include "../../../messages/robot_commands.h"
 
-class UdpCommunicator: public BaseComponent<TransmittedCommands>{
+class UdpCommunicator: public TBaseComponent<TransmittedCommands>{
 private:
     int bufferSizeMax;
     int queueSizeMax;

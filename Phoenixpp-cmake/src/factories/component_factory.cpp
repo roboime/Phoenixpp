@@ -2,9 +2,9 @@
 
 ComponentFactory::ComponentFactory(atomic<bool> &stop) : stop(stop) {}
 
-shared_ptr<AnyBaseComponent> ComponentFactory::createComponent(string type, string implementation, double fps){
+shared_ptr<BaseComponent> ComponentFactory::createComponent(string type, string implementation, double fps){
     if (implementation == "none"){
-        return nullptr;
+        return make_shared<DummyComponent>(stop, fps);
     }
     if(type == "vision"){
         return createVisionComponent(implementation, fps);
@@ -26,7 +26,7 @@ shared_ptr<AnyBaseComponent> ComponentFactory::createComponent(string type, stri
     }
 }
 
-shared_ptr<AnyBaseComponent> ComponentFactory::createVisionComponent(string implementation, double fps){
+shared_ptr<BaseComponent> ComponentFactory::createVisionComponent(string implementation, double fps){
     if (implementation == "testVision"){
         return make_shared<TestVision>(stop, fps);
     }
@@ -37,28 +37,28 @@ shared_ptr<AnyBaseComponent> ComponentFactory::createVisionComponent(string impl
         return make_shared<RealGameVision>(stop, fps);
     }
     else {
-        return nullptr;
+        return make_shared<DummyComponent>(stop, fps);
     }
 }
-shared_ptr<AnyBaseComponent> ComponentFactory::createLogicComponent(string implementation, double fps){
+shared_ptr<BaseComponent> ComponentFactory::createLogicComponent(string implementation, double fps){
     if (implementation == "testLogic"){
         return make_shared<TestLogic>(stop, fps);
     }
     else {
-        return nullptr;
+        return make_shared<DummyComponent>(stop, fps);
     }
 }
-shared_ptr<AnyBaseComponent> ComponentFactory::createRefereeComponent(string implementation, double fps){
-    return nullptr;
+shared_ptr<BaseComponent> ComponentFactory::createRefereeComponent(string implementation, double fps){
+    return make_shared<DummyComponent>(stop, fps);
 }
-shared_ptr<AnyBaseComponent> ComponentFactory::createFeedbackComponent(string implementation, double fps){
-    return nullptr;
+shared_ptr<BaseComponent> ComponentFactory::createFeedbackComponent(string implementation, double fps){
+    return make_shared<DummyComponent>(stop, fps);
 }
-shared_ptr<AnyBaseComponent> ComponentFactory::createCommunicatorComponent(string implementation, double fps){
+shared_ptr<BaseComponent> ComponentFactory::createCommunicatorComponent(string implementation, double fps){
     if (implementation == "udpCommunicator"){
         return make_shared<UdpCommunicator>(stop, fps);
     }
     else {
-        return nullptr;
+        return make_shared<DummyComponent>(stop, fps);
     }
 }

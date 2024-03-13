@@ -1,7 +1,7 @@
 #include "test_logic.h"
 
 TestLogic::TestLogic(atomic<bool>& stop, double fps)
-    : BaseComponent("testlogic", stop, fps) { }
+    : TBaseComponent("testlogic", stop, fps) { }
 
 void TestLogic::start(){
 }
@@ -11,7 +11,11 @@ RobotCommands TestLogic::update(RobotCommands message){
     {
         lock_guard<mutex> lock(component_mtx);
         if (!isComponentValid("vision")) return message;
-        env = components["vision"]->getMessage<Environment>();
+        try{
+            env = components["vision"]->getMessage<Environment>();
+        } catch(exception&){
+            return message;
+        }
     }
     RobotCommands robotCommands;
     robotCommands.timestamp = (double)(chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count());

@@ -1,6 +1,6 @@
 #include "udp_communicator.h"
 
-UdpCommunicator::UdpCommunicator(atomic<bool>& stop, double fps) : BaseComponent("udpcommunicator", stop, fps) {
+UdpCommunicator::UdpCommunicator(atomic<bool>& stop, double fps) : TBaseComponent("udpcommunicator", stop, fps) {
     parameters.load();
     string multicastAddress = any_cast<string>(parameters.get("multicastAddress"));
     string port = any_cast<string>(parameters.get("port"));
@@ -23,7 +23,12 @@ TransmittedCommands UdpCommunicator::update(TransmittedCommands old_transmitted)
             //cerr << "blueLogic not valid\n";
             return transmitted;
         }
-        commands = components["blueLogic"]->getMessage<RobotCommands>();
+        try{
+            commands = components["blueLogic"]->getMessage<RobotCommands>();
+        } catch(exception&){
+            return transmitted;
+        }
+
     }
     grSim_Packet packetMessage;
     grSim_Commands commandsMessage;

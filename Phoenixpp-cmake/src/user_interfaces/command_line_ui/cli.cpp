@@ -4,7 +4,7 @@ using namespace std;
 
 Cli::Cli(json config, double fps) : BaseUi(fps), config(config){
     try{
-        shared_ptr<AnyBaseComponent> component;
+        shared_ptr<BaseComponent> component;
         // cout << config["vision"] << " " << config["referee"] << " " << config["feedback"] << " " << config["blueLogic"] << " " << config["yellowLogic"] << " " << config["communicator"] << endl;
         components["vision"] = factory.createComponent("vision", config["vision"], 70);
         components["referee"] = factory.createComponent("referee", config["referee"], 70);
@@ -46,7 +46,7 @@ void Cli::execute(){
 
     cout << "show environment: (e);\nshow robot commands: (r);\nstop: (s)" << endl;
     cin >> chr;
-    shared_ptr<AnyBaseComponent> ptr = nullptr;
+    shared_ptr<BaseComponent> ptr = nullptr;
     switch (chr){
         case 'c':
             cin >> key;
@@ -97,24 +97,30 @@ void Cli::execute(){
 }
 
 void Cli::showEnvironment(){
-    Environment env;
-    {
-        lock_guard<mutex> lock(component_mtx);
-        if (!componentIsValid("vision")) return;
-        env = components["vision"]->getMessage<Environment>();
-    }
-    //cout << env.rawData << "\n";
-    //cout << env.rawData.length() << "\n";
-    cout << "received: " << env.received << endl;
-    cout << "field lenght: " << env.field.field_length << endl;
-    cout << "field width: " << env.field.field_width << endl;
-    cout << "ball x: " << env.ball.x << endl;
-    cout << "ball y: " << env.ball.y << endl;
+    try{
+        Environment env;
+        {
+            lock_guard<mutex> lock(component_mtx);
+            if (!componentIsValid("vision")) return;
+            env = components["vision"]->getMessage<Environment>();
+        }
+        //cout << env.rawData << "\n";
+        //cout << env.rawData.length() << "\n";
+        cout << "received: " << env.received << endl;
+        cout << "field lenght: " << env.field.field_length << endl;
+        cout << "field width: " << env.field.field_width << endl;
+        cout << "ball x: " << env.ball.x << endl;
+        cout << "ball y: " << env.ball.y << endl;
+    } catch(exception&){}
     TransmittedCommands transmitted;
     {
         lock_guard<mutex> lock(component_mtx);
         if (!componentIsValid("communicator")) return;
-        transmitted = components["communicator"]->getMessage<TransmittedCommands>();
+        try{
+            transmitted = components["communicator"]->getMessage<TransmittedCommands>();
+        } catch(exception&){
+            return;
+        }
     }
     cout << "transmitted: " << transmitted.transmitted << endl;
 }
@@ -124,7 +130,11 @@ void Cli::showRobotCommands(){
     {
         lock_guard<mutex> lock(component_mtx);
         if (!componentIsValid("blueLogic")) return;
-        robotCommands = components["blueLogic"]->getMessage<RobotCommands>();
+        try{
+            robotCommands = components["blueLogic"]->getMessage<RobotCommands>();
+        } catch(exception&){
+            return;
+        }
     }
     //cout << "timestamp: " << robotCommands.timestamp << endl;
     cout << "vel_tang: " << robotCommands.robotCommands[0].veltangent << endl;

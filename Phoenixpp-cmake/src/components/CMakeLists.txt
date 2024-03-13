@@ -3,6 +3,8 @@ add_subdirectory(implementations)
 add_library(Components
     base_component.h
     base_component.cpp
+    dummy_component.h
+    dummy_component.cpp
 )
 target_include_directories(Components PRIVATE ${CMAKE_SOURCE_DIR}/src/components/messages)
 target_include_directories(Components PRIVATE ${CMAKE_SOURCE_DIR}/src/utils)

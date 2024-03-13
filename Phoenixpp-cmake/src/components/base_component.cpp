@@ -1,9 +1,8 @@
-// BaseComponent.cpp
 #include "base_component.h"
 
 template <typename T>
-T AnyBaseComponent::getMessage() {
-    BaseComponent<T>* typedComponent = dynamic_cast<BaseComponent<T>*>(this);
+T BaseComponent::getMessage() {
+    TBaseComponent<T>* typedComponent = dynamic_cast<TBaseComponent<T>*>(this);
     if (typedComponent) {
         return typedComponent->getMessage();
     } else {
@@ -12,11 +11,11 @@ T AnyBaseComponent::getMessage() {
 }
 
 template <typename T>
-BaseComponent<T>::BaseComponent(string component, atomic<bool>& stop, double fps) : stop(stop), parameters(component), fps(fps){
+TBaseComponent<T>::TBaseComponent(string component, atomic<bool>& stop, double fps) : stop(stop), parameters(component), fps(fps){
 }
 
 template <typename T>
-void BaseComponent<T>::execute(){
+void TBaseComponent<T>::execute(){
     T message = update(getMessage());
     {
         unique_lock<shared_mutex> lock(message_mtx);
@@ -25,49 +24,49 @@ void BaseComponent<T>::execute(){
 }
 
 template <typename T>
-T BaseComponent<T>::getMessage(){
+T TBaseComponent<T>::getMessage(){
     shared_lock<shared_mutex> lock(message_mtx);
     return message;
 }
 template <typename T>
-void BaseComponent<T>::setComponent(string key, shared_ptr<AnyBaseComponent> newComponent) {
+void TBaseComponent<T>::setComponent(string key, shared_ptr<BaseComponent> newComponent) {
     std::lock_guard<std::mutex> lock(component_mtx);
     components[key] = newComponent;
 }
 
 template <typename T>
-unordered_map<string, shared_ptr<AnyBaseComponent>> BaseComponent<T>::getComponents(){
+unordered_map<string, shared_ptr<BaseComponent>> TBaseComponent<T>::getComponents(){
     std::lock_guard<std::mutex> lock(component_mtx);
     return components;
 }
 
 template <typename T>
-bool BaseComponent<T>::isComponentValid(string key) {
+bool TBaseComponent<T>::isComponentValid(string key) {
     return components.count(key) && components[key] != nullptr;
 }
 template <typename T>
-bool BaseComponent<T>::isComponentPresent(string key) {
+bool TBaseComponent<T>::isComponentPresent(string key) {
     std::lock_guard<std::mutex> lock(component_mtx);
     return components.count(key);
 }
 template <typename T>
-void BaseComponent<T>::setParameter(std::string key, std::any value){
+void TBaseComponent<T>::setParameter(std::string key, std::any value){
     parameters.set(key, value);
 }
 template <typename T>
-any BaseComponent<T>::getParameter(std::string key){
+any TBaseComponent<T>::getParameter(std::string key){
     return parameters.get(key);
 }
 template <typename T>
-void BaseComponent<T>::saveParameters(){
+void TBaseComponent<T>::saveParameters(){
     parameters.save();
 }
 template <typename T>
-void BaseComponent<T>::loadParameters(){
+void TBaseComponent<T>::loadParameters(){
     parameters.load();
 }
 template <typename T>
-BaseComponent<T>::~BaseComponent(){
+TBaseComponent<T>::~TBaseComponent(){
     cout << "destruindo base component" << endl;
     for(auto &pair : components){
         pair.second = nullptr;
@@ -75,13 +74,15 @@ BaseComponent<T>::~BaseComponent(){
     components.clear();
     cout << "done base component" << endl;
 }
-template class BaseComponent<Environment>;
-template class BaseComponent<RefereeCommands>;
-template class BaseComponent<RobotCommands>;
-template class BaseComponent<RobotFeedbackData>;
-template class BaseComponent<TransmittedCommands>;
-template Environment AnyBaseComponent::getMessage<Environment>();
-template RefereeCommands AnyBaseComponent::getMessage<RefereeCommands>();
-template RobotCommands AnyBaseComponent::getMessage<RobotCommands>();
-template RobotFeedbackData AnyBaseComponent::getMessage<RobotFeedbackData>();
-template TransmittedCommands AnyBaseComponent::getMessage<TransmittedCommands>();
+template class TBaseComponent<Environment>;
+template class TBaseComponent<RefereeCommands>;
+template class TBaseComponent<RobotCommands>;
+template class TBaseComponent<RobotFeedbackData>;
+template class TBaseComponent<TransmittedCommands>;
+template class TBaseComponent<DummyMessage>;
+template Environment BaseComponent::getMessage<Environment>();
+template RefereeCommands BaseComponent::getMessage<RefereeCommands>();
+template RobotCommands BaseComponent::getMessage<RobotCommands>();
+template RobotFeedbackData BaseComponent::getMessage<RobotFeedbackData>();
+template TransmittedCommands BaseComponent::getMessage<TransmittedCommands>();
+template DummyMessage BaseComponent::getMessage<DummyMessage>();

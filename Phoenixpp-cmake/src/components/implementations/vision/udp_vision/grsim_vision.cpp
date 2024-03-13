@@ -1,6 +1,6 @@
 #include "grsim_vision.h"
 
-UdpVision::UdpVision(atomic<bool>& stop, double fps) : BaseComponent("grsimvision", stop, fps) {
+UdpVision::UdpVision(atomic<bool>& stop, double fps) : TBaseComponent("grsimvision", stop, fps) {
     parameters.load();
     string multicastAddress = any_cast<string>(parameters.get("multicastAddress"));
     string port = any_cast<string>(parameters.get("port"));
