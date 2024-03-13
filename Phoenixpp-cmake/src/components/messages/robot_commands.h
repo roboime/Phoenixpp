@@ -25,4 +25,8 @@ struct RobotCommands {
     std::vector<RobotCommand> robotCommands;
 };
 
+struct TransmittedCommands{
+    bool transmitted;
+};
+
 #endif // ROBOTCOMMANDS_H

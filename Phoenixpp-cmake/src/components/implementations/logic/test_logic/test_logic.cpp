@@ -19,9 +19,18 @@ RobotCommands TestLogic::update(RobotCommands message){
     RobotCommand command;
 
     command.id = 0;
-    command.velangular = 1;
-    command.velnormal = 1;
-    command.veltangent = 1;
+    command.velangular = 0;
+    command.velnormal = 0;
+    command.veltangent = 4;
+    command.kickspeedx = 0;
+    command.kickspeedz = 0;
+    command.spinner = 0;
+    command.wheel1 = 0;
+    command.wheel2 = 0;
+    command.wheel3 = 0;
+    command.wheel4 = 0;
+    command.wheelsspeed = 0;
+
     robotCommands.robotCommands.push_back(command);
 
     return robotCommands;

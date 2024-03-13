@@ -18,7 +18,7 @@ shared_ptr<AnyBaseComponent> ComponentFactory::createComponent(string type, stri
     else if(type == "feedback"){
         return createFeedbackComponent(implementation, fps);
     }
-    else if(type == "comunicator"){
+    else if(type == "communicator"){
         return createCommunicatorComponent(implementation, fps);
     }
     else{

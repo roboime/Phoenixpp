@@ -8,7 +8,7 @@ UdpSender::UdpSender(atomic<bool>& stop, queue<pair<char*,int>> &bufferQueue, mu
 }
 
 void UdpSender::start(){
-    reconnect();
+    //reconnect();
     /*
     Poco::Net::ReadableNotification readableNotification(&reactor);
     reactor.addEventHandler(socket, Poco::Observer<UdpSender, Poco::Net::ReadableNotification>(*this, &UdpSender::onReadable));
@@ -22,49 +22,41 @@ void UdpSender::start(){
 void UdpSender::reconnect(){
     try{
         Poco::Net::SocketAddress group(multicastAddress, port);
-        socket.bind(Poco::Net::SocketAddress("0.0.0.0", port));
-        socket.joinGroup(group.host());
-        socket.setReceiveTimeout(Poco::Timespan(1, 0));
+        //socket.bind(Poco::Net::SocketAddress("0.0.0.0", port));
+        //socket.connect(group);
+        //socket.setReceiveTimeout(Poco::Timespan(1, 0));
     }
     catch (Poco::Exception& e) {
-        //cerr << "Error trying to reconnect to multicast group: " << e.displayText() << endl;
+        cerr << "Error trying to reconnect to multicast group: " << e.displayText() << endl;
     }
 }
 
 void UdpSender::sendPacket() {
-    Poco::Net::SocketAddress sender;
+    Poco::Net::SocketAddress group(multicastAddress, port);
     Poco::Net::SocketImpl* socketImpl;
     pair<char*, int> front;
     int size;
     while (!stop.load() && !stopSender.load()) {
-        socketImpl = socket.impl();
-        if (!socketImpl || !socketImpl->initialized()){
-            //cerr << (bool)socketImpl << " " << socketImpl->initialized() << endl;
-            reconnect();
-        }
         {
             unique_lock<mutex> lock(bufferQueue_mtx);
+            //cerr << "send queue size: " << bufferQueue.size() << "\n";
             if (bufferQueue.empty()) continue;
             front = bufferQueue.front();
             buffer = front.first;
             size = front.second;
+            //for(int i=0;i<size;i++) cout << i << ": " << (int)buffer[i] << endl;
+            //cout << endl;
             bufferQueue.pop();
         }
         try{
-            socket.sendTo(buffer, size, sender);
+            socket.sendTo(buffer, size, group);
             transmitted.store(true);
             //cerr << "received\n";
-        } catch (const Poco::TimeoutException& e) {
-            transmitted.store(false);
-            reconnect();
-            //cerr << "Receive timeout: " << e.displayText() << "\n";
         } catch (const Poco::Exception& e) {
             transmitted.store(false);
-            //cerr << "Error while receiving: " << e.displayText() << "\n";
         }
         delete [] buffer; // deletando espaco alocado pelo udpCommunicator ao criar a mensagem
     }
-    //reactor.stop();
     socket.close();
     //this_thread::sleep_for(chrono::seconds(500));
 }

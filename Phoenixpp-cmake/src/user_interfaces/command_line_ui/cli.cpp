@@ -110,6 +110,13 @@ void Cli::showEnvironment(){
     cout << "field width: " << env.field.field_width << endl;
     cout << "ball x: " << env.ball.x << endl;
     cout << "ball y: " << env.ball.y << endl;
+    TransmittedCommands transmitted;
+    {
+        lock_guard<mutex> lock(component_mtx);
+        if (!componentIsValid("communicator")) return;
+        transmitted = components["communicator"]->getMessage<TransmittedCommands>();
+    }
+    cout << "transmitted: " << transmitted.transmitted << endl;
 }
 
 void Cli::showRobotCommands(){
@@ -119,6 +126,8 @@ void Cli::showRobotCommands(){
         if (!componentIsValid("blueLogic")) return;
         robotCommands = components["blueLogic"]->getMessage<RobotCommands>();
     }
-    cout << "timestamp: " << robotCommands.timestamp << endl;
-    //cout << "vel_tang: " << robotCommands.vel_tang << endl;
+    //cout << "timestamp: " << robotCommands.timestamp << endl;
+    cout << "vel_tang: " << robotCommands.robotCommands[0].veltangent << endl;
+    cout << "vel_norm: " << robotCommands.robotCommands[0].velnormal<< endl;
+    cout << "vel_ang: " << robotCommands.robotCommands[0].velangular << endl;
 }

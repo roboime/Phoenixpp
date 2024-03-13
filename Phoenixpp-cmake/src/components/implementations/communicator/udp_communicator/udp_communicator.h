@@ -13,7 +13,7 @@
 #include "../../../base_component.h"
 #include "../../../messages/robot_commands.h"
 
-class UdpCommunicator: public BaseComponent<RobotCommands>{
+class UdpCommunicator: public BaseComponent<TransmittedCommands>{
 private:
     int bufferSizeMax;
     int queueSizeMax;
@@ -22,8 +22,7 @@ private:
     mutex bufferQueue_mtx;
 public:
     UdpCommunicator(std::atomic<bool>& stop, double fps);
-    RobotCommands update(RobotCommands robotCommands) override;
-    void execute() override;
+    TransmittedCommands update(TransmittedCommands transmittedCommands) override;
     void start() override;
     ~UdpCommunicator();
 };

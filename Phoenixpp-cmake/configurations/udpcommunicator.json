@@ -1,5 +1,5 @@
 {
-    "multicastAddress" : "224.5.23.2",
+    "multicastAddress" : "172.15.1.159",
     "port" : "20011",
     "bufferSizeMax" : 2048,
     "queueSizeMax" : 10
