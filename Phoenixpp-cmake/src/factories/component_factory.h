@@ -7,6 +7,7 @@
 #include "../components/implementations/vision/udp_vision/grsim_vision.h"
 #include "../components/implementations/vision/udp_vision/real_game_vision.h"
 #include "../components/implementations/communicator/udp_communicator/udp_communicator.h"
+#include "../components/implementations/navigation/elo_mec_tester/elo_mec_tester.h"
 #include "../components/dummy_component.h"
 
 class ComponentFactory {
@@ -16,6 +17,7 @@ private:
     shared_ptr<BaseComponent> createLogicComponent(string implementation, double fps);
     shared_ptr<BaseComponent> createRefereeComponent(string implementation, double fps);
     shared_ptr<BaseComponent> createFeedbackComponent(string implementation, double fps);
+    shared_ptr<BaseComponent> createNavigationComponent(string implementation, double fps);
     shared_ptr<BaseComponent> createCommunicatorComponent(string implementation, double fps);
 public:
     ComponentFactory(atomic<bool> &stop);

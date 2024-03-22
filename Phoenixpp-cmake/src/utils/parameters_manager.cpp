@@ -6,10 +6,12 @@ using namespace std;
 ParametersManager::ParametersManager(string component) : component(component) {}
 
 void ParametersManager::set(string key, any value) {
+    lock_guard<mutex> lock(mtx);
     parameters[key] = value;
 }
 
 any ParametersManager::get(string key) {
+    lock_guard<mutex> lock(mtx);
     return parameters[key];
 }
 
@@ -87,6 +89,7 @@ void ParametersManager::save() {
     }
 
     nlohmann::json jsonData;
+    unique_lock<mutex> lock(mtx);
     for (const auto& pair : parameters) {
         vector<string> keys;
         istringstream iss(pair.first);
@@ -95,7 +98,7 @@ void ParametersManager::save() {
         }
         recursiveJsonInsert(jsonData, keys, pair.second);
     }
-
+    lock.unlock();
     file << setw(4) << jsonData << endl;
 
     cout << "Saved parameters to: " << filePath << endl;
@@ -109,12 +112,15 @@ void ParametersManager::recursiveJsonLoad(const nlohmann::json& jsonData, string
             recursiveJsonLoad(it.value(), combinedKey);
         } else if (it.value().is_boolean()) {
             set(combinedKey, it.value().get<bool>());
+            //cerr << "debug: " << any_cast<bool>(get(combinedKey));
         } else if (it.value().is_number_integer()) {
             set(combinedKey, it.value().get<int>());
+            //cerr << "debug: " << any_cast<int>(get(combinedKey));
         } else if (it.value().is_string()) {
             set(combinedKey, it.value().get<string>());
         } else if (it.value().is_number_float()) {
             set(combinedKey, it.value().get<double>());
+            //cerr << "debug: " << any_cast<double>(get(combinedKey));
         } else if (it.value().is_array()) {
             if (std::all_of(it.value().begin(), it.value().end(), [](const auto& element) {
                     return element.is_number_float();

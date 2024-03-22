@@ -20,6 +20,7 @@ private:
     shared_ptr<UdpSender> udpSender;
     queue<pair<char*,int>> bufferQueue;
     mutex bufferQueue_mtx;
+    void pushRobotCommand(string logic);
 public:
     UdpCommunicator(std::atomic<bool>& stop, double fps);
     TransmittedCommands update(TransmittedCommands transmittedCommands) override;

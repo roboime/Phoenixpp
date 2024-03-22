@@ -15,6 +15,7 @@ private:
     json config;
     void showEnvironment();
     void showRobotCommands();
+    void eloMecTester(unique_lock<mutex> &components_lock);
 public:
     Cli(json config, double fps);
     void execute() override;

@@ -1,6 +1,6 @@
 {
-    "multicastAddress" : "172.15.1.159",
+    "localAddress" : "172.15.0.60",
     "port" : "20011",
-    "bufferSizeMax" : 2048,
+    "bufferSizeMax" : 4096,
     "queueSizeMax" : 10
 }

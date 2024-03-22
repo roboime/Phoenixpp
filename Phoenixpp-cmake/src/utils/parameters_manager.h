@@ -8,20 +8,24 @@
 #include <fstream>
 #include <vector>
 #include <nlohmann/json.hpp>
+#include <mutex>
+
+using namespace std;
 
 class ParametersManager {
 private:
-    std::unordered_map<std::string, std::any> parameters;
-    std::string component;
+    mutex mtx;
+    unordered_map<string, any> parameters;
+    string component;
 
-    nlohmann::json convertAnyToJson(const std::any& value);
-    void recursiveJsonInsert(nlohmann::json& jsonData, const std::vector<std::string>& keys, const std::any& value);
-    void recursiveJsonLoad(const nlohmann::json& jsonData, std::string currentKey);
+    nlohmann::json convertAnyToJson(const any& value);
+    void recursiveJsonInsert(nlohmann::json& jsonData, const vector<string>& keys, const any& value);
+    void recursiveJsonLoad(const nlohmann::json& jsonData, string currentKey);
 
 public:
-    ParametersManager(std::string component);
-    void set(std::string key, std::any value);
-    std::any get(std::string key);
+    ParametersManager(string component);
+    void set(string key, any value);
+    any get(string key);
     void save();
     void load();
 };

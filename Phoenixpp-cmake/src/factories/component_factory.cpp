@@ -18,6 +18,9 @@ shared_ptr<BaseComponent> ComponentFactory::createComponent(string type, string 
     else if(type == "feedback"){
         return createFeedbackComponent(implementation, fps);
     }
+    else if(type == "navigation"){
+        return createNavigationComponent(implementation, fps);
+    }
     else if(type == "communicator"){
         return createCommunicatorComponent(implementation, fps);
     }
@@ -54,6 +57,15 @@ shared_ptr<BaseComponent> ComponentFactory::createRefereeComponent(string implem
 shared_ptr<BaseComponent> ComponentFactory::createFeedbackComponent(string implementation, double fps){
     return make_shared<DummyComponent>(stop, fps);
 }
+shared_ptr<BaseComponent> ComponentFactory::createNavigationComponent(string implementation, double fps){
+    if (implementation == "eloMecTester"){
+        return make_shared<EloMecTester>(stop, fps);
+    }
+    else {
+        return make_shared<DummyComponent>(stop, fps);
+    }
+}
+
 shared_ptr<BaseComponent> ComponentFactory::createCommunicatorComponent(string implementation, double fps){
     if (implementation == "udpCommunicator"){
         return make_shared<UdpCommunicator>(stop, fps);

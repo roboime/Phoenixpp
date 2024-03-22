@@ -1,11 +1,11 @@
 {
-    "vision" : "grsimVision",
+    "vision" : "none",
     "filter" : "none",
     "referee" : "none",
     "feedback" : "none",
-    "blueLogic" : "testLogic",
+    "blueLogic" : "none",
     "yellowLogic" : "none",
     "pathPlanning" : "none",
-    "navigation" : "none",
+    "navigation" : "eloMecTester",
     "communicator" : "udpCommunicator"
 }

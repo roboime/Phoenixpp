@@ -2,7 +2,7 @@
 
 UdpCommunicator::UdpCommunicator(atomic<bool>& stop, double fps) : TBaseComponent("udpcommunicator", stop, fps) {
     parameters.load();
-    string multicastAddress = any_cast<string>(parameters.get("multicastAddress"));
+    string multicastAddress = any_cast<string>(parameters.get("localAddress"));
     string port = any_cast<string>(parameters.get("port"));
     bufferSizeMax = any_cast<int>(parameters.get("bufferSizeMax"));
     queueSizeMax = any_cast<int>(parameters.get("queueSizeMax"));
@@ -14,19 +14,18 @@ void UdpCommunicator::start(){
     udpSender->start();
 }
 
-TransmittedCommands UdpCommunicator::update(TransmittedCommands old_transmitted){
-    TransmittedCommands transmitted = { udpSender->getReceived() };
+void UdpCommunicator::pushRobotCommand(string logic){
     RobotCommands commands;
     {
         lock_guard<mutex> lock(component_mtx);
-        if (!isComponentValid("blueLogic")){
+        if (!isComponentValid("navigation")){
             //cerr << "blueLogic not valid\n";
-            return transmitted;
+            return;
         }
         try{
-            commands = components["blueLogic"]->getMessage<RobotCommands>();
+            commands = components["navigation"]->getMessage<RobotCommands>();
         } catch(exception&){
-            return transmitted;
+            return;
         }
 
     }
@@ -53,22 +52,12 @@ TransmittedCommands UdpCommunicator::update(TransmittedCommands old_transmitted)
         }
     }
     *(packetMessage.mutable_commands()) = commandsMessage;
-    /*
-    grSim_Replacement replacement;
-    grSim_BallReplacement ball;
-    ball.set_x(0);
-    ball.set_y(0);
-    ball.set_vx(0);
-    ball.set_vy(0);
-    *(replacement.mutable_ball()) = ball;
-    *(packetMessage.mutable_replacement()) = replacement;
-    */
     {
         lock_guard<mutex> lock(bufferQueue_mtx);
         if(bufferQueue.size() == queueSizeMax){
             //cerr << "queue full\n";
             //delete commandsMessage;
-            return transmitted;
+            return;
         }
         const int size = packetMessage.ByteSizeLong();
         char * ptr = new char[size]; // espaco sera deletado pelo destrutor ou pelo udoSender ao da pop na fila
@@ -80,6 +69,23 @@ TransmittedCommands UdpCommunicator::update(TransmittedCommands old_transmitted)
         }
         //cerr << "communicator queue size: " << bufferQueue.size() << "/" << queueSizeMax << endl;
     }
+}
+
+TransmittedCommands UdpCommunicator::update(TransmittedCommands old_transmitted){
+    TransmittedCommands transmitted = { udpSender->getReceived() };
+    pushRobotCommand("blueLogic");
+    //pushRobotCommand("yellowLogic");
+    /*
+    grSim_Replacement replacement;
+    grSim_BallReplacement ball;
+    ball.set_x(0);
+    ball.set_y(0);
+    ball.set_vx(0);
+    ball.set_vy(0);
+    *(replacement.mutable_ball()) = ball;
+    *(packetMessage.mutable_replacement()) = replacement;
+    */
+
     //delete commandsMessage;
     return transmitted;
 }
