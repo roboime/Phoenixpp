@@ -4,24 +4,46 @@
 
 using namespace std;
 
-BaseUi::BaseUi(double fps) : stop(false), fps(fps), factory(stop) {}
+BaseUi::BaseUi() : stop(false), fps(70), factory(stop){
+    try{
+        ifstream file("../configurations/main_settings.json");
+        json config;
+        file >> config;
+        this->config = config;
+        shared_ptr<BaseComponent> component;
+        string graph = config["graph"];
+        vector<string> componentTypes = { "vision", "referee", "feedback", "blueLogic", "yellowLogic", "pathPlanning", "navigation", "communicator"};
+        for (const auto &el : config["graphList"]){
+            if(el["name"] != graph) continue;
+            for(const auto &type : componentTypes){
+                components[type] = factory.createComponent(type, config[type], 70);
+                for(const auto &derived : el[type]){
+                    components[type]->setComponent(derived, components[derived]);
+                }
+            }
+            break;
+        }
+    }
+    catch (exception ex){
+        cerr << "Error instanciating components: " << ex.what() << endl;
+        const type_info& typeInfo = typeid(ex);
+        cerr << "Exception type: " << typeInfo.name() << endl;
+        cerr << "Function: " << __PRETTY_FUNCTION__ << endl;
+    }
+}
 
 void BaseUi::start(){
-    vector<thread> threads;
     for (const auto& pair : components){
         if (pair.second == nullptr) continue;
         threads.push_back(thread([this, &pair]() { loopComponent(pair.first, 70); }));
     }
     cerr << "number of threads: " << threads.size() << endl;
-    long long period = (long long)(1000.0 / fps);
-    while (!stop.load()){
-        execute();
-        this_thread::sleep_for(chrono::milliseconds(period));
-    }
-    {
-        lock_guard<mutex> lock(component_mtx);
-        components.clear();
-    }
+}
+
+void BaseUi::finish(){
+    stop.store(true);
+    lock_guard<mutex> lock(component_mtx);
+    components.clear();
     for (auto& thread : threads) {
         if(thread.joinable()) thread.join();
     }

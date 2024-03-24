@@ -1,7 +1,11 @@
-add_library(Gui gui.cpp gui.h)
+add_library(Gui gui.cpp gui.h main_window.cpp main_window.h mainwindow.ui)
 target_include_directories(Gui PUBLIC ${CMAKE_SOURCE_DIR}/src/components)
 target_include_directories(Gui PUBLIC ${CMAKE_SOURCE_DIR}/src/factories)
 # set_target_properties(Gui PROPERTIES LINKER_LANGUAGE CXX)
 target_link_libraries(Gui PUBLIC nlohmann_json)
 target_link_libraries(Gui PUBLIC Factories)
 target_link_libraries(Gui PUBLIC BaseUi)
+
+find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
+include_directories(${Qt5_INCLUDE_DIRS})
+target_link_libraries(Gui PUBLIC Qt5::Core Qt5::Gui Qt5::Widgets)

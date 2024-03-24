@@ -10,11 +10,9 @@
 using namespace std;
 using json = nlohmann::json;
 
-class Gui : public BaseUi{
-private:
-    json config;
+class Gui : public BaseUi {
 public:
-    Gui(json config, double fps);
+    Gui();
     void execute() override;
     ~Gui();
 };

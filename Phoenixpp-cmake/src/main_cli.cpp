@@ -11,16 +11,9 @@ using json = nlohmann::json;
 using namespace std;
 
 int main(int argc, char**argv){
-    ifstream file("../configurations/main_settings.json");
-    if (!file.is_open()) {
-        cerr << "Error opening file" << endl;
-        return 1;
-    }
-    json config;
-    file >> config;
-
-    Cli cli(config, 70);
+    Cli cli;
     cli.start();
-
+    cli.loop();
+    cli.finish();
     return 0;
 }

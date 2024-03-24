@@ -5,13 +5,17 @@
 #include <mutex>
 #include <unordered_map>
 #include <utility>
+#include <nlohmann/json.hpp>
 #include "../components/base_component.h"
 #include "../factories/component_factory.h"
 
 using namespace std;
+using json = nlohmann::json;
 
 class BaseUi {
 protected:
+    vector<thread> threads;
+    json config;
     mutex component_mtx;
     atomic<bool> stop;
     double fps;
@@ -19,9 +23,10 @@ protected:
     ComponentFactory factory;
     bool componentIsValid(string key);
 public:
-    BaseUi(double fps);
+    BaseUi();
     void setComponent(string key, shared_ptr<BaseComponent> new_component);
     void start();
+    void finish();
     void loopComponent(string key, double fps);
     virtual void execute() = 0;
     ~BaseUi();

@@ -16,3 +16,7 @@ target_include_directories(PhoenixGui PUBLIC ${CMAKE_SOURCE_DIR}/src/user_interf
 target_include_directories(PhoenixGui PUBLIC ${CMAKE_SOURCE_DIR}/proto)
 target_link_libraries(PhoenixGui PUBLIC nlohmann_json)
 target_link_libraries(PhoenixGui PUBLIC Gui)
+
+find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
+include_directories(${Qt5_INCLUDE_DIRS})
+target_link_libraries(PhoenixGui PUBLIC Qt5::Core Qt5::Gui Qt5::Widgets)

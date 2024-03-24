@@ -1,21 +1,14 @@
-#include "user_interfaces/graphical_ui/gui.h"
-#include <nlohmann/json.hpp>
+#include "user_interfaces/graphical_ui/main_window.h"
 #include <fstream>
 #include <iostream>
+#include <QApplication>
 
 using json = nlohmann::json;
 using namespace std;
 
 int main(int argc, char**argv){
-    ifstream file("../configurations/main_settings.json");
-    if (!file.is_open()) {
-        cerr << "Error opening file" << endl;
-        return 1;
-    }
-    json config;
-    file >> config;
-
-    Gui gui(config, 70);
-    gui.start();
-    return 0;
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
 }

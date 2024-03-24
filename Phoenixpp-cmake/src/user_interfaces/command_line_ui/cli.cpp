@@ -4,44 +4,9 @@
 
 using namespace std;
 
-Cli::Cli(json config, double fps) : BaseUi(fps), config(config){
-    try{
-        shared_ptr<BaseComponent> component;
-        // cout << config["vision"] << " " << config["referee"] << " " << config["feedback"] << " " << config["blueLogic"] << " " << config["yellowLogic"] << " " << config["communicator"] << endl;
-        components["vision"] = factory.createComponent("vision", config["vision"], 70);
-        components["referee"] = factory.createComponent("referee", config["referee"], 70);
-        components["feedback"] = factory.createComponent("feedback", config["feedback"], 70);
-
-        components["blueLogic"] = factory.createComponent("logic", config["blueLogic"], 70);;
-        if(components["blueLogic"] != nullptr){
-            components["blueLogic"]->setComponent("vision", components["vision"]);
-            components["blueLogic"]->setComponent("referee", components["referee"]);
-            components["blueLogic"]->setComponent("feedback",components["feedback"]);
-        }
-
-        components["yellowLogic"] = factory.createComponent("logic", config["yellowLogic"], 70);
-        if(components["yellowLogic"] != nullptr){
-            components["yellowLogic"]->setComponent("vision", components["vision"]);
-            components["yellowLogic"]->setComponent("referee",components["referee"]);
-            components["yellowLogic"]->setComponent("feedback", components["feedback"]);
-        }
-        components["navigation"] = factory.createComponent("navigation", config["navigation"], 70);
-        if(components["navigation"] != nullptr){
-            components["navigation"]->setComponent("blueLogic", components["blueLogic"]);
-            components["navigation"]->setComponent("yellowLogic", components["yellowLogic"]);
-        }
-        components["communicator"] = factory.createComponent("communicator", config["communicator"], 70);
-        if(components["communicator"] != nullptr){
-            components["communicator"]->setComponent("navigation", components["navigation"]);
-        }
-    }
-    catch (exception ex){
-        cerr << "Error instanciating components: " << ex.what() << endl;
-        const type_info& typeInfo = typeid(ex);
-        cerr << "Exception type: " << typeInfo.name() << endl;
-        cerr << "Function: " << __PRETTY_FUNCTION__ << endl;
-    }
+Cli::Cli() : BaseUi(){
 }
+
 void Cli::eloMecTester(unique_lock<mutex> &components_lock){
     mutex mtx;
     condition_variable cv, cv2;
@@ -64,6 +29,7 @@ void Cli::eloMecTester(unique_lock<mutex> &components_lock){
             if (chr == 27) { // ESC KITA
                 lock.unlock();
                 curThread.join();
+                cerr << "\r";
                 break;
             }
             else if (chr2 != chr){
@@ -74,11 +40,12 @@ void Cli::eloMecTester(unique_lock<mutex> &components_lock){
                         components["navigation"]->setParameter(string(1, chr), true);
                     }
                 }
-                cerr << any_cast<bool>(components["navigation"]->getParameter("w")) << endl;
+                //cerr << any_cast<bool>(components["navigation"]->getParameter("w")) << endl;
                 components_lock.unlock();
             }
             lock.unlock();
             curThread.join();
+            cerr << "\r";
             this_thread::sleep_for(chrono::milliseconds(5));
             chr2 = chr;
             chrReady = false;
@@ -105,9 +72,15 @@ void Cli::eloMecTester(unique_lock<mutex> &components_lock){
     system("stty cooked");
 }
 
+void Cli::loop(){
+    long long period = (long long)(1000.0 / fps);
+    while (!stop.load()){
+        execute();
+        this_thread::sleep_for(chrono::milliseconds(period));
+    }
+}
+
 void Cli::execute(){
-
-
     char chr, chr2;
     string str, key, type, imp;
     int num;

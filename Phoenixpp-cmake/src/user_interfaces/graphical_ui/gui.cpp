@@ -1,12 +1,9 @@
 #include "gui.h"
 
-Gui::Gui(json config, double fps) : BaseUi(fps), config(config){
-
+Gui::Gui(){
 }
 
-void Gui::execute(){
-
-}
+void Gui::execute(){ }
 
 Gui::~Gui() {
 
