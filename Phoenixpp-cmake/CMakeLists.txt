@@ -33,3 +33,11 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(poco)
 include_directories(${poco_SOURCE_DIR}/Net/include/Poco/Net)
 
+FetchContent_Declare(
+  eigen
+  GIT_REPOSITORY "https://gitlab.com/libeigen/eigen.git"
+  GIT_SHALLOW    TRUE
+)
+FetchContent_MakeAvailable(eigen)
+include_directories(${eigen_SOURCE_DIR}/)
+
