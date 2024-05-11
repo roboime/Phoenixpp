@@ -38,6 +38,18 @@ FetchContent_Declare(
   GIT_REPOSITORY "https://gitlab.com/libeigen/eigen.git"
   GIT_SHALLOW    TRUE
 )
-FetchContent_MakeAvailable(eigen)
-include_directories(${eigen_SOURCE_DIR}/)
+
+include(FetchContent)
+FetchContent_Declare(
+  Eigen
+  GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+  GIT_TAG master
+  GIT_SHALLOW TRUE
+  GIT_PROGRESS TRUE)
+set(BUILD_TESTING OFF)
+set(EIGEN_BUILD_TESTING OFF)
+set(EIGEN_MPL2_ONLY ON)
+set(EIGEN_BUILD_PKGCONFIG OFF)
+set(EIGEN_BUILD_DOC OFF)
+FetchContent_MakeAvailable(Eigen)
 

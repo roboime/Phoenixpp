@@ -1,10 +1,15 @@
 #ifndef KALMANFILTER_H
 #define KALMANFILTER_H
 
+#include <mutex>
+#include <atomic>
 #include <Eigen/Dense>
+#include "../../../base_component.h"
+#include "../../../messages/environment.h"
+#include "../../../messages/raw_environment.h"
 
 template<int stateVectorDimension, int outputVectorDimension>
-class KalmanFilter
+class KalmanFilter : public TBaseComponent<Environment>
 {
 public:
     typedef Eigen::Matrix<double, stateVectorDimension,
@@ -31,8 +36,7 @@ public:
 
     outputVector vector_measurementStateError;
 
-    KalmanFilter();
-    explicit KalmanFilter(const stateVector &x, const stateMatrix &P);
+    KalmanFilter(atomic<bool>& stop, double fps);
 
     void predict_timeUpdate();
     void predict_timeUpdate(const stateVector &controlVector_u);
@@ -42,6 +46,9 @@ public:
     const stateMatrix &getCovarianceMatrix_P() const;
     void setStateVector(const stateVector& newVector_x);
     void setCovarianceMatrix_P(const stateMatrix &newCovarianceMatrix_P);
+    Environment update(Environment environment) override;
+    void start() override;
+    ~KalmanFilter();
 };
 
 #endif

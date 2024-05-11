@@ -14,15 +14,15 @@ void RealGameVision::start(){
     udpReceiver->start();
 }
 
-Environment RealGameVision::update(Environment message){
+RawEnvironment RealGameVision::update(RawEnvironment message){
     SSL_WrapperPacket packet;
     lock_guard<mutex> lock(bufferQueue_mtx);
     pair<char*, int> buffer;
     char * buffer_ptr;
     int size;
-    Ball ball;
+    RawBall ball;
     Field field;
-    Environment env = message;
+    RawEnvironment env = message;
     for(int i=0;i<4;i++){
         if(bufferQueue.empty()){
             //cout << "queue empty\n";
@@ -48,24 +48,29 @@ Environment RealGameVision::update(Environment message){
             }
             else{
                 //cout << "no ball update" << endl;
-                ball = env.ball;
+                ball = env.balls[0];
             }
         }
         else{
             //cout << "no ball update 2" << endl;
-            ball = env.ball;
+            ball = env.balls[0];
         }
         if(packet.has_geometry()){
             //cout << "field update:" << endl;
             SSL_GeometryData geometry = packet.geometry();
             SSL_GeometryFieldSize fieldSize = geometry.field();
-            field = {(double)fieldSize.field_length(), (double)fieldSize.field_width()};
+            field.field_length = (double)fieldSize.field_length();
+            field.field_width = (double)fieldSize.field_width();
         }
         else{
             //cout << "no field update" << endl;
             field = env.field;
         }
-        env = {0, ball, field};
+        vector<RawBall> balls;
+        balls.push_back(ball);
+        env.received = 0;
+        env.balls = balls;
+        env.field = field;
     }
     env.received = udpReceiver->getReceived();
     return env;

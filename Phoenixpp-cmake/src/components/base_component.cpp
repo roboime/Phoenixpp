@@ -28,6 +28,7 @@ T TBaseComponent<T>::getMessage(){
     shared_lock<shared_mutex> lock(message_mtx);
     return message;
 }
+
 template <typename T>
 void TBaseComponent<T>::setComponent(string key, shared_ptr<BaseComponent> newComponent) {
     std::lock_guard<std::mutex> lock(component_mtx);
@@ -74,12 +75,14 @@ TBaseComponent<T>::~TBaseComponent(){
     components.clear();
     cout << "done base component" << endl;
 }
+template class TBaseComponent<RawEnvironment>;
 template class TBaseComponent<Environment>;
 template class TBaseComponent<RefereeCommands>;
 template class TBaseComponent<RobotCommands>;
 template class TBaseComponent<RobotFeedbackData>;
 template class TBaseComponent<TransmittedCommands>;
 template class TBaseComponent<DummyMessage>;
+template RawEnvironment BaseComponent::getMessage<RawEnvironment>();
 template Environment BaseComponent::getMessage<Environment>();
 template RefereeCommands BaseComponent::getMessage<RefereeCommands>();
 template RobotCommands BaseComponent::getMessage<RobotCommands>();

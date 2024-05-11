@@ -19,16 +19,16 @@
 #include "../../../../../proto/protobuf_files.h"
 #include "../../../../utils/udp_receiver.h"
 #include "../../../base_component.h"
-#include "../../../messages/environment.h"
+#include "../../../messages/raw_environment.h"
 
-class RealGameVision : public TBaseComponent<Environment>{
+class RealGameVision : public TBaseComponent<RawEnvironment>{
 private:
     shared_ptr<UdpReceiver> udpReceiver;
     queue<pair<char*,int>> bufferQueue;
     mutex bufferQueue_mtx;
 public:
     RealGameVision(std::atomic<bool>& stop, double fps);
-    Environment update(Environment message) override;
+    RawEnvironment update(RawEnvironment message) override;
     void start() override;
     ~RealGameVision();
 };

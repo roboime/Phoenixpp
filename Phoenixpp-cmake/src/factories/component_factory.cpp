@@ -12,6 +12,9 @@ shared_ptr<BaseComponent> ComponentFactory::createComponent(string type, string 
     else if(type == "logic"){
         return createLogicComponent(implementation, fps);
     }
+    else if(type == "filter"){
+        return createLogicComponent(implementation, fps);
+    }
     else if(type == "referee"){
         return createRefereeComponent(implementation, fps);
     }
@@ -43,6 +46,18 @@ shared_ptr<BaseComponent> ComponentFactory::createVisionComponent(string impleme
         return make_shared<DummyComponent>(stop, fps);
     }
 }
+
+shared_ptr<BaseComponent> ComponentFactory::createFilterComponent(string implementation, double fps){
+    if (implementation == "kalmanFilter"){
+        //KalmanFilter<9,6> oi(stop,fps);
+        //return make_shared<KalmanFilter<9,6>>(oi);
+        return make_shared<DummyComponent>(stop, fps);
+    }
+    else {
+        return make_shared<DummyComponent>(stop, fps);
+    }
+}
+
 shared_ptr<BaseComponent> ComponentFactory::createLogicComponent(string implementation, double fps){
     if (implementation == "testLogic"){
         return make_shared<TestLogic>(stop, fps);

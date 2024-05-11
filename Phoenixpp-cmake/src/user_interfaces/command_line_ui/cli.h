@@ -11,6 +11,7 @@ using json = nlohmann::json;
 
 class Cli : public BaseUi{
 private:
+    void showRawEnvironment();
     void showEnvironment();
     void showRobotCommands();
     void eloMecTester(unique_lock<mutex> &components_lock);

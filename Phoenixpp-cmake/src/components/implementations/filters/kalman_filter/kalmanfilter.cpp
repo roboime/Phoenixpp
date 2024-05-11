@@ -1,7 +1,11 @@
 #include "kalmanfilter.h"
 
 template<int stateVectorDimension, int outputVectorDimension>
-KalmanFilter<stateVectorDimension, outputVectorDimension>::KalmanFilter() {
+KalmanFilter<stateVectorDimension, outputVectorDimension>::KalmanFilter(atomic<bool>& stop, double fps) : TBaseComponent("kalmanfilter", stop, fps) {
+    //const stateVector &x, const stateMatrix &P;
+    //vector_x = x;
+    //covarianceMatrix_P = P;
+    //parameters.load();
     matrix_Phi = stateMatrix::Identity();
     matrix_H = outputMatrix::Identity();
     covarianceMatrix_Q = stateMatrix::Zero();
@@ -10,7 +14,7 @@ KalmanFilter<stateVectorDimension, outputVectorDimension>::KalmanFilter() {
     matrix_B = stateMatrix::Identity();
     vector_measurementStateError = outputVector::Zero();
 }
-
+/*
 template<int stateVectorDimension, int outputVectorDimension>
 KalmanFilter<stateVectorDimension, outputVectorDimension>::KalmanFilter(const stateVector &x, const stateMatrix &P)
     : vector_x(x)
@@ -24,6 +28,7 @@ KalmanFilter<stateVectorDimension, outputVectorDimension>::KalmanFilter(const st
     matrix_B = stateMatrix::Identity();
     vector_measurementStateError = outputVector::Zero();
 }
+*/
 
 template<int stateVectorDimension, int outputVectorDimension>
 void KalmanFilter<stateVectorDimension, outputVectorDimension>::predict_timeUpdate() {
@@ -64,4 +69,36 @@ void KalmanFilter<stateVectorDimension, outputVectorDimension>::setStateVector(c
 template<int stateVectorDimension, int outputVectorDimension>
 void KalmanFilter<stateVectorDimension, outputVectorDimension>::setCovarianceMatrix_P(const stateMatrix &newCovarianceMatrix_P) {
     covarianceMatrix_P = newCovarianceMatrix_P;
+}
+
+template<int stateVectorDimension, int outputVectorDimension>
+void KalmanFilter<stateVectorDimension, outputVectorDimension>::start(){
+
+}
+
+template<int stateVectorDimension, int outputVectorDimension>
+Environment KalmanFilter<stateVectorDimension, outputVectorDimension>::update(Environment message){
+    RawEnvironment raw_env;
+    Environment env = message;
+    {
+        lock_guard<mutex> lock(component_mtx);
+        if (!isComponentValid("vision")){
+            //cerr << "blueLogic not valid\n";
+            return message;
+        }
+        try{
+            raw_env = components["vision"]->template getMessage<RawEnvironment>();
+        } catch(exception&){
+            return message;
+        }
+    }
+    env.field = raw_env.field;
+    //env.Robot = ;
+    //env.Ball = ;
+    return env;
+}
+
+template<int stateVectorDimension, int outputVectorDimension>
+KalmanFilter<stateVectorDimension, outputVectorDimension>::~KalmanFilter(){
+
 }

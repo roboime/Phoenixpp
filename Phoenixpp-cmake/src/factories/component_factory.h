@@ -2,6 +2,7 @@
 #define COMPONENT_FACTORY_H
 #include <atomic>
 #include "../components/base_component.h"
+#include "../components/implementations/filters/kalman_filter/kalmanfilter.h"
 #include "../components/implementations/logic/test_logic/test_logic.h"
 #include "../components/implementations/vision/test_vision/test_vision.h"
 #include "../components/implementations/vision/udp_vision/grsim_vision.h"
@@ -15,6 +16,7 @@ private:
     atomic<bool> &stop;
     shared_ptr<BaseComponent> createVisionComponent(string implementation, double fps);
     shared_ptr<BaseComponent> createLogicComponent(string implementation, double fps);
+    shared_ptr<BaseComponent> createFilterComponent(string implementation, double fps);
     shared_ptr<BaseComponent> createRefereeComponent(string implementation, double fps);
     shared_ptr<BaseComponent> createFeedbackComponent(string implementation, double fps);
     shared_ptr<BaseComponent> createNavigationComponent(string implementation, double fps);

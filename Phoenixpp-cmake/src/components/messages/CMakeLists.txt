@@ -1,5 +1,5 @@
 add_library(Messages
-    environment.h
+    raw_environment.h
     referee_commands.h
     robot_commands.h
     robot_feedback_data.h

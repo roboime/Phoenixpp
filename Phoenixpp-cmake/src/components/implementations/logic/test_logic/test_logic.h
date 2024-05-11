@@ -10,7 +10,7 @@
 #include "../../../base_component.h"
 #include "../../../../utils/parameters_manager.h"
 #include "../../../messages/robot_commands.h"
-#include "../../../messages/environment.h"
+#include "../../../messages/raw_environment.h"
 
 using namespace std;
 

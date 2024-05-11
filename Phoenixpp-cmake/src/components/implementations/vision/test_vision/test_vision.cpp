@@ -8,14 +8,14 @@ TestVision::TestVision(atomic<bool>& stop, double fps) : TBaseComponent("testvis
 void TestVision::start(){
 }
 
-Environment TestVision::update(Environment message){
+RawEnvironment TestVision::update(RawEnvironment message){
     random_device dev;
     mt19937 rng(dev());
     uniform_real_distribution<double> dist(0,1);
 
-    Environment environment;
-    environment.ball.x = dist(rng);
-    environment.ball.y = dist(rng);
+    RawEnvironment environment;
+    environment.balls[0].x = dist(rng);
+    environment.balls[0].y = dist(rng);
     environment.field.field_length = dist(rng);
     environment.field.field_width = dist(rng);
     return environment;

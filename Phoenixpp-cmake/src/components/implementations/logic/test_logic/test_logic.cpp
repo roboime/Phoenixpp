@@ -7,12 +7,12 @@ void TestLogic::start(){
 }
 
 RobotCommands TestLogic::update(RobotCommands message){
-    Environment env;
+    RawEnvironment env;
     {
         lock_guard<mutex> lock(component_mtx);
         if (!isComponentValid("vision")) return message;
         try{
-            env = components["vision"]->getMessage<Environment>();
+            env = components["vision"]->getMessage<RawEnvironment>();
         } catch(exception&){
             return message;
         }

@@ -9,6 +9,7 @@
 #include <shared_mutex>
 #include <thread>
 #include "../utils/parameters_manager.h"
+#include "./messages/raw_environment.h"
 #include "./messages/environment.h"
 #include "./messages/referee_commands.h"
 #include "./messages/robot_commands.h"

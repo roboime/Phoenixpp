@@ -1,6 +1,6 @@
 {
     "vision" : "grsimVision",
-    "filter" : "none",
+    "filter" : "kalmanFilter",
     "referee" : "none",
     "feedback" : "none",
     "blueLogic" : "none",

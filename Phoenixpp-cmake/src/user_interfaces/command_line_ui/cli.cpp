@@ -102,6 +102,10 @@ void Cli::execute(){
             break;
         case 'e':
             cerr << "show environment" << endl;
+            showRawEnvironment();
+            break;
+        case 'f':
+            cerr << "show environment" << endl;
             showEnvironment();
             break;
         case 'r':
@@ -144,16 +148,37 @@ void Cli::showEnvironment(){
         Environment env;
         {
             lock_guard<mutex> lock(component_mtx);
-            if (!componentIsValid("vision")) return;
-            env = components["vision"]->getMessage<Environment>();
+            if (!componentIsValid("filter")) return;
+            env = components["filter"]->getMessage<Environment>();
         }
         //cout << env.rawData << "\n";
         //cout << env.rawData.length() << "\n";
         cout << "received: " << env.received << endl;
         cout << "field lenght: " << env.field.field_length << endl;
         cout << "field width: " << env.field.field_width << endl;
-        cout << "ball x: " << env.ball.x << endl;
-        cout << "ball y: " << env.ball.y << endl;
+        cout << "ball x: " << env.ball[0].x << endl;
+        cout << "ball y: " << env.ball[0].y << endl;
+        cout << "ball vX: " << env.ball[0].velX << endl;
+        cout << "ball vY: " << env.ball[0].velY << endl;
+    } catch(exception&){}
+}
+
+
+void Cli::showRawEnvironment(){
+    try{
+        RawEnvironment env;
+        {
+            lock_guard<mutex> lock(component_mtx);
+            if (!componentIsValid("vision")) return;
+            env = components["vision"]->getMessage<RawEnvironment>();
+        }
+        //cout << env.rawData << "\n";
+        //cout << env.rawData.length() << "\n";
+        cout << "received: " << env.received << endl;
+        cout << "field lenght: " << env.field.field_length << endl;
+        cout << "field width: " << env.field.field_width << endl;
+        cout << "ball x: " << env.balls[0].x << endl;
+        cout << "ball y: " << env.balls[0].y << endl;
     } catch(exception&){}
     TransmittedCommands transmitted;
     {

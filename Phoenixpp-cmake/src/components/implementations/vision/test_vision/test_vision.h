@@ -6,12 +6,12 @@
 #include <thread>
 #include <random>
 #include "../../../base_component.h"
-#include "../../../messages/environment.h"
+#include "../../../messages/raw_environment.h"
 
-class TestVision : public TBaseComponent<Environment> {
+class TestVision : public TBaseComponent<RawEnvironment> {
 public:
     TestVision(std::atomic<bool>& stop, double fps);
-    Environment update(Environment message) override;
+    RawEnvironment update(RawEnvironment message) override;
     void start() override;
     ~TestVision();
 };
