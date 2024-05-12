@@ -1,3 +1,0 @@
-add_library(kalman_filter)
-target_link_libraries(Utils PUBLIC nlohmann_json)
-

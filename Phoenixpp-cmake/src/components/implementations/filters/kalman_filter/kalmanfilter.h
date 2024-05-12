@@ -9,7 +9,7 @@
 #include "../../../messages/raw_environment.h"
 
 template<int stateVectorDimension, int outputVectorDimension>
-class KalmanFilter : public TBaseComponent<Environment>
+class KalmanFilter
 {
 public:
     typedef Eigen::Matrix<double, stateVectorDimension,
@@ -35,30 +35,14 @@ public:
     stateMatrix matrix_B; //state transition jacobian
 
     outputVector vector_measurementStateError;
-
-<<<<<<< HEAD:Phoenixpp-cmake/src/components/implementations/filters/kalman_filter/kalmanfilter.h
-    KalmanFilter(atomic<bool>& stop, double fps);
-=======
     KalmanFilter(){
         matrix_Phi = stateMatrix::Identity();
         matrix_H = outputMatrix::Identity();
         covarianceMatrix_Q = stateMatrix::Zero();
         covarianceMatrix_R = observationNoiseCovariance::Zero();
->>>>>>> cedc420 (coloquei tudo no .h):Phoenixpp-cmake/src/filters/kalman_filter/kalmanfilter.h
-
         matrix_B = stateMatrix::Identity();
         vector_measurementStateError = outputVector::Zero();
     }
-
-<<<<<<< HEAD:Phoenixpp-cmake/src/components/implementations/filters/kalman_filter/kalmanfilter.h
-    const stateVector &getStateVector() const;
-    const stateMatrix &getCovarianceMatrix_P() const;
-    void setStateVector(const stateVector& newVector_x);
-    void setCovarianceMatrix_P(const stateMatrix &newCovarianceMatrix_P);
-    Environment update(Environment environment) override;
-    void start() override;
-    ~KalmanFilter();
-=======
     explicit KalmanFilter(const stateVector &x, const stateMatrix & P)
         : vector_x(x)
         , covarianceMatrix_P(P)
@@ -71,7 +55,9 @@ public:
         matrix_B = stateMatrix::Identity();
         vector_measurementStateError = outputVector::Zero();
     }
+    Environment update(RawEnvironment raw_env){
 
+    }
     void predict_timeUpdate(){
         vector_x = matrix_Phi*vector_x;
         covarianceMatrix_P = matrix_Phi*covarianceMatrix_P*matrix_Phi.transpose() + covarianceMatrix_Q;
@@ -101,7 +87,6 @@ public:
     void setCovarianceMatrix_P(const stateMatrix &newCovarianceMatrix_P){
         covarianceMatrix_P = newCovarianceMatrix_P;
     }
->>>>>>> cedc420 (coloquei tudo no .h):Phoenixpp-cmake/src/filters/kalman_filter/kalmanfilter.h
 };
 
 #endif
