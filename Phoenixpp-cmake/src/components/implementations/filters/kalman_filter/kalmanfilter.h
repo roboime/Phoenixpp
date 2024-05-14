@@ -69,7 +69,7 @@ public:
     };
 
     void correction_measurementUpdate(const outputVector &cameraMeasurementVector_y){
-        vector_measurementStateError = cameraMeasurementVector_y - (matrix_Phi*vector_x);
+        vector_measurementStateError = cameraMeasurementVector_y - (matrix_H*vector_x);
         observationNoiseCovariance auxiliarMatrix = matrix_H*covarianceMatrix_P*matrix_H.transpose() + covarianceMatrix_R;
         inputMatrix kalmanGain = covarianceMatrix_P*matrix_H.transpose()*auxiliarMatrix.inverse();
         vector_x += kalmanGain*vector_measurementStateError;
@@ -81,6 +81,12 @@ public:
     const stateMatrix &getCovarianceMatrix_P() const{
         return covarianceMatrix_P;
     }
+
+    void modifyStateVector(int index, double value)
+    {
+        vector_x(index) = value;
+    }
+
     void setStateVector(const stateVector& newVector_x){
         vector_x = newVector_x;
     }

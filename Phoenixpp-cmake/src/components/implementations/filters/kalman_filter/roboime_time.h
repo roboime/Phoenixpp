@@ -1,8 +1,7 @@
-#ifndef TIME_H
-#define TIME_H
+#ifndef ROBOIMETIME_H
+#define ROBOIMETIME_H
 
 #include <chrono>
-#include <string>
 
 class RoboimeTime
 {
@@ -12,12 +11,27 @@ public:
         {};
     explicit RoboimeTime(std::chrono::high_resolution_clock::duration duration);
     explicit RoboimeTime(double seconds);
-    explicit RoboimeTime(long nanoseconds) : timePoint{std::chrono::nanoseconds(nanoseconds)} {};
+    explicit RoboimeTime(long nanoseconds);
     static RoboimeTime now();
+    [[nodiscard]] long asNanoseconds() const;
+    [[nodiscard]] double asSeconds() const;
+
+    RoboimeTime operator+(const RoboimeTime &other) const;
+    RoboimeTime operator-(const RoboimeTime &other) const;
+    RoboimeTime &operator-=(const RoboimeTime &other);
+    RoboimeTime &operator+=(const RoboimeTime &other);
+    bool operator>(const RoboimeTime &other) const;
+    bool operator>=(const RoboimeTime &other) const;
+    bool operator<(const RoboimeTime &other) const;
+    bool operator<=(const RoboimeTime &other) const;
+    bool operator==(const RoboimeTime &other) const;
+    bool operator!=(const RoboimeTime &other) const;
 
 
 private:
     std::chrono::high_resolution_clock::duration timePoint;
+
+
 };
 
-#endif // TIME_H
+#endif // ROBOIMETIME_H
