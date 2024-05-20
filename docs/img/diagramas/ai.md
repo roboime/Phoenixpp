@@ -37,4 +37,5 @@ Tactic "1..*" -- "1" Role
 Role "1..*" -- "1" Play
 
 note "Each Play, Role, Tactic and Skill implements\nIPlay, IRole, ITactic and ISkill" as N1
-@enduml```
+@enduml
+```
