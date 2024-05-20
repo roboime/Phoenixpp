@@ -1,4 +1,5 @@
-```@startuml teste
+```
+@startuml teste
 class Skill {
     StateMachine stateMachine
 }
