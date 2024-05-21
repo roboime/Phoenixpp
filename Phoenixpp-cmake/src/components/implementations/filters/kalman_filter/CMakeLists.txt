@@ -1,6 +1,11 @@
-add_library(KalmanFilter kalmanfilter.cpp kalmanfilter.h kalmanstateestimator1d.cpp kalmanstateestimator1d.h roboime_time.cpp roboime_time.h)
+add_library(KalmanFilter kalmanfilter.cpp kalmanfilter.h kalmanstateestimator1d.cpp kalmanstateestimator1d.h roboime_time.cpp roboime_time.h
+    kalmanstateestimator3d.h kalmanstateestimator3d.cpp
+)
+
 target_include_directories(TestLogic PRIVATE ${CMAKE_SOURCE_DIR}/src/components)
 target_include_directories(TestLogic PRIVATE ${CMAKE_SOURCE_DIR}/src/components/messages)
 target_link_libraries(KalmanFilter PUBLIC Components)
 target_link_libraries(KalmanFilter PUBLIC Messages)
 target_link_libraries(KalmanFilter PUBLIC Eigen3::Eigen)
+
+

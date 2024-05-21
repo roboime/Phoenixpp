@@ -5,7 +5,7 @@ KalmanStateEstimator1D::KalmanStateEstimator1D(const Eigen::Vector2d &initialSta
     : kalmanFilter1D{initialState, initialCovariance}
     , modelError{modelError}
 {
-    kalmanFilter1D.covarianceMatrix_R(0, 0) = measurementError;
+    kalmanFilter1D.covariance_R(0, 0) = measurementError;
 }
 
 bool KalmanStateEstimator1D::predict_timeUpdate(const RoboimeTime &timeStamp)
@@ -37,11 +37,11 @@ double KalmanStateEstimator1D::getVelocityUncertainty() const
 }
 
 void KalmanStateEstimator1D::setMeasurementError(double error) {
-    kalmanFilter1D.covarianceMatrix_R(0, 0) = error;
+    kalmanFilter1D.covariance_R(0, 0) = error;
 }
 
 void KalmanStateEstimator1D::setTransitionMatrix(double dt) {
-    kalmanFilter1D.matrix_Phi(0, 1) = dt;
+    kalmanFilter1D.Phi(0, 1) = dt;
 }
 void KalmanStateEstimator1D::setProcessNoiseFromRandomAcceleration(double dt) {
     double sigmaSq = modelError * modelError;
@@ -50,11 +50,11 @@ void KalmanStateEstimator1D::setProcessNoiseFromRandomAcceleration(double dt) {
     double dt3 = (1.0 / 3.0) * dt * dt * dt * sigmaSq;
     double dt2 = (1.0 / 2.0) * dt * dt * sigmaSq;
     double dt1 = dt * sigmaSq;
-
-    kalmanFilter1D.covarianceMatrix_Q(0, 0) = dt3;
-    kalmanFilter1D.covarianceMatrix_Q(0, 1) = dt2;
-    kalmanFilter1D.covarianceMatrix_Q(1, 0) = dt2;
-    kalmanFilter1D.covarianceMatrix_Q(1, 1) = dt1;
+    
+    kalmanFilter1D.covariance_Q(0, 0) = dt3;
+    kalmanFilter1D.covariance_Q(0, 1) = dt2;
+    kalmanFilter1D.covariance_Q(1, 0) = dt2;
+    kalmanFilter1D.covariance_Q(1, 1) = dt1;
 }
 
 const Eigen::Vector2d &KalmanStateEstimator1D::get1DState() const

@@ -1,12 +1,9 @@
 #ifndef KALMANFILTER_H
 #define KALMANFILTER_H
 
-#include <mutex>
-#include <atomic>
 #include <Eigen/Dense>
-#include "../../../base_component.h"
-#include "../../../messages/environment.h"
-#include "../../../messages/raw_environment.h"
+// #include "../../../messages/environment.h"
+// #include "../../../messages/raw_environment.h"
 
 template<int stateVectorDimension, int outputVectorDimension>
 class KalmanFilter
@@ -25,61 +22,62 @@ public:
 
 private:
     stateVector vector_x;
-    stateMatrix covarianceMatrix_P; //Accuracy of the state estimate
+    stateMatrix covariance_P; //Accuracy of the state estimate
 
 public:
-    stateMatrix matrix_Phi;
-    outputMatrix matrix_H;
-    stateMatrix covarianceMatrix_Q;
-    observationNoiseCovariance covarianceMatrix_R;
-    stateMatrix matrix_B; //state transition jacobian
+    stateMatrix Phi;
+    outputMatrix H;
+    stateMatrix covariance_Q;
+    observationNoiseCovariance covariance_R;
+    stateMatrix B; //state transition jacobian
 
     outputVector vector_measurementStateError;
     KalmanFilter(){
-        matrix_Phi = stateMatrix::Identity();
-        matrix_H = outputMatrix::Identity();
-        covarianceMatrix_Q = stateMatrix::Zero();
-        covarianceMatrix_R = observationNoiseCovariance::Zero();
-        matrix_B = stateMatrix::Identity();
+        Phi = stateMatrix::Identity();
+        H = outputMatrix::Identity();
+        covariance_Q = stateMatrix::Zero();
+        covariance_R = observationNoiseCovariance::Zero();
+        B = stateMatrix::Identity();
         vector_measurementStateError = outputVector::Zero();
     }
     explicit KalmanFilter(const stateVector &x, const stateMatrix & P)
         : vector_x(x)
-        , covarianceMatrix_P(P)
+        , covariance_P(P)
     {
-        matrix_Phi = stateMatrix::Identity();
-        matrix_H = outputMatrix::Identity();
-        covarianceMatrix_Q = stateMatrix::Zero();
-        covarianceMatrix_R = observationNoiseCovariance::Zero();
+        Phi = stateMatrix::Identity();
+        H = outputMatrix::Identity();
+        covariance_Q = stateMatrix::Zero();
+        covariance_R = observationNoiseCovariance::Zero();
 
-        matrix_B = stateMatrix::Identity();
+        B = stateMatrix::Identity();
         vector_measurementStateError = outputVector::Zero();
     }
-    Environment update(RawEnvironment raw_env){
 
-    }
+    //Environment update(RawEnvironment raw_env){
+    //}
+
     void predict_timeUpdate(){
-        vector_x = matrix_Phi*vector_x;
-        covarianceMatrix_P = matrix_Phi*covarianceMatrix_P*matrix_Phi.transpose() + covarianceMatrix_Q;
+        vector_x = Phi*vector_x;
+        covariance_P = Phi*covariance_P*Phi.transpose() + covariance_Q;
     };
 
     void predict_timeUpdate(const stateVector &controlVector_u){
-        vector_x = matrix_Phi*vector_x + matrix_B*controlVector_u;
-        covarianceMatrix_P = matrix_Phi*covarianceMatrix_P*matrix_Phi.transpose() + covarianceMatrix_Q;
+        vector_x = Phi*vector_x + B*controlVector_u;
+        covariance_P = Phi*covariance_P*Phi.transpose() + covariance_Q;
     };
 
     void correction_measurementUpdate(const outputVector &cameraMeasurementVector_y){
-        vector_measurementStateError = cameraMeasurementVector_y - (matrix_H*vector_x);
-        observationNoiseCovariance auxiliarMatrix = matrix_H*covarianceMatrix_P*matrix_H.transpose() + covarianceMatrix_R;
-        inputMatrix kalmanGain = covarianceMatrix_P*matrix_H.transpose()*auxiliarMatrix.inverse();
+        vector_measurementStateError = cameraMeasurementVector_y - (H*vector_x);
+        observationNoiseCovariance S = H*covariance_P*H.transpose() + covariance_R;
+        inputMatrix kalmanGain = covariance_P*H.transpose()*S.inverse();
         vector_x += kalmanGain*vector_measurementStateError;
-        covarianceMatrix_P -= kalmanGain*matrix_H*covarianceMatrix_P;
+        covariance_P -= kalmanGain*H*covariance_P;
     };
     const stateVector &getStateVector() const{
         return vector_x;
     }
     const stateMatrix &getCovarianceMatrix_P() const{
-        return covarianceMatrix_P;
+        return covariance_P;
     }
 
     void modifyStateVector(int index, double value)
@@ -91,7 +89,7 @@ public:
         vector_x = newVector_x;
     }
     void setCovarianceMatrix_P(const stateMatrix &newCovarianceMatrix_P){
-        covarianceMatrix_P = newCovarianceMatrix_P;
+        covariance_P = newCovarianceMatrix_P;
     }
 };
 
