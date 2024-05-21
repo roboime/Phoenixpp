@@ -59,6 +59,6 @@ Skill "1..*" o-- "1" Tactic
 Tactic "1..*" o-- "1" Role
 Role "1..*" o-- "1" Play
 
-note Each Play, Role, Tactic and Skill implements\nIPlay, IRole, ITactic and ISkill as N1
+note "Each Play, Role, Tactic and Skill implements\nIPlay, IRole, ITactic and ISkill" as N1
 note top of PlaySelection: Queremos selecionar ao mesmo\n tempo uma ou mais plays?
 @enduml
