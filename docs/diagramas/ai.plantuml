@@ -4,23 +4,23 @@ class Robot {
 }
 
 class Skill {
-    StateMachine stateMachine
+
 }
 
 class Tactic {
-    vector<<Skill>> skills
+    StateMachine<State, Skill> stateMachine
 }
 
 class Role {
-    vector<<Tactic>> tactics
+    StateMachine<State, Tactic> stateMachine
 }
 
 class Play {
-    vector<<Role>> roles
+    vector<Role> roles
 }
 
 class PlayLibrary {
-    vector<<Play>> allPlays
+    vector<Play> allPlays
     void cadastrarPlay(Play play)
 }
 
@@ -30,16 +30,16 @@ class RoleAssigner {
 }
 
 class PlaySelection {
-    vector<<Play>> allPlays
+    vector<Play> allPlays
     Play actualPlay
     bool shouldUpdatePlay(FieldState fieldState)
     vector<<Play>> selectPlays(FieldState fieldState)
 }
 
 class FieldState {
-    vector<<Ball>> balls
-    vector<<Robot>> blueRobots
-    vector<<Robot>> yellowRobots
+    vector<Ball> balls
+    vector<Robot> blueRobots
+    vector<Robot> yellowRobots
     FieldGeometry fieldGeometry
 }
 
@@ -47,7 +47,7 @@ interface ITeam
 
 class OurTeam implements ITeam {
     enum color
-    vector<<Robot>> robot
+    vector<Robot> robot
 }
 
 PlayLibrary "1" --o "*" Play
