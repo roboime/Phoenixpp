@@ -43,11 +43,12 @@ class FieldState {
     FieldGeometry fieldGeometry
 }
 
-interface ITeam
+interface ITeam {
+    vector<Robot> robot
+}
 
 class OurTeam implements ITeam {
     enum color
-    vector<Robot> robot
 }
 
 PlayLibrary "1" --o "*" Play
