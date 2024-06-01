@@ -1,5 +1,0 @@
-add_library(Cli cli.h cli.cpp)
-target_include_directories(Cli PUBLIC ${CMAKE_SOURCE_DIR}/src/components)
-target_include_directories(Cli PUBLIC ${CMAKE_SOURCE_DIR}/src/factories)
-target_link_libraries(Cli PUBLIC Factories)
-target_link_libraries(Cli PUBLIC BaseUi)

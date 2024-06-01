@@ -1,5 +1,0 @@
-add_library(TestVision test_vision.h test_vision.cpp)
-target_include_directories(TestVision PUBLIC ${CMAKE_SOURCE_DIR}/src/components)
-target_include_directories(TestVision PUBLIC ${CMAKE_SOURCE_DIR}/src/components/messages)
-target_link_libraries(TestVision PUBLIC Components)
-target_link_libraries(TestVision PUBLIC Messages)

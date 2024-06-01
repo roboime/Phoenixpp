@@ -1,5 +1,0 @@
-add_library(EloMecTester elo_mec_tester.h elo_mec_tester.cpp)
-target_include_directories(EloMecTester PUBLIC ${CMAKE_SOURCE_DIR}/src/components)
-target_include_directories(EloMecTester PUBLIC ${CMAKE_SOURCE_DIR}/src/components/messages)
-target_link_libraries(EloMecTester PUBLIC Components)
-target_link_libraries(EloMecTester PUBLIC Messages)

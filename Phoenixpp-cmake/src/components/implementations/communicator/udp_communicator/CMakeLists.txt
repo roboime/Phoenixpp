@@ -1,6 +1,0 @@
-add_library(UdpCommunicator udp_communicator.cpp udp_communicator.h)
-target_link_libraries(UdpCommunicator PUBLIC Components)
-target_link_libraries(UdpCommunicator PUBLIC Messages)
-target_link_libraries(UdpCommunicator PUBLIC Poco::Net)
-target_link_libraries(UdpCommunicator PUBLIC ssl_proto)
-target_link_libraries(UdpCommunicator PUBLIC protobuf_files)

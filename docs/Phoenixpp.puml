@@ -1,0 +1,189 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Environment #burlywood{
+}
+class Fouls #burlywood{
+}
+class RobotsFeedback #burlywood{
+}
+class RobotsDecision #burlywood{
+}
+class RobotsPath #burlywood{
+}
+class RobotsCommands #burlywood{
+}
+
+class DataPublisher<T> #lightblue;text:black {
+    -executors : Executor[]
+    +notifyExecutors(T)
+    +subscribe(Executor)
+    +unsubscribe(Executor)
+}
+note right of DataPublisher
+    void notifyExecutors(T data){
+        DataWrapper<T> dataWrapper = new(data);
+        for e in executors{
+            e.update(dataWrapper);
+        }
+    }
+end note
+abstract Executor #crimson{
+    +update(Data)
+    +{abstract}execute()
+    +{abstract}visit(Environment)
+    +{abstract}visit(Fouls)
+    +{abstract}visit(RobotsFeedback)
+    +{abstract}visit(RobotsDecision)
+    +{abstract}visit(RobotsPath)
+    +{abstract}visit(RobotsCommand)
+}
+Executor -r[hidden] Data
+Executor -l[hidden] DataPublisher
+note left of Executor::update
+    data.accept(this);
+end note
+interface Data #khaki{
+    +{abstract}accept(Executor)
+}
+Executor -r- Data #darkred
+class DataWrapper<T> #khaki{
+    -data : T
+    +accept(Executor) override
+    +getData() : T
+}
+note right of DataWrapper
+    void accept(Executor ex) override{
+        T data = getData();
+        ex.visit(data);
+    }
+end note
+Data <|.d. DataWrapper #chocolate
+interface Receiver #orchid{
+}
+class SerialReceiver #orchid{
+}
+class UdpReceiver #orchid{
+}
+class ReplayReceiver #orchid{
+}
+interface Transmitter #orchid{
+}
+class UdpTransmitter #orchid{
+}
+class SerialTransmitter #orchid{
+}
+
+
+class Vision #darkseagreen{
+    - dataProvider: DataPublisher<Environment>
+    - receiver : Receiver
+    - filter : Filter
+    +execute() override
+    +setFilter()
+}
+Vision -d-> Environment #chocolate
+class Referee #darkseagreen{
+    - dataProvider: DataPublisher<Fouls>
+    - receiver : Receiver
+    +execute() override
+}
+Referee -d-> Fouls #chocolate
+class Feedback #darkseagreen{
+    - dataProvider: DataPublisher<RobotsFeedback>
+    - receiver : Receiver
+    +execute() override
+}
+Feedback -d-> RobotsFeedback #chocolate
+class DecisionMaker #darkseagreen{
+    - dataProvider: DataPublisher<RobotsFeedback>
+    -Environment
+    -Fouls
+    -RobotsFeedback
+    +execute() override
+    +visit(Environment) override
+    +visit(Fouls) override
+    +visit(RobotsFeedback) override
+}
+DecisionMaker -d-> RobotsDecision #chocolate
+class PathPlanner #darkseagreen{
+    - dataProvider: DataPublisher<RobotsPath>
+    -Environment
+    -RobotsDecision
+    +execute() override
+    +visit(Environment) override
+    +visit(RobotsDecision) override
+}
+PathPlanner -d-> RobotsPath #chocolate
+class Controller #darkseagreen{
+    - dataProvider: DataPublisher<RobotsCommands>
+    -Environment
+    -RobotsDecision
+    -RobotsPath
+    +execute() override
+    +visit(Environment) override
+    +visit(RobotsDecision) override
+    +visit(RobotsPath) override
+}
+Controller -d-> RobotsCommands #chocolate
+class Communicator #darkseagreen{
+    -RobotsCommands
+    +execute() override
+    +visit(RobotsCommands) override
+}
+
+class Filter{
+    +{abstract}applyFilter(Environment) : Environment
+}
+Vision o-d- Filter
+class KalmanFilter{
+    +applyFilter(Environment) override: Environment
+}
+KalmanFilter -u-|> Filter
+
+Vision *-d- Receiver #line:darkmagenta
+Referee *-d- Receiver #line:darkmagenta
+Feedback *-d- Receiver #line:darkmagenta
+Vision *-u- DataPublisher #line:darkcyan
+Referee *-u- DataPublisher #line:darkcyan
+Feedback *-u- DataPublisher #line:darkcyan
+DecisionMaker *-u- DataPublisher #line:darkcyan
+PathPlanner *-u- DataPublisher #line:darkcyan
+Controller *-u- DataPublisher #line:darkcyan
+
+
+Communicator *-- Transmitter #line:darkmagenta
+
+DecisionMaker o-- Environment #line:green
+DecisionMaker o-- Fouls #line:green
+DecisionMaker o-- RobotsFeedback #line:green
+PathPlanner o-- Environment #line:green
+PathPlanner o-- RobotsDecision #line:green
+Controller o-- Environment #line:green
+Controller o-- RobotsDecision #line:green
+Controller o-- RobotsPath #line:green
+Communicator o-- RobotsCommands #line:green
+
+
+Executor <|-d- DecisionMaker #line:darkred
+Executor <|-d- Controller #line:darkred
+Executor <|-d- PathPlanner #line:darkred
+Executor <|-d- Communicator #line:darkred
+Executor <|-d- Vision #line:darkred
+Executor <|-d- Referee #line:darkred
+Executor <|-d- Feedback #line:darkred
+
+Receiver <|.. SerialReceiver #darkmagenta
+Receiver <|.. UdpReceiver #darkmagenta
+Receiver <|.. ReplayReceiver #darkmagenta
+
+Transmitter <|.. SerialTransmitter #darkmagenta
+Transmitter <|.. UdpTransmitter #darkmagenta
+
+
+
+
+
+
+
+@enduml

@@ -1,6 +1,0 @@
-{
-    "localAddress" : "172.15.0.60",
-    "port" : "20011",
-    "bufferSizeMax" : 4096,
-    "queueSizeMax" : 10
-}
