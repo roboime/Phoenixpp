@@ -1,155 +1,209 @@
 @startuml
 'https://plantuml.com/class-diagram
+skinparam linetype polyline
+skinparam linetype ortho
+set separator ::
 
-class Environment #burlywood{
-}
-class Fouls #burlywood{
-}
-class RobotsFeedback #burlywood{
-}
-class RobotsDecision #burlywood{
-}
-class RobotsPath #burlywood{
-}
-class RobotsCommands #burlywood{
+class roboime::ui::UserInterface #darkseagreen{
+    -listener : UIListener
+    -agents : Agent[]
+    +initializeAgents()
+    +loopAgents()
+    +stopAgents()
 }
 
-class DataPublisher<T> #lightblue;text:black {
-    -executors : Executor[]
+class roboime::messages::Environment #burlywood{
+}
+class roboime::messages::Fouls #burlywood{
+}
+class roboime::messages::RobotsFeedback #burlywood{
+}
+class roboime::messages::RobotsDecision #burlywood{
+}
+class roboime::messages::RobotsPath #burlywood{
+}
+class roboime::messages::RobotsCommands #burlywood{
+}
+class roboime::messages::RobotsOutput #burlywood{
+}
+class roboime::MessagePublisher<T> #lightblue;text:black {
+    -executors : MessageListener[]
     +notifyExecutors(T)
     +subscribe(Executor)
     +unsubscribe(Executor)
 }
-note right of DataPublisher
+note top of MessagePublisher
     void notifyExecutors(T data){
-        DataWrapper<T> dataWrapper = new(data);
+        MessageWrapper<T> dataWrapper = new(data);
         for e in executors{
             e.update(dataWrapper);
         }
     }
 end note
-abstract Executor #crimson{
-    +update(Data)
+abstract roboime::Agent #crimson{
+    - fps : int
+    +parametersManager : ParametersManager
+    +{abstract}initialize()
     +{abstract}execute()
-    +{abstract}visit(Environment)
-    +{abstract}visit(Fouls)
-    +{abstract}visit(RobotsFeedback)
-    +{abstract}visit(RobotsDecision)
-    +{abstract}visit(RobotsPath)
-    +{abstract}visit(RobotsCommand)
+    +{abstract}stop()
 }
-Executor -r[hidden] Data
-Executor -l[hidden] DataPublisher
-note left of Executor::update
-    data.accept(this);
-end note
-interface Data #khaki{
-    +{abstract}accept(Executor)
+abstract roboime::MessageListener #khaki{
+    +update(Message)
+    +{abstract}updateVisit(Environment)
+    +{abstract}updateVisit(Fouls)
+    +{abstract}updateVisit(RobotsFeedback)
+    +{abstract}updateVisit(RobotsDecision)
+    +{abstract}updateVisit(RobotsPath)
+    +{abstract}updateVisit(RobotsCommands)
+    +{abstract}updateVisit(RobotsOutput)
 }
-Executor -r- Data #darkred
-class DataWrapper<T> #khaki{
-    -data : T
-    +accept(Executor) override
-    +getData() : T
-}
-note right of DataWrapper
-    void accept(Executor ex) override{
-        T data = getData();
-        ex.visit(data);
+
+note top of MessageListener
+    void update(Message data){
+        data.accept(this);
     }
 end note
-Data <|.d. DataWrapper #chocolate
-interface Receiver #orchid{
+interface roboime::Message #khaki{
+    +{abstract}accept(Executor)
 }
-class SerialReceiver #orchid{
+MessageListener -l[hidden] Message
+MessageListener -r[hidden] MessagePublisher
+MessageListener -- Message #goldenrod
+class roboime::MessageWrapper<T> #khaki{
+    -data : T
+    +accept(Executor) override
+    +getMessage() : T
 }
-class UdpReceiver #orchid{
+note right of MessageWrapper
+    void accept(Executor ex) override{
+        T data = getMessage();
+        ex.updateVisit(data);
+    }
+end note
+Message <|.d. MessageWrapper #goldenrod
+interface roboime::io::Receiver #orchid{
 }
-class ReplayReceiver #orchid{
+class roboime::io::SerialReceiver #orchid{
 }
-interface Transmitter #orchid{
+class roboime::io::UdpReceiver #orchid{
 }
-class UdpTransmitter #orchid{
+class roboime::io::ReplayReceiver #orchid{
 }
-class SerialTransmitter #orchid{
+interface roboime::io::Transmitter #orchid{
 }
+class roboime::io::UdpTransmitter #orchid{
+}
+class roboime::io::SerialTransmitter #orchid{
+}
+interface roboime::io::ParametersManager #orchid{
+}
+class roboime::io::JsonParametersManager #orchid{
+}
+JsonParametersManager -u-|> ParametersManager #darkmagenta
+Agent *-- ParametersManager #darkmagenta
 
-
-class Vision #darkseagreen{
-    - dataProvider: DataPublisher<Environment>
+class roboime::vision::Vision #darkseagreen{
+    - dataProvider: MessagePublisher<Environment>
     - receiver : Receiver
     - filter : Filter
     +execute() override
     +setFilter()
 }
 Vision -d-> Environment #chocolate
-class Referee #darkseagreen{
-    - dataProvider: DataPublisher<Fouls>
+class roboime::referee::Referee #darkseagreen{
+    - dataProvider: MessagePublisher<Fouls>
     - receiver : Receiver
     +execute() override
 }
 Referee -d-> Fouls #chocolate
-class Feedback #darkseagreen{
-    - dataProvider: DataPublisher<RobotsFeedback>
+class roboime::feedback::Feedback #darkseagreen{
+    - dataProvider: MessagePublisher<RobotsFeedback>
     - receiver : Receiver
     +execute() override
 }
 Feedback -d-> RobotsFeedback #chocolate
-class DecisionMaker #darkseagreen{
-    - dataProvider: DataPublisher<RobotsFeedback>
+class roboime::ai::DecisionMaker #darkseagreen{
+    - dataProvider: MessagePublisher<RobotsFeedback>
     -Environment
     -Fouls
     -RobotsFeedback
     +execute() override
-    +visit(Environment) override
-    +visit(Fouls) override
-    +visit(RobotsFeedback) override
+    +updateVisit(Environment) override
+    +updateVisit(Fouls) override
+    +updateVisit(RobotsFeedback) override
 }
 DecisionMaker -d-> RobotsDecision #chocolate
-class PathPlanner #darkseagreen{
-    - dataProvider: DataPublisher<RobotsPath>
+class roboime::pathplanning::PathPlanner #darkseagreen{
+    - dataProvider: MessagePublisher<RobotsPath>
     -Environment
     -RobotsDecision
     +execute() override
-    +visit(Environment) override
-    +visit(RobotsDecision) override
+    +updateVisit(Environment) override
+    +updateVisit(RobotsDecision) override
 }
 PathPlanner -d-> RobotsPath #chocolate
-class Controller #darkseagreen{
-    - dataProvider: DataPublisher<RobotsCommands>
+class roboime::navigation::Controller #darkseagreen{
+    - dataProvider: MessagePublisher<RobotsCommands>
     -Environment
     -RobotsDecision
     -RobotsPath
     +execute() override
-    +visit(Environment) override
-    +visit(RobotsDecision) override
-    +visit(RobotsPath) override
+    +updateVisit(Environment) override
+    +updateVisit(RobotsDecision) override
+    +updateVisit(RobotsPath) override
 }
 Controller -d-> RobotsCommands #chocolate
-class Communicator #darkseagreen{
-    -RobotsCommands
+class roboime::communication::Communicator #darkseagreen{
+    - dataProvider: MessagePublisher<RobotsOutput>
+    - RobotsCommands
     +execute() override
-    +visit(RobotsCommands) override
+    +updateVisit(RobotsCommands) override
 }
-
-class Filter{
+Communicator -d-> RobotsOutput #chocolate
+class roboime::ui::UIListener #darkseagreen{
+    -dataProvider: MessagePublisher<>
+    -Environment
+    -Fouls
+    -RobotsFeedback
+    -RobotsDecision
+    -RobotsPath
+    -RobotsCommands
+    -RobotsOutput
+    +updateVisit(Environment) override
+    +updateVisit(Fouls) override
+    +updateVisit(RobotsFeedback) override
+    +updateVisit(RobotsDecision) override
+    +updateVisit(RobotsPath) override
+    +updateVisit(RobotsCommands) override
+    +updateVisit(RobotsOutput) override
+    +getEnvironment() : Environment
+    +getFouls() : Fouls
+    +getRobotsFeedback() : RobotsFeedback
+    +getRobotsDecision() : RobotsDecision
+    +getRobotsPath() : RobotsPath
+    +getRobotsCommands() : RobotsCommands
+    +getRobotsOutput() : RobotsOutput
+}
+UserInterface *-- UIListener #darkgreen
+class roboime::vision::Filter #mediumturquoise{
     +{abstract}applyFilter(Environment) : Environment
 }
-Vision o-d- Filter
-class KalmanFilter{
+Vision o-d- Filter #darkslategrey
+class roboime::vision::KalmanFilter #mediumturquoise{
     +applyFilter(Environment) override: Environment
 }
-KalmanFilter -u-|> Filter
+KalmanFilter -u-|> Filter #darkslategrey
 
 Vision *-d- Receiver #line:darkmagenta
 Referee *-d- Receiver #line:darkmagenta
 Feedback *-d- Receiver #line:darkmagenta
-Vision *-u- DataPublisher #line:darkcyan
-Referee *-u- DataPublisher #line:darkcyan
-Feedback *-u- DataPublisher #line:darkcyan
-DecisionMaker *-u- DataPublisher #line:darkcyan
-PathPlanner *-u- DataPublisher #line:darkcyan
-Controller *-u- DataPublisher #line:darkcyan
+Vision *-u- MessagePublisher #line:darkcyan
+Referee *-u- MessagePublisher #line:darkcyan
+Feedback *-u- MessagePublisher #line:darkcyan
+DecisionMaker *-u- MessagePublisher #line:darkcyan
+PathPlanner *-u- MessagePublisher #line:darkcyan
+Controller *-u- MessagePublisher #line:darkcyan
+Controller *-u- MessagePublisher #line:darkcyan
 
 
 Communicator *-- Transmitter #line:darkmagenta
@@ -163,15 +217,30 @@ Controller o-- Environment #line:green
 Controller o-- RobotsDecision #line:green
 Controller o-- RobotsPath #line:green
 Communicator o-- RobotsCommands #line:green
+UIListener o-- Environment #line:green
+UIListener o-- Fouls #line:green
+UIListener o-- RobotsFeedback #line:green
+UIListener o-- RobotsDecision #line:green
+UIListener o-- RobotsPath #line:green
+UIListener o-- RobotsCommands #line:green
+UIListener o-- RobotsOutput #line:green
 
+MessageListener <|-d- DecisionMaker #line:goldenrod
+MessageListener <|-d- Controller #line:goldenrod
+MessageListener <|-d- PathPlanner #line:goldenrod
+MessageListener <|-d- Communicator #line:goldenrod
+MessageListener <|-d- Vision #line:goldenrod
+MessageListener <|-d- Referee #line:goldenrod
+MessageListener <|-d- Feedback #line:goldenrod
+MessageListener <|-d- UIListener #line:goldenrod
 
-Executor <|-d- DecisionMaker #line:darkred
-Executor <|-d- Controller #line:darkred
-Executor <|-d- PathPlanner #line:darkred
-Executor <|-d- Communicator #line:darkred
-Executor <|-d- Vision #line:darkred
-Executor <|-d- Referee #line:darkred
-Executor <|-d- Feedback #line:darkred
+Agent <|-d- DecisionMaker #line:darkred
+Agent <|-d- Controller #line:darkred
+Agent <|-d- PathPlanner #line:darkred
+Agent <|-d- Communicator #line:darkred
+Agent <|-d- Vision #line:darkred
+Agent <|-d- Referee #line:darkred
+Agent <|-d- Feedback #line:darkred
 
 Receiver <|.. SerialReceiver #darkmagenta
 Receiver <|.. UdpReceiver #darkmagenta
