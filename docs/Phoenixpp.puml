@@ -3,6 +3,7 @@
 skinparam linetype polyline
 skinparam linetype ortho
 set separator ::
+namespace roboime{
 
 class ui::UIController #darkseagreen{
     -listener : UIListener
@@ -14,32 +15,30 @@ class ui::UIController #darkseagreen{
 class AgentFactory #lightskyblue{
     +createAgent()
 }
-class messages::Environment #burlywood{
+together {
+class messaging::Environment #burlywood{
 }
-class messages::Fouls #burlywood{
+class messaging::Fouls #burlywood{
 }
-class messages::RobotsFeedback #burlywood{
+class messaging::RobotsFeedback #burlywood{
 }
-class messages::RobotsDecision #burlywood{
+class messaging::RobotsDecision #burlywood{
 }
-class messages::RobotsPath #burlywood{
+class messaging::RobotsPath #burlywood{
 }
-class messages::RobotsCommands #burlywood{
+class messaging::RobotsCommands #burlywood{
 }
-class messages::RobotsOutput #burlywood{
+class messaging::RobotsOutput #burlywood{
 }
-class MessagePublisher<T> #lightblue {
+}
+class messaging::MessagePublisher<T> #lightblue {
     -listeners : MessageListener[]
     +notifyListeners(T)
     +subscribe(MessageListener)
     +unsubscribe(MessageListener)
 }
-note right of MessagePublisher::listeners
-    MessageWrapper<T> messageWrapper = new(message);
-    for e in executors{
-        e.update(dataWrapper);
-    }
-end note
+
+
 abstract Agent<T> #crimson{
     # fps : int
     # parametersManager : ParametersManager
@@ -48,8 +47,8 @@ abstract Agent<T> #crimson{
     +{abstract}execute()
     +{abstract}stop()
 }
-abstract MessageListener #khaki{
-    +update(Message)
+abstract messaging::MessageListener #khaki{
+    +update(message: Message)
     +{abstract}updateVisit(Environment)
     +{abstract}updateVisit(Fouls)
     +{abstract}updateVisit(RobotsFeedback)
@@ -58,28 +57,39 @@ abstract MessageListener #khaki{
     +{abstract}updateVisit(RobotsCommands)
     +{abstract}updateVisit(RobotsOutput)
 }
-note as N1
-For simplicity, roboime namespace on all classes was omitted
-end note
-note left of MessageListener::update
-    data.accept(this);
-end note
-interface IMessage #khaki{
-    +{abstract}accept(Executor)
+
+interface messaging::Message #khaki{
+    +{abstract}accept(MessageListener)
 }
-'MessageListener -l[hidden] IMessage
+'MessageListener -l[hidden] Message
 'MessageListener -r[hidden] MessagePublisher
-MessageListener -- IMessage #goldenrod
-class MessageWrapper<T> #khaki{
-    -data : T
-    +accept(Executor) override
+MessageListener -- Message #goldenrod
+class messaging::MessageWrapper<T> #khaki{
+    -message : T
+    +accept(listener : MessageListener) override
     +getMessage() : T
 }
-note right of MessageWrapper::accept
-    T data = getMessage();
-    executor.updateVisit(data);
+MessagePublisher ..> MessageWrapper #darkblue
+
+Message <|.d. MessageWrapper #goldenrod
+
+namespace messaging {
+note right of MessagePublisher::notifyListeners
+    MessageWrapper<T> messageWrapper = new(message);
+    for l in listeners{
+        l.update(messageWrapper);
+    }
 end note
-IMessage <|.d. MessageWrapper #goldenrod
+
+note left of MessageListener::update
+    message.accept(this);
+end note
+note right of MessageWrapper::accept
+    T message = getMessage();
+    listener.updateVisit(message);
+end note
+}
+
 together{
 interface io::PacketReceiver #orchid{
 }
@@ -277,6 +287,15 @@ MessageListener <|-d- PathPlanner #line:goldenrod
 MessageListener <|-d- Communicator #line:goldenrod
 MessageListener <|-d- UIListener #line:goldenrod
 
+MessageListener ..> Environment #maroon
+MessageListener ..> Fouls #maroon
+MessageListener ..> RobotsFeedback #maroon
+MessageListener ..> RobotsDecision #maroon
+MessageListener ..> RobotsPath #maroon
+MessageListener ..> RobotsCommands #maroon
+MessageListener ..> RobotsOutput #maroon
+
+
 Agent <|-d- DecisionMaker #line:darkred
 Agent <|-d- Controller #line:darkred
 Agent <|-d- PathPlanner #line:darkred
@@ -307,7 +326,7 @@ AgentFactory ..> ManualController #darkblue
 AgentFactory ..> Communicator #darkblue
 
 
-UIController *-- AgentFactory
+UIController *-- AgentFactory #darkgreen
 
 Vision -[hidden]- Referee
 Referee -[hidden]- Feedback
@@ -316,8 +335,7 @@ DecisionMaker -[hidden]- PathPlanner
 PathPlanner -[hidden]- Controller
 Controller -[hidden]- Communicator
 
-
-
+}
 
 
 @enduml

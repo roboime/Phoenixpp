@@ -7,9 +7,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/libs)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
-include_directories(include)
-
-# Generating protobuf files
+############# Generating protobuf files #############
 find_package(Protobuf CONFIG REQUIRED)
 include_directories(${Protobuf_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -33,13 +31,24 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
 add_library(ssl_proto STATIC ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(ssl_proto PUBLIC protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
 
+############# Source and Executable #############
+include_directories(include)
 add_executable(Phoenixpp apps/PhoenixCLI/PhoenixCli.cpp)
-
 target_link_libraries(Phoenixpp PRIVATE ssl_proto)
 #find_package(nlohmann CONFIG REQUIRED)
 #target_link_libraries(Phoenixpp PRIVATE nlohmann::json)
 add_subdirectory(src)
-target_link_libraries(Phoenixpp PRIVATE base_component)
-target_link_libraries(Phoenixpp PRIVATE udpVision)
-target_link_libraries(Phoenixpp PRIVATE baseUI)
+target_link_libraries(Phoenixpp PRIVATE messaging)
+
+############# Tests #############
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+option(PACKAGE_TESTS "Build the tests" ON)
+if(PACKAGE_TESTS)
+    enable_testing()
+    include(GoogleTest)
+    add_subdirectory(tests)
+endif()
+
+
 
