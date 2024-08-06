@@ -5,14 +5,23 @@
 #ifndef ROBOTS_FEEDBACK_H
 #define ROBOTS_FEEDBACK_H
 
-namespace roboime {
-namespace messaging {
+#include "message.h"
 
+namespace phoenixpp {
+namespace messaging {
 struct RobotsFeedback {
 
 };
-
+class RobotsFeedbackWrapper : public Message{
+public:
+    void forwardTo(RobotsFeedbackListener *listener) override;
+    RobotsFeedback getRobotsFeedback() const {return feedback;}
+private:
+    RobotsFeedback feedback;
+};
+using RobotsFeedbackWrapperPtr = std::shared_ptr<RobotsFeedbackWrapper>;
+using RobotsFeedbackPtr = std::shared_ptr<std::atomic<RobotsFeedback>>;
 } // messaging
-} // roboime
+} // phoenixpp
 
 #endif //ROBOTS_FEEDBACK_H

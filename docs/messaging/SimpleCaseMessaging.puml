@@ -1,0 +1,90 @@
+@startuml
+
+note as N1
+Every Agent have a Publisher that will send
+some kind of Message to its Listeners. Here
+Vision sends Environment Messages to some
+EnvironmentListener. This Listener is mapped on
+DecisionMaker, which will share an Environment
+instance with its Listener, so that the Vision
+thread writes to the Message while DecisionMaker
+thread reads from it.
+
+end note
+
+interface Listener {
+    +{abstract}update(Message);
+}
+
+class Publisher {
+    -Listener[]
+    +distribute(Message)
+    +addListener(Listener)
+    +removeListener(Listener)
+}
+
+abstract class Message {
+    +forwardTo(EnvironmentListener)
+}
+
+class EnvironmentListener {
+    +updateEnvironment(Environment)
+    +update(Message)
+}
+
+note bottom of EnvironmentListener
+    message->forwardTo(this)
+end note
+
+EnvironmentListener ..u|> Listener
+
+class Environment {
+    +forwardTo(EnvironmentListener)
+}
+
+
+Environment --u|> Message
+
+
+abstract class Agent {
+    Publisher
+    +{abstract}execute()
+}
+
+class Vision {
+    -Environment
+    +execute()
+}
+
+Vision --u|> Agent
+Agent *--u Publisher
+
+class DecisionMaker {
+    -Message->Listener
+    -Listener[]
+    +execute()
+}
+
+DecisionMaker --u|> Agent
+DecisionMaker *-d- Listener
+
+note right of Vision::execute
+Environment newEnvironment;
+...
+publisher.distribute(newEnvironment);
+end note
+
+note left of Publisher::distribute
+for each listener{
+    listener->update(message);
+}
+end note
+
+note bottom of Environment
+listener->updateEnvironment(this)
+end note
+
+DecisionMaker -[hidden]r- Vision
+DecisionMaker *-- Message
+
+@enduml

@@ -1,0 +1,44 @@
+{
+  "agents" : {
+    "vision" : {
+      "implementation" : "ssl",
+      "subscriptions" : [],
+      "fps" : 240
+    },
+    "referee" : {
+      "implementation" : "ssl",
+      "subscriptions" : [],
+      "fps" : 60
+    },
+    "feedback" : {
+      "implementation" : "grSim",
+      "subscriptions" : [],
+      "fps" : 60
+    },
+    "blue_ai" : {
+      "implementation" : "stp",
+      "subscriptions" : ["vision", "referee", "feedback"],
+      "fps" : 60
+    },
+    "yellow_ai" : {
+      "implementation" : "none",
+      "subscriptions" : ["vision", "referee", "feedback"],
+      "fps" : 60
+    },
+    "path_planner" : {
+      "implementation" : "rrt",
+      "subscriptions" : ["vision", "blue_ai", "yellow_ai"],
+      "fps" : 60
+    },
+    "controller" : {
+      "implementation" : "bang_bang",
+      "subscriptions" : ["vision", "path_planner"],
+      "fps" : 60
+    },
+    "communicator" : {
+      "implementation" : "ssl",
+      "subscriptions" : ["controller"],
+      "fps" : 60
+    }
+  }
+}

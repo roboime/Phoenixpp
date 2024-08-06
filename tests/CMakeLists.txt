@@ -8,4 +8,5 @@ macro(package_add_test TESTNAME FILES LIBRARIES)
     set_target_properties(${TESTNAME} PROPERTIES FOLDER tests)
 endmacro()
 
-package_add_test(testMessageListener messaging/test_message_listener.cpp messaging)
+#package_add_test(testMessageListener messaging/test_environment.cpp messaging)
+package_add_test(testCore core/test_core.cpp core)

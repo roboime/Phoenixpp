@@ -1,0 +1,118 @@
+@startuml
+
+note as N1
+Here is the expanded version. Now There is the
+RobotsDecision Message, that is sent by Strategy.
+PathPlanner is an Agent that receives both
+RobotsDecision and Environment Messages with
+RobotsDecisionListener and EnvironmentListener
+respectively.
+end note
+
+interface Listener {
+    +{abstract}update(Message);
+}
+
+class Publisher {
+    -Listener[]
+    +distribute(Message)
+    +addListener(Listener)
+    +removeListener(Listener)
+}
+
+abstract class Message {
+    +forwardTo(EnvironmentListener)
+}
+
+class RobotsDecision{
+    +forwardTo(RobotsDecisionListener)
+}
+
+RobotsDecision --u|> Message
+
+
+class EnvironmentListener {
+    +updateEnvironment(Environment)
+    +update(Message)
+}
+
+class RobotsDecisionListener {
+    +updateRobotsDecision(RobotsDecision)
+    +update(Message)
+}
+
+RobotsDecisionListener ..u|> Listener
+
+note bottom of EnvironmentListener
+    message->forwardTo(this)
+end note
+
+note bottom of RobotsDecisionListener
+    message->forwardTo(this)
+end note
+
+EnvironmentListener ..u|> Listener
+
+class Environment {
+    +forwardTo(EnvironmentListener)
+}
+
+
+Environment --u|> Message
+
+
+abstract class Agent {
+    Publisher
+    +{abstract}execute()
+}
+
+class Vision {
+    -Environment
+    +execute()
+}
+
+Vision --u|> Agent
+Agent *--u Publisher
+
+class Strategy {
+    -Message->Listener
+    +execute()
+}
+
+Strategy --u|> Agent
+Strategy *-d- Listener
+
+class PathPlanner {
+    -Message->Listener
+    +execute()
+}
+
+PathPlanner --u|> Agent
+PathPlanner *-d- Listener
+PathPlanner *-- Message
+
+note left of Strategy::execute
+RobotsDecision newRobotsDecision;
+...
+publisher.distribute(newRobotsDecision);
+end note
+
+note left of Publisher::distribute
+for each listener{
+    listener->update(message);
+}
+end note
+
+note bottom of Environment
+listener->updateEnvironment(this)
+end note
+
+note bottom of RobotsDecision
+listener->updateRobotsDecision(this)
+end note
+
+Strategy -[hidden]r- PathPlanner
+PathPlanner -[hidden]r- Vision
+Strategy *-- Message
+
+@enduml

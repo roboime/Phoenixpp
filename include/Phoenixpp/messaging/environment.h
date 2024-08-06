@@ -5,14 +5,28 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
-namespace roboime {
+#include "message.h"
+#include <atomic>
+
+namespace phoenixpp {
 namespace messaging {
 
-struct Environment {
+struct Environment{
     int a;
 };
+class EnvironmentWrapper : public Message {
+public:
+    explicit EnvironmentWrapper(const Environment env) : environment(env) {};
+    ~EnvironmentWrapper() override = default;
+    void forwardTo(EnvironmentListener* listener) override;
+    Environment getEnvironment() const {return environment;}
+private:
+    Environment environment;
+};
+using EnvironmentWrapperPtr = std::shared_ptr<EnvironmentWrapper>;
+using EnvironmentPtr = std::shared_ptr<std::atomic<Environment>>;
 
 } // messaging
-} // roboime
+} // phoenixpp
 
 #endif //ENVIRONMENT_H

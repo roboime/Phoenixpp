@@ -1,0 +1,202 @@
+@startuml
+
+
+namespace core{
+abstract class Agent {
+    Publisher
+    +{abstract}execute()
+}
+
+class AgentController{
+    - Message->Listener
+    - Agent[]
+    +initAgents()
+    +loopAgents()
+    +stopAgents()
+    +setAgent()
+}
+note left of AgentController
+AgentController will create threads for each
+agent. Different implementations of certain
+Agent can be set using the strategy pattern
+end note
+
+}
+
+namespace vision{
+class Vision {
+    -Environment
+    +execute()
+}
+class Filter {
+}
+Filter --r* Vision
+class KalmanFilter {
+}
+KalmanFilter --u|> Filter
+class ReplayVision{
+    +execute()
+}
+ReplayVision --u|> Vision
+class SSLVision{
+    +execute()
+}
+SSLVision --u|> Vision
+}
+namespace referee{
+class Referee {
+    -Environment
+    +execute()
+}
+class ManualReferee {
+    +execute()
+}
+class SSLReferee {
+    +execute()
+}
+ManualReferee --u|> Referee
+SSLReferee --u|> Referee
+}
+namespace feedback{
+class Feedback {
+    -Message->Listener
+    +execute()
+}
+class GrSimFeedback {
+    +execute()
+}
+class SerialFeedback {
+    +execute()
+}
+SerialFeedback --u|> Feedback
+GrSimFeedback --u|> Feedback
+}
+namespace ai{
+class DecisionMaker {
+    -Message->Listener
+    +execute()
+}
+class STP {
+    +execute()
+}
+STP --u|> DecisionMaker
+class NavigationTester {
+    +execute()
+}
+NavigationTester --u|> DecisionMaker
+class PlayTester {
+    +execute()
+}
+PlayTester --u|> DecisionMaker
+}
+namespace PathPlanning{
+class PathPlanner {
+    -Message->Listener
+    +execute()
+}
+class SimplePath {
+    +execute()
+}
+SimplePath --u|> PathPlanner
+class RRT {
+    +execute()
+}
+RRT --u|> PathPlanner
+}
+namespace Navigation{
+class Controller {
+    -Message->Listener
+    +execute()
+}
+class BangBangController {
+    +execute()
+}
+class ManualController {
+    +execute()
+}
+BangBangController --u|> Controller
+ManualController --u|> Controller
+}
+namespace Communication{
+class Communicator {
+    -Message->Listener
+    +execute()
+}
+}
+namespace messaging {
+
+class Publisher {
+    -Listener[]
+    +distribute(Message)
+    +addListener(Listener)
+    +removeListener(Listener)
+}
+interface Listener {
+    +{abstract}update(Message);
+}
+
+abstract class Message {
+    +forwardTo(EnvironmentListener)
+    +forwardTo(FoulsListener)
+    +forwardTo(RobotsFeedbackListener)
+    +forwardTo(RobotsDecisionListener)
+    +forwardTo(RobotsPathListener)
+    +forwardTo(RobotsCommandsListener)
+    +forwardTo(RobotsOutputListener)
+}
+
+Vision --u|> Agent
+Agent *--u Publisher
+
+
+DecisionMaker --u|> Agent
+'DecisionMaker *-d- Listener
+
+
+
+'PathPlanner *-d- Listener
+'PathPlanner *-- Message
+
+DecisionMaker -[hidden]r- PathPlanner
+PathPlanner -[hidden]r- Vision
+'DecisionMaker *-- Message
+Referee --u|> Agent
+Feedback --u|> Agent
+PathPlanner --u|> Agent
+Controller --u|> Agent
+Communicator --u|> Agent
+}
+namespace io{
+class Network{
+    -transmitted
+    -received
+    +startSending()
+    +startReceiving()
+    +sendPacket()
+    +receivePacket()
+}
+class Serial{
+    -transmitted
+    -received
+    +startSending()
+    +startReceiving()
+    +sendPacket()
+    +receivePacket()
+}
+}
+
+namespace factories{
+class AgentFactory{
+    -createVision()
+    -createReferee()
+    -createFeedback()
+    -createDecisionMaker()
+    -createPathPlanner()
+    -createController()
+    -createCommunicator()
+    +createAgent()
+}
+AgentFactory ..> Agent : creates
+}
+
+@enduml

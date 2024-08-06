@@ -5,14 +5,24 @@
 #ifndef FOULS_H
 #define FOULS_H
 
-namespace roboime {
+#include "message.h"
+
+namespace phoenixpp {
 namespace messaging {
 
 struct Fouls {
-
 };
+class FoulsWrapper : public Message{
+public:
+    void forwardTo(FoulsListener* listener) override;
+    Fouls getFouls() const {return fouls;}
+private:
+    Fouls fouls;
+};
+using FoulsWrapperPtr = std::shared_ptr<FoulsWrapper>;
+using FoulsPtr = std::shared_ptr<std::atomic<Fouls>>;
 
 } // messaging
-} // roboime
+} // phoenixpp
 
 #endif //FOULS_H

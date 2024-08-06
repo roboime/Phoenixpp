@@ -5,14 +5,23 @@
 #ifndef ROBOTS_DECISION_H
 #define ROBOTS_DECISION_H
 
-namespace roboime {
-namespace messaging {
+#include "message.h"
 
+namespace phoenixpp {
+namespace messaging {
 struct RobotsDecision {
 
 };
-
+class RobotsDecisionWrapper : public Message{
+public:
+    void forwardTo(RobotsDecisionListener *listener) override;
+    RobotsDecision getRobotsDecision() const {return robotsDecision;}
+private:
+    RobotsDecision robotsDecision;
+};
+using RobotsDecisionWrapperPtr = std::shared_ptr<RobotsDecisionWrapper>;
+using RobotsDecisionPtr = std::shared_ptr<std::atomic<RobotsDecision>>;
 } // messaging
-} // roboime
+} // phoenixpp
 
 #endif //ROBOTS_DECISION_H

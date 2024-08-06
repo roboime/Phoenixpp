@@ -1,0 +1,68 @@
+@startuml
+
+note as N1
+All messages and which Agent sends which.
+Blue arrows indicate receiving messages and
+red arrows, sending.
+end note
+
+class Vision
+class Referee
+class Feedback
+class DecisionMaker
+class PathPlanner
+class Controller
+class Communicator
+
+namespace messaging{
+class Environment
+class Fouls
+class RobotsFeedback
+class RobotsDecision
+class RobotsPath
+class RobotsCommands
+class RobotsOutput
+}
+
+Fouls -[hidden]r- Feedback
+Feedback -[hidden]r- Environment
+Environment -[hidden]r- RobotsDecision
+RobotsDecision -[hidden]r- RobotsPath
+RobotsPath -[hidden]r- RobotsCommands
+RobotsCommands -[hidden]r- RobotsOutput
+
+Referee -[hidden]r- Feedback
+Feedback -[hidden]r- Vision
+Vision -[hidden]r- DecisionMaker
+DecisionMaker -[hidden]r- PathPlanner
+PathPlanner -[hidden]r- Controller
+Controller -[hidden]r- Communicator
+
+DecisionMaker <--u Environment #darkblue
+DecisionMaker <--u Fouls #darkblue
+DecisionMaker <--u RobotsFeedback #darkblue
+PathPlanner <--u Environment #darkblue
+PathPlanner <--u RobotsDecision #darkblue
+Controller <--u Environment #darkblue
+Controller <--u RobotsDecision #darkblue
+Controller <--u RobotsPath #darkblue
+Communicator <--u RobotsPath #darkblue
+
+Vision --u> Environment #red
+Referee --u> Fouls #red
+Feedback --u> RobotsFeedback #red
+DecisionMaker --u> RobotsDecision #red
+PathPlanner --u> RobotsPath #red
+Controller --u> RobotsCommands #red
+Communicator --u> RobotsOutput #red
+
+AgentController <--d Environment #darkblue
+AgentController <--d Fouls #darkblue
+AgentController <--d RobotsFeedback #darkblue
+AgentController <--d RobotsDecision #darkblue
+AgentController <--d RobotsPath #darkblue
+AgentController <--d RobotsCommands #darkblue
+AgentController <--d RobotsOutput #darkblue
+
+
+@enduml

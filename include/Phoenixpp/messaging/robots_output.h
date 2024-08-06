@@ -5,14 +5,22 @@
 #ifndef ROBOTS_OUTPUT_H
 #define ROBOTS_OUTPUT_H
 
-namespace roboime {
+#include "message.h"
+
+namespace phoenixpp {
 namespace messaging {
-
 struct RobotsOutput {
-
 };
-
+class RobotsOutputWrapper : public Message{
+public:
+    void forwardTo(RobotsOutputListener *listener) override;
+    RobotsOutput getRobotsOutput() const {return robotsOutput;}
+private:
+    RobotsOutput robotsOutput;
+};
+using RobotsOutputWrapperPtr = std::shared_ptr<RobotsOutputWrapper>;
+using RobotsOutputPtr = std::shared_ptr<std::atomic<RobotsOutput>>;
 } // messaging
-} // roboime
+} // phoenixpp
 
 #endif //ROBOTS_OUTPUT_H
