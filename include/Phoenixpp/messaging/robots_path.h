@@ -19,7 +19,7 @@ private:
     RobotsPath robotsPath;
 };
 using RobotsPathWrapperPtr = std::shared_ptr<RobotsPathWrapper>;
-using RobotsPathPtr = std::shared_ptr<std::atomic<RobotsPath>>;
+using RobotsPathPtr = std::shared_ptr<boost::atomic<RobotsPath>>;
 } // messaging
 } // phoenixpp
 

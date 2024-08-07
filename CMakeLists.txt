@@ -9,7 +9,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
-
 ############# Generating protobuf files #############
 find_package(Protobuf CONFIG REQUIRED)
 include_directories(${Protobuf_INCLUDE_DIRS})
@@ -33,7 +32,9 @@ set(PROTO_FILES
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
 add_library(ssl_proto STATIC ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(ssl_proto PUBLIC protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
-
+############## Adding Boost Library #############
+find_package(Boost 1.85 REQUIRED COMPONENTS atomic)
+include_directories(${Boost_INCLUDE_DIRS})
 ############## Adding QT LIBRARY #############
 set(CMAKE_PREFIX_PATH "C:/Qt/6.7.0/mingw_64/lib/cmake")
 find_package(Qt6 COMPONENTS
@@ -59,6 +60,7 @@ target_link_libraries(Phoenixpp PRIVATE
         Qt6::Gui
         Qt6::Widgets
 )
+target_link_libraries(Phoenixpp PRIVATE ${Boost_LIBRARIES})
 if (WIN32) # AND NOT DEFINED CMAKE_TOOLCHAIN_FILE
     set(DEBUG_SUFFIX)
     if (MSVC AND CMAKE_BUILD_TYPE MATCHES "Debug")

@@ -10,14 +10,14 @@ namespace phoenixpp {
 namespace messaging {
 
 MessageCollection::MessageCollection() :
-    environment(std::make_shared<std::atomic<Environment>>()),
-    fouls(std::make_shared<std::atomic<Fouls>>()),
-    robotsFeedback(std::make_shared<std::atomic<RobotsFeedback>>()),
-    blueDecision(std::make_shared<std::atomic<RobotsDecision>>()),
-    yellowDecision(std::make_shared<std::atomic<RobotsDecision>>()),
-    robotsPath(std::make_shared<std::atomic<RobotsPath>>()),
-    robotsCommands(std::make_shared<std::atomic<RobotsCommands>>()),
-    robotsOutput(std::make_shared<std::atomic<RobotsOutput>>()){}
+    environment(std::make_shared<boost::atomic<Environment>>()),
+    fouls(std::make_shared<boost::atomic<Fouls>>()),
+    robotsFeedback(std::make_shared<boost::atomic<RobotsFeedback>>()),
+    blueDecision(std::make_shared<boost::atomic<RobotsDecision>>()),
+    yellowDecision(std::make_shared<boost::atomic<RobotsDecision>>()),
+    robotsPath(std::make_shared<boost::atomic<RobotsPath>>()),
+    robotsCommands(std::make_shared<boost::atomic<RobotsCommands>>()),
+    robotsOutput(std::make_shared<boost::atomic<RobotsOutput>>()){}
 
 ListenerPtr MessageCollection::createListener(const std::string &key) {
     if(key == "vision") {

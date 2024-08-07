@@ -22,6 +22,7 @@ public:
     void updateEnvironmentValue();
 
 private:
+    void displayEnvironment(const messaging::Environment& env);
     core::AgentController &controller;
     Ui::Gui *ui;
 };

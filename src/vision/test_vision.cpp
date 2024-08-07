@@ -11,8 +11,6 @@ namespace vision {
 
 void TestVision::execute() {
     messaging::Environment newEnv = environment;
-    newEnv.a += 2;
-    std::cout << "SSL Vision counter: " << newEnv.a << std::endl;
     distributeEnvironment(newEnv);
 }
 

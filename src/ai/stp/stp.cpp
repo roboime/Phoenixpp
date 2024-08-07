@@ -11,7 +11,6 @@ namespace ai {
 STP::STP(const string &type) : Strategy(type) {}
 void STP::execute() {
     messaging::Environment env = environment->load();
-    std::cout << type << " STP counter: " << env.a << std::endl;
 }
 
 } // ai

@@ -5,6 +5,8 @@
 #ifndef SSL_VISION_H
 #define SSL_VISION_H
 
+#include <queue>
+#include "Phoenixpp/io/udp_handler.h"
 #include "vision.h"
 
 namespace phoenixpp {
@@ -15,6 +17,10 @@ public:
     SSLVision();
     ~SSLVision() override = default;
     void execute() override;
+private:
+    std::shared_ptr<io::UdpHandler> udpReceiver;
+    std::queue<std::pair<char*,int>> bufferQueue;
+    std::mutex bufferQueue_mtx;
 };
 
 } // vision

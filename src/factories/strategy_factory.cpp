@@ -13,9 +13,9 @@ namespace phoenixpp {
 namespace factories {
 
 StrategyFactory::StrategyFactory(std::string type) : type(std::move(type)),
-    environment(std::make_shared<std::atomic<messaging::Environment>>()),
-    fouls(std::make_shared<std::atomic<messaging::Fouls>>()),
-    robotsFeedback(std::make_shared<std::atomic<messaging::RobotsFeedback>>()){}
+    environment(std::make_shared<boost::atomic<messaging::Environment>>()),
+    fouls(std::make_shared<boost::atomic<messaging::Fouls>>()),
+    robotsFeedback(std::make_shared<boost::atomic<messaging::RobotsFeedback>>()){}
 
 std::shared_ptr<ai::Strategy> StrategyFactory::_createAgent(const std::string &implementation) {
     if(implementation == "stp"){

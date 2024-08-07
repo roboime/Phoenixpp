@@ -16,7 +16,7 @@
 
 namespace phoenixpp {
 namespace core {
-using std::unordered_map, std::atomic, std::string;
+using std::unordered_map, boost::atomic, std::string;
 class AgentController{
 public:
     AgentController();

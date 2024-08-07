@@ -15,7 +15,6 @@ Strategy::Strategy(const std::string &type) : Agent(type){}
 void Strategy::execute() {
     // std::cout << "Executing Default Strategy" << std::endl;
     messaging::Environment env = environment->load();
-    std::cout << type << " Strategy counter: " << env.a << std::endl;
 }
 messaging::ListenerPtr Strategy::createListener(const std::string &type) {
     if(type == "vision") {

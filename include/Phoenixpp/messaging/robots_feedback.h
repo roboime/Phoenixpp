@@ -20,7 +20,7 @@ private:
     RobotsFeedback feedback;
 };
 using RobotsFeedbackWrapperPtr = std::shared_ptr<RobotsFeedbackWrapper>;
-using RobotsFeedbackPtr = std::shared_ptr<std::atomic<RobotsFeedback>>;
+using RobotsFeedbackPtr = std::shared_ptr<boost::atomic<RobotsFeedback>>;
 } // messaging
 } // phoenixpp
 

@@ -34,6 +34,10 @@ add_library(ai
         ai/strategy.cpp
         ai/stp/stp.cpp
 )
+add_library(io
+    STATIC
+    io/udp_handler.cpp
+)
 
 find_package(nlohmann_json CONFIG REQUIRED)
 target_link_libraries(core PRIVATE nlohmann_json::nlohmann_json)
@@ -44,5 +48,7 @@ target_link_libraries(factories PRIVATE referee)
 target_link_libraries(factories PRIVATE ai)
 target_link_libraries(referee PRIVATE core)
 target_link_libraries(vision PRIVATE core)
+target_link_libraries(vision PRIVATE ssl_proto)
+target_link_libraries(vision PRIVATE io)
 target_link_libraries(ai PRIVATE core)
 target_link_libraries(ai PRIVATE factories)

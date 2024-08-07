@@ -20,7 +20,7 @@ private:
     RobotsDecision robotsDecision;
 };
 using RobotsDecisionWrapperPtr = std::shared_ptr<RobotsDecisionWrapper>;
-using RobotsDecisionPtr = std::shared_ptr<std::atomic<RobotsDecision>>;
+using RobotsDecisionPtr = std::shared_ptr<boost::atomic<RobotsDecision>>;
 } // messaging
 } // phoenixpp
 

@@ -1,6 +1,7 @@
 #include "Phoenixpp/messaging/listener.h"
 
 #include <memory>
+#include <atomic>
 
 namespace phoenixpp {
 namespace messaging {

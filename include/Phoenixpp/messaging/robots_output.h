@@ -19,7 +19,7 @@ private:
     RobotsOutput robotsOutput;
 };
 using RobotsOutputWrapperPtr = std::shared_ptr<RobotsOutputWrapper>;
-using RobotsOutputPtr = std::shared_ptr<std::atomic<RobotsOutput>>;
+using RobotsOutputPtr = std::shared_ptr<boost::atomic<RobotsOutput>>;
 } // messaging
 } // phoenixpp
 

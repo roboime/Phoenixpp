@@ -20,7 +20,7 @@ private:
     Fouls fouls;
 };
 using FoulsWrapperPtr = std::shared_ptr<FoulsWrapper>;
-using FoulsPtr = std::shared_ptr<std::atomic<Fouls>>;
+using FoulsPtr = std::shared_ptr<boost::atomic<Fouls>>;
 
 } // messaging
 } // phoenixpp

@@ -20,7 +20,7 @@ private:
     RobotsCommands robotsCommands;
 };
 using RobotsCommandsWrapperPtr = std::shared_ptr<RobotsCommandsWrapper>;
-using RobotsCommandsPtr = std::shared_ptr<std::atomic<RobotsCommands>>;
+using RobotsCommandsPtr = std::shared_ptr<boost::atomic<RobotsCommands>>;
 } // messaging
 } // phoenixpp
 
