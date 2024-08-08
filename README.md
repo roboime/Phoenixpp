@@ -34,7 +34,8 @@ You need to install the following dependencies:
 - [Protobuf](https://developers.google.com/protocol-buffers)
 - [nlohmann/json](https://github.com/nlohmann/json)
 - [Qt 6.7.0](https://www.qt.io/)
-- [Boost](https://www.boost.org/)
+- [Boost](https://www.boost.org/) For Windows users installing Boost via vcpkg gives an error, try installing only Boost-atomic.
+- GTest
 
 Alternatively, if you are using CLion on windows, you can easily install the dependencies with [Vcpkg](https://www.jetbrains.com/help/clion/package-management.html#install-vcpkg).
 I also recommend installing plantUml plugin on CLion to visualize the UML diagrams.
