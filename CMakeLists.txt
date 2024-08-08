@@ -36,7 +36,7 @@ target_link_libraries(ssl_proto PUBLIC protobuf::libprotoc protobuf::libprotobuf
 find_package(Boost 1.85 REQUIRED COMPONENTS atomic)
 include_directories(${Boost_INCLUDE_DIRS})
 ############## Adding QT LIBRARY #############
-set(CMAKE_PREFIX_PATH "C:/Qt/6.7.0/mingw_64/lib/cmake")
+# set(CMAKE_PREFIX_PATH "C:/Users/lucas/.vcpkg-clion/vcpkg3/installed/x64-windows")
 find_package(Qt6 COMPONENTS
         Core
         Gui
