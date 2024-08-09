@@ -36,32 +36,14 @@ target_link_libraries(ssl_proto PUBLIC protobuf::libprotoc protobuf::libprotobuf
 find_package(Boost 1.85 REQUIRED COMPONENTS atomic)
 include_directories(${Boost_INCLUDE_DIRS})
 ############## Adding QT LIBRARY #############
-# set(CMAKE_PREFIX_PATH "C:/Users/lucas/.vcpkg-clion/vcpkg3/installed/x64-windows")
 find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
+        Network
         REQUIRED
 )
-############# Source and Executable #############
-include_directories(include)
-set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/resources/qt)
-add_executable(Phoenixpp
-    apps/Phoenixpp.cpp
-    src/qt/gui.cpp
-    resources/qt/gui.ui
-    include/Phoenixpp/qt/gui.h
-)
-#target_link_libraries(Phoenixpp PRIVATE ssl_proto)
-add_subdirectory(src)
-target_link_libraries(Phoenixpp PRIVATE core)
-target_link_libraries(Phoenixpp PRIVATE
-        Qt6::Core
-        Qt6::Gui
-        Qt6::Widgets
-)
-target_link_libraries(Phoenixpp PRIVATE ${Boost_LIBRARIES})
-if (WIN32) # AND NOT DEFINED CMAKE_TOOLCHAIN_FILE
+if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(DEBUG_SUFFIX)
     if (MSVC AND CMAKE_BUILD_TYPE MATCHES "Debug")
         set(DEBUG_SUFFIX "d")
@@ -86,6 +68,25 @@ if (WIN32) # AND NOT DEFINED CMAKE_TOOLCHAIN_FILE
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
     endforeach (QT_LIB)
 endif ()
+############# Source and Executable #############
+include_directories(include)
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/resources/qt)
+add_executable(Phoenixpp
+    apps/Phoenixpp.cpp
+    src/qt/gui.cpp
+    resources/qt/gui.ui
+    include/Phoenixpp/qt/gui.h
+)
+#target_link_libraries(Phoenixpp PRIVATE ssl_proto)
+add_subdirectory(src)
+target_link_libraries(Phoenixpp PRIVATE core)
+target_link_libraries(Phoenixpp PRIVATE
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
+        Qt6::Network
+)
+target_link_libraries(Phoenixpp PRIVATE ${Boost_LIBRARIES})
 ############# Tests #############
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
