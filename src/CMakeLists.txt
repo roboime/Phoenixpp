@@ -23,6 +23,7 @@ add_library(vision
         vision/vision.cpp
         vision/ssl_vision.cpp
         vision/test_vision.cpp
+        vision/filter.cpp
 )
 add_library(referee
         STATIC

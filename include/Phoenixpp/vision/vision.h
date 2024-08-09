@@ -5,7 +5,9 @@
 #ifndef VISION_H
 #define VISION_H
 
+#include "filter.h"
 #include "Phoenixpp/core/agent.h"
+#include "Phoenixpp/messaging/environment.h"
 
 namespace phoenixpp {
 namespace vision {
@@ -16,8 +18,10 @@ public:
     ~Vision() override;
     void execute() override;
 protected:
-    messaging::Environment environment;
+    void processPacket(const char *bufferPtr, int size);
     void distributeEnvironment(const messaging::Environment &env);
+    messaging::RawEnvironment rawEnv;
+    FilterPtr filter;
 };
 
 } // vision

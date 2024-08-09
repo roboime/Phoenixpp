@@ -24,6 +24,7 @@ struct UdpData {
 class UdpHandler {
 public:
     explicit UdpHandler(UdpData &data);
+    bool getReceived();
     ~UdpHandler() = default;
     void execute();
 private:

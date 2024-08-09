@@ -13,12 +13,15 @@
 namespace phoenixpp {
 namespace messaging {
 
-const int MAX_ROBOTS = 32;
-const int MAX_BALLS = 10;
+constexpr int MAX_ROBOTS = 32;
+constexpr int MAX_BALLS = 10;
+constexpr double BALL_RADIUS = 21.5;
+constexpr double ROBOT_RADIUS = 90;
+constexpr double KICKER_DISTANCE = 73;
+
 struct RawObject{
-    double x;
-    double y;
-    int id;
+    bool valid;
+    std::complex<double> position;
     double radius;
     double confidence;
 };
@@ -28,6 +31,7 @@ struct RawBall : RawObject{
 };
 
 struct RawRobot : RawObject{
+    int id;
     double orientation;
     double height;
     double kickerDistance; // distance between center of the robot to the kicker
@@ -51,6 +55,30 @@ struct RawEnvironment{
     std::array<RawBall, MAX_BALLS> balls;
     std::array<RawRobot, MAX_ROBOTS> robots;
     Field field;
+    void insertBall(RawBall ball){
+        for(int i = 0; i < MAX_BALLS; i++){
+            if(balls[i].valid) continue;
+            ball.valid = true;
+            balls[i] = ball;
+            return;
+        }
+    }
+    void insertRobot(RawRobot robot) {
+        for(int i = 0; i < MAX_ROBOTS; i++){
+            if(robots[i].valid) continue;
+            robot.valid = true;
+            robots[i] = robot;
+            return;
+        }
+    }
+    void clear() {
+        for(auto &robot : robots) {
+            robot.valid = false;
+        }
+        for(auto &ball : balls) {
+            ball.valid = false;
+        }
+    }
 };
 
 struct Object{
@@ -58,7 +86,6 @@ struct Object{
     std::complex<double> position;
     std::complex<double> velocity;
     std::complex<double> acceleration;
-    int id;
     double radius;
     double confidence;
 };
@@ -68,6 +95,7 @@ struct Ball : Object{
 };
 
 struct Robot : Object{
+    int id;
     double orientation;
     double height;
     double kickerDistance; // distance between center of the robot to the kicker
@@ -75,8 +103,8 @@ struct Robot : Object{
 
 struct Environment{
     bool received;
-    std::array<Ball, MAX_BALLS> ball;
-    std::array<Robot, MAX_ROBOTS> robot;
+    std::array<Ball, MAX_BALLS> balls;
+    std::array<Robot, MAX_ROBOTS> robots;
     Field field;
 };
 class EnvironmentWrapper : public Message {
