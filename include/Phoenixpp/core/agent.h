@@ -18,7 +18,7 @@ public:
     messaging::Publisher getPublisher() const;
     void setPublisher(const messaging::Publisher &pub);
     const std::string &getType() const;
-    virtual messaging::ListenerPtr createListener(const std::string &type);
+    virtual messaging::ListenerPtr createListener(const std::string &key);
     virtual void execute() {};
     virtual ~Agent() = default;
 protected:

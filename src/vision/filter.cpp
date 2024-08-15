@@ -12,6 +12,7 @@ messaging::Environment Filter::execute(messaging::RawEnvironment &rawEnv) {
         env.balls[i].position = rawEnv.balls[i].position;
         env.balls[i].radius = rawEnv.balls[i].radius;
         env.balls[i].z = rawEnv.balls[i].z;
+        env.balls[i].valid = rawEnv.balls[i].valid;
     }
     for(int i = 0; i < rawEnv.robots.size(); i++) {
         env.robots[i].position = rawEnv.robots[i].position;
@@ -20,6 +21,8 @@ messaging::Environment Filter::execute(messaging::RawEnvironment &rawEnv) {
         env.robots[i].height = rawEnv.robots[i].height;
         env.robots[i].orientation = rawEnv.robots[i].orientation;
         env.robots[i].kickerDistance = rawEnv.robots[i].kickerDistance;
+        env.robots[i].color = rawEnv.robots[i].color;
+        env.robots[i].valid = rawEnv.robots[i].valid;
     }
     env.field = rawEnv.field;
     env.received = rawEnv.received;

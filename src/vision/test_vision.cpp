@@ -10,8 +10,6 @@ namespace phoenixpp {
 namespace vision {
 
 void TestVision::execute() {
-    messaging::Environment newEnv = environment;
-    distributeEnvironment(newEnv);
 }
 
 } // vision

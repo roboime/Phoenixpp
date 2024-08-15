@@ -1,7 +1,6 @@
 #include <Phoenixpp/core/agent_controller.h>
 #include "Phoenixpp/qt/gui.h"
 #include <QApplication>
-#include <Phoenixpp/messaging/message_collection.h>
 
 int main(int argc, char *argv[])
 {

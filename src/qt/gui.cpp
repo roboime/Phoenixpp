@@ -30,10 +30,9 @@ void Gui::displayEnvironment(const messaging::Environment& env) {
 
     // Display balls
     text += "Balls:\n";
-    for (const auto& ball : env.ball) {
+    for (const auto& ball : env.balls) {
         if(!ball.valid) continue;
-        text += QString("ID: %1, Position: (%2, %3), Velocity: (%4, %5), Acceleration: (%6, %7), Radius: %8, Confidence: %9, Z: %10\n")
-            .arg(ball.id)
+        text += QString("Position: (%1, %2), Velocity: (%3, %4), Acceleration: (%5, %6), Radius: %7, Confidence: %8, Z: %9\n")
             .arg(ball.position.real()).arg(ball.position.imag())
             .arg(ball.velocity.real()).arg(ball.velocity.imag())
             .arg(ball.acceleration.real()).arg(ball.acceleration.imag())
@@ -44,7 +43,7 @@ void Gui::displayEnvironment(const messaging::Environment& env) {
 
     // Display robots
     text += "Robots:\n";
-    for (const auto& robot : env.robot) {
+    for (const auto& robot : env.robots) {
         if(!robot.valid) continue;
         text += QString("ID: %1, Position: (%2, %3), Velocity: (%4, %5), Acceleration: (%6, %7), Radius: %8, Confidence: %9, Orientation: %10, Height: %11, Kicker Distance: %12\n")
             .arg(robot.id)

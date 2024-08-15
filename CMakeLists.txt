@@ -11,8 +11,16 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 ############# Generating protobuf files #############
 find_package(Protobuf CONFIG REQUIRED)
+if (Protobuf_FOUND)
+    message(STATUS "Protobuf found: ${Protobuf_INCLUDE_DIRS}")
+else()
+    message(FATAL_ERROR "Protobuf not found")
+endif()
 include_directories(${Protobuf_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+set(GENERATED_PROTO_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
+file(MAKE_DIRECTORY ${GENERATED_PROTO_DIR})
+include_directories(${GENERATED_PROTO_DIR})
 set(PROTO_FILES
         ${CMAKE_SOURCE_DIR}/proto/game_event.proto
         ${CMAKE_SOURCE_DIR}/proto/grSim_Commands.proto
@@ -29,13 +37,14 @@ set(PROTO_FILES
         ${CMAKE_SOURCE_DIR}/proto/referee.proto
         ${CMAKE_SOURCE_DIR}/proto/savestate.proto
 )
-protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES} PROTOC_OUT_DIR ${GENERATED_PROTO_DIR})
 add_library(ssl_proto STATIC ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(ssl_proto PUBLIC protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
 ############## Adding Boost Library #############
 find_package(Boost 1.85 REQUIRED COMPONENTS atomic)
 include_directories(${Boost_INCLUDE_DIRS})
 ############## Adding QT LIBRARY #############
+set(Qt6_DIR "C:/Qt/6.7.0/mingw_64/lib/cmake/Qt6")
 find_package(Qt6 COMPONENTS
         Core
         Gui
@@ -43,40 +52,45 @@ find_package(Qt6 COMPONENTS
         Network
         REQUIRED
 )
-if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-    set(DEBUG_SUFFIX)
-    if (MSVC AND CMAKE_BUILD_TYPE MATCHES "Debug")
-        set(DEBUG_SUFFIX "d")
+function(copy_qt_dlls target)
+    if (WIN32)
+        set(QT_DLLS
+                "Qt6Core.dll"
+                "Qt6Gui.dll"
+                "Qt6Widgets.dll"
+                "Qt6Network.dll"
+        )
+        set(QT_PLUGINS
+            "platforms/qwindows.dll"
+        )
+        foreach (dll ${QT_DLLS})
+            add_custom_command(TARGET ${target} POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    "${Qt6_DIR}/../../../bin/${dll}"
+                    "$<TARGET_FILE_DIR:${target}>/${dll}"
+            )
+        endforeach ()
+        foreach (plugin ${QT_PLUGINS})
+            add_custom_command(TARGET ${target} POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    "${Qt6_DIR}/../../../plugins/${plugin}"
+                    "$<TARGET_FILE_DIR:${target}>/${plugin}"
+            )
+        endforeach ()
     endif ()
-    set(QT_INSTALL_PATH "${CMAKE_PREFIX_PATH}/..")
-    if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
-        set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
-    endif ()
-    if (EXISTS "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll")
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory
-                "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy
-                "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
-                "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
-    endif ()
-    foreach (QT_LIB Core gui Widgets)
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy
-                "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"
-                "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
-    endforeach (QT_LIB)
-endif ()
+endfunction()
 ############# Source and Executable #############
 include_directories(include)
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/resources/qt)
 add_executable(Phoenixpp
     apps/Phoenixpp.cpp
     src/qt/gui.cpp
+    src/io/udp_handler.cpp
     resources/qt/gui.ui
     include/Phoenixpp/qt/gui.h
+    include/Phoenixpp/io/udp_handler.h
 )
+copy_qt_dlls(Phoenixpp)
 #target_link_libraries(Phoenixpp PRIVATE ssl_proto)
 add_subdirectory(src)
 target_link_libraries(Phoenixpp PRIVATE core)
@@ -96,6 +110,4 @@ if(PACKAGE_TESTS)
     include(GoogleTest)
     add_subdirectory(tests)
 endif()
-
-
 

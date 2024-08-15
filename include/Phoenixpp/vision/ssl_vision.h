@@ -11,11 +11,11 @@
 
 namespace phoenixpp {
 namespace vision {
-
+constexpr int NUM_CAMERAS = 4;
 class SSLVision : public Vision{
 public:
     SSLVision();
-    ~SSLVision() override = default;
+    ~SSLVision() override;
     void execute() override;
 private:
     std::shared_ptr<io::UdpHandler> udpReceiver;

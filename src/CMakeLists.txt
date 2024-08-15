@@ -20,6 +20,8 @@ add_library(messaging
 )
 add_library(vision
         STATIC
+        ${PROTO_SRCS}
+        ${PROTO_HDRS}
         vision/vision.cpp
         vision/ssl_vision.cpp
         vision/test_vision.cpp
@@ -49,7 +51,25 @@ target_link_libraries(factories PRIVATE referee)
 target_link_libraries(factories PRIVATE ai)
 target_link_libraries(referee PRIVATE core)
 target_link_libraries(vision PRIVATE core)
-target_link_libraries(vision PRIVATE ssl_proto)
 target_link_libraries(vision PRIVATE io)
+target_link_libraries(vision PRIVATE ssl_proto)
 target_link_libraries(ai PRIVATE core)
 target_link_libraries(ai PRIVATE factories)
+target_link_libraries(io PRIVATE
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
+        Qt6::Network
+)
+target_link_libraries(factories PRIVATE
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
+        Qt6::Network
+)
+target_link_libraries(vision PRIVATE
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
+        Qt6::Network
+)

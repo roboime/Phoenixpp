@@ -13,17 +13,16 @@ namespace ai {
 
 Strategy::Strategy(const std::string &type) : Agent(type){}
 void Strategy::execute() {
-    // std::cout << "Executing Default Strategy" << std::endl;
     messaging::Environment env = environment->load();
 }
-messaging::ListenerPtr Strategy::createListener(const std::string &type) {
-    if(type == "vision") {
+messaging::ListenerPtr Strategy::createListener(const std::string &key) {
+    if(key == "vision") {
         return factories::ListenerFactory::createListener(environment);
     }
-    if(type == "feedback") {
+    if(key == "feedback") {
         return factories::ListenerFactory::createListener(robotsFeedback);
     }
-    if(type == "referee") {
+    if(key == "referee") {
         return factories::ListenerFactory::createListener(fouls);
     }
     return nullptr;

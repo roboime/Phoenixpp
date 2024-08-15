@@ -18,6 +18,7 @@ constexpr int MAX_BALLS = 10;
 constexpr double BALL_RADIUS = 21.5;
 constexpr double ROBOT_RADIUS = 90;
 constexpr double KICKER_DISTANCE = 73;
+enum class Color {BLUE, YELLOW};
 
 struct RawObject{
     bool valid;
@@ -35,6 +36,7 @@ struct RawRobot : RawObject{
     double orientation;
     double height;
     double kickerDistance; // distance between center of the robot to the kicker
+    Color color;
 };
 
 struct Field {
@@ -45,9 +47,9 @@ struct Field {
     int boundary_width;
     int penalty_area_depth; // x axis
     int penalty_area_width; // y axis
+    double penaltyDistance;
     std::complex<double> blueGoalPosition; // [x,y]
     std::complex<double> yellowGoalPosition; // [x,y]
-    double penaltyDistance;
 };
 
 struct RawEnvironment{
@@ -83,11 +85,11 @@ struct RawEnvironment{
 
 struct Object{
     bool valid;
+    double radius;
+    double confidence;
     std::complex<double> position;
     std::complex<double> velocity;
     std::complex<double> acceleration;
-    double radius;
-    double confidence;
 };
 
 struct Ball : Object{
@@ -99,6 +101,7 @@ struct Robot : Object{
     double orientation;
     double height;
     double kickerDistance; // distance between center of the robot to the kicker
+    Color color;
 };
 
 struct Environment{

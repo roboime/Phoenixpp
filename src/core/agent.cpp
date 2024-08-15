@@ -20,7 +20,7 @@ messaging::Publisher Agent::getPublisher() const {
 void Agent::setPublisher(const messaging::Publisher &pub) {
     publisher = pub;
 }
-messaging::ListenerPtr Agent::createListener(const std::string &type) {
+messaging::ListenerPtr Agent::createListener(const std::string &key) {
     return nullptr;
 }
 std::size_t AgentHash::operator()(const AgentPtr &agent) const {

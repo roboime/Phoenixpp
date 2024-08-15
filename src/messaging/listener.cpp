@@ -1,7 +1,6 @@
 #include "Phoenixpp/messaging/listener.h"
 
 #include <memory>
-#include <atomic>
 
 namespace phoenixpp {
 namespace messaging {
@@ -13,7 +12,9 @@ void EnvironmentListener::update(MessagePtr const message) {
 }
 
 void EnvironmentListener::updateEnvironment(EnvironmentWrapper *newEnvironment) const{
+    Environment env1 = newEnvironment->getEnvironment();
     environment->store(newEnvironment->getEnvironment());
+    Environment env2 = environment->load();
 }
 
 FoulsListener::FoulsListener(const FoulsPtr &fouls) : fouls(fouls) {}

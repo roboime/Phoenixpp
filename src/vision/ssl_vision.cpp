@@ -13,7 +13,7 @@ using std::cout, std::endl;
 
 SSLVision::SSLVision() {
     std::string multicastAddress = "224.5.23.2";
-    int port = 10020;
+    unsigned short port = 10020;
     int bufferSizeMax = 2048;
     int queueSizeMax = 4;
     io::UdpData data{
@@ -29,7 +29,7 @@ SSLVision::SSLVision() {
 
 void SSLVision::execute() {
     std::unique_lock lock(bufferQueue_mtx);
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < NUM_CAMERAS; i++) {
         if(bufferQueue.empty()){
             continue;
         }
@@ -41,6 +41,16 @@ void SSLVision::execute() {
     lock.unlock();
     rawEnv.received = udpReceiver->getReceived();
     Vision::execute();
+}
+
+SSLVision::~SSLVision() {
+    std::cout << "Destroying SSL Vision" << std::endl;
+    std::unique_lock lock(bufferQueue_mtx);
+    while(!bufferQueue.empty()) {
+        delete[] bufferQueue.front().first;
+        bufferQueue.pop();
+    }
+    lock.unlock();
 }
 
 } // vision

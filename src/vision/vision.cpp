@@ -49,6 +49,7 @@ void Vision::processPacket(const char *bufferPtr, int size) {
             robot.orientation = detection.robots_blue().Get(i).orientation();
             robot.radius = messaging::ROBOT_RADIUS;
             robot.kickerDistance = messaging::KICKER_DISTANCE;
+            robot.color = messaging::Color::BLUE;
             rawEnv.insertRobot(robot);
         }
         for(int i=0;i<detection.robots_yellow_size();i++) {
@@ -62,6 +63,7 @@ void Vision::processPacket(const char *bufferPtr, int size) {
             robot.orientation = detection.robots_yellow().Get(i).orientation();
             robot.radius = messaging::ROBOT_RADIUS;
             robot.kickerDistance = messaging::KICKER_DISTANCE;
+            robot.color = messaging::Color::YELLOW;
             rawEnv.insertRobot(robot);
         }
     }
@@ -73,6 +75,7 @@ void Vision::processPacket(const char *bufferPtr, int size) {
         field.field_width = fieldSize.field_width();
         field.goal_depth = fieldSize.goal_depth();
         field.goal_width = fieldSize.goal_depth();
+        rawEnv.field = field;
     }
 }
 
