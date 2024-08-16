@@ -24,7 +24,7 @@ class EnvironmentListener: public Listener {
 public:
     explicit EnvironmentListener(const EnvironmentPtr &env);
     void update(MessagePtr message) override;
-    void updateEnvironment(EnvironmentWrapper* newEnvironment) const;
+    void updateEnvironment(Environment* newEnvironment) const;
 private:
     EnvironmentPtr environment;
 };
@@ -33,7 +33,7 @@ class FoulsListener : public Listener {
 public:
     explicit FoulsListener(const FoulsPtr &fouls);
     void update(MessagePtr message) override;
-    void updateFouls(FoulsWrapper* newFouls) const;
+    void updateFouls(Fouls* newFouls) const;
 
 private:
     FoulsPtr fouls;
@@ -43,7 +43,7 @@ class RobotsFeedbackListener : public Listener {
 public:
     explicit RobotsFeedbackListener(const RobotsFeedbackPtr &feedback);
     void update(MessagePtr message) override;
-    void updateRobotsFeedback(RobotsFeedbackWrapper* newFeedback) const;
+    void updateRobotsFeedback(RobotsFeedback* newFeedback) const;
 
 private:
     RobotsFeedbackPtr robotsFeedback;
@@ -53,7 +53,7 @@ class RobotsDecisionListener : public Listener {
 public:
     explicit RobotsDecisionListener(const RobotsDecisionPtr &decision);
     void update(MessagePtr message) override;
-    void updateRobotsDecision(RobotsDecisionWrapper* newDecision) const;
+    void updateRobotsDecision(RobotsDecision* newDecision) const;
 
 private:
     RobotsDecisionPtr robotsDecision;
@@ -63,7 +63,7 @@ class RobotsPathListener : public Listener {
 public:
     explicit RobotsPathListener(const RobotsPathPtr &path);
     void update(MessagePtr message) override;
-    void updateRobotsPath(RobotsPathWrapper* newPath) const;
+    void updateRobotsPath(RobotsPath* newPath) const;
 
 private:
     RobotsPathPtr robotsPath;
@@ -73,7 +73,7 @@ class RobotsCommandsListener : public Listener {
 public:
     explicit RobotsCommandsListener(const RobotsCommandsPtr &commands);
     void update(MessagePtr message) override;
-    void updateRobotsCommands(RobotsCommandsWrapper* newCommands) const;
+    void updateRobotsCommands(RobotsCommands* newCommands) const;
 
 private:
     RobotsCommandsPtr robotsCommands;
@@ -83,7 +83,7 @@ class RobotsOutputListener : public Listener {
 public:
     explicit RobotsOutputListener(const RobotsOutputPtr &output);
     void update(MessagePtr message) override;
-    void updateRobotsOutput(RobotsOutputWrapper* newOutput) const;
+    void updateRobotsOutput(RobotsOutput* newOutput) const;
 
 private:
     RobotsOutputPtr robotsOutput;

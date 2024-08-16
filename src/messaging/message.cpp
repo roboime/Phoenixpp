@@ -35,31 +35,31 @@ void Message::forwardTo(RobotsOutputListener *listener) {
     logWarning("RobotsOutput");
 }
 
-void EnvironmentWrapper::forwardTo(EnvironmentListener *listener) {
+void Environment::forwardTo(EnvironmentListener *listener) {
     listener->updateEnvironment(this);
 }
 
-void FoulsWrapper::forwardTo(FoulsListener *listener) {
+void Fouls::forwardTo(FoulsListener *listener) {
     listener->updateFouls(this);
 }
 
-void RobotsFeedbackWrapper::forwardTo(RobotsFeedbackListener *listener) {
+void RobotsFeedback::forwardTo(RobotsFeedbackListener *listener) {
     listener->updateRobotsFeedback(this);
 }
 
-void RobotsDecisionWrapper::forwardTo(RobotsDecisionListener *listener) {
+void RobotsDecision::forwardTo(RobotsDecisionListener *listener) {
     listener->updateRobotsDecision(this);
 }
 
-void RobotsPathWrapper::forwardTo(RobotsPathListener *listener) {
+void RobotsPath::forwardTo(RobotsPathListener *listener) {
     listener->updateRobotsPath(this);
 }
 
-void RobotsCommandsWrapper::forwardTo(RobotsCommandsListener *listener) {
+void RobotsCommands::forwardTo(RobotsCommandsListener *listener) {
     listener->updateRobotsCommands(this);
 }
 
-void RobotsOutputWrapper::forwardTo(RobotsOutputListener *listener) {
+void RobotsOutput::forwardTo(RobotsOutputListener *listener) {
     listener->updateRobotsOutput(this);
 }
 

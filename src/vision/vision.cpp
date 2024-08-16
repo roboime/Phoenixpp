@@ -30,20 +30,16 @@ void Vision::processPacket(const char *bufferPtr, int size) {
         const SSL_DetectionFrame detection = packet.detection();
         for(int i=0;i<detection.balls_size();i++) {
             messaging::RawBall ball;
-            ball.position = {
-                detection.balls().Get(i).x(),
-                detection.balls().Get(i).y()
-            };
+            ball.positionX = detection.balls().Get(i).x();
+            ball.positionY = detection.balls().Get(i).y();
             ball.confidence = detection.balls().Get(i).confidence();
             ball.radius = messaging::BALL_RADIUS;
             rawEnv.insertBall(ball);
         }
         for(int i=0;i<detection.robots_blue_size();i++) {
             messaging::RawRobot robot;
-            robot.position = {
-                detection.robots_blue().Get(i).x(),
-                detection.robots_blue().Get(i).y()
-            };
+            robot.positionX = detection.robots_blue().Get(i).x();
+            robot.positionY = detection.robots_blue().Get(i).y();
             robot.id = detection.robots_blue().Get(i).robot_id();
             robot.height = detection.robots_blue().Get(i).height();
             robot.orientation = detection.robots_blue().Get(i).orientation();
@@ -54,10 +50,8 @@ void Vision::processPacket(const char *bufferPtr, int size) {
         }
         for(int i=0;i<detection.robots_yellow_size();i++) {
             messaging::RawRobot robot;
-            robot.position = {
-                detection.robots_yellow().Get(i).x(),
-                detection.robots_yellow().Get(i).y()
-            };
+            robot.positionX = detection.robots_yellow().Get(i).x();
+            robot.positionY = detection.robots_yellow().Get(i).y();
             robot.id = detection.robots_yellow().Get(i).robot_id();
             robot.height = detection.robots_yellow().Get(i).height();
             robot.orientation = detection.robots_yellow().Get(i).orientation();
@@ -75,12 +69,12 @@ void Vision::processPacket(const char *bufferPtr, int size) {
         field.field_width = fieldSize.field_width();
         field.goal_depth = fieldSize.goal_depth();
         field.goal_width = fieldSize.goal_depth();
-        rawEnv.field = field;
+        rawEnv.field.store(field);
     }
 }
 
 void Vision::distributeEnvironment(const messaging::Environment &env) {
-    messaging::MessagePtr message = std::make_shared<messaging::EnvironmentWrapper>(env);
+    messaging::MessagePtr message = std::make_shared<messaging::Environment>(env);
     publisher.distribute(message);
 }
 

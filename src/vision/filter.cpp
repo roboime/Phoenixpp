@@ -8,24 +8,26 @@ namespace phoenixpp {
 namespace vision {
 messaging::Environment Filter::execute(messaging::RawEnvironment &rawEnv) {
     messaging::Environment env;
-    for(int i = 0; i < rawEnv.balls.size(); i++) {
-        env.balls[i].position = rawEnv.balls[i].position;
-        env.balls[i].radius = rawEnv.balls[i].radius;
-        env.balls[i].z = rawEnv.balls[i].z;
-        env.balls[i].valid = rawEnv.balls[i].valid;
-    }
-    for(int i = 0; i < rawEnv.robots.size(); i++) {
-        env.robots[i].position = rawEnv.robots[i].position;
-        env.robots[i].id = rawEnv.robots[i].id;
-        env.robots[i].radius = rawEnv.robots[i].radius;
-        env.robots[i].height = rawEnv.robots[i].height;
-        env.robots[i].orientation = rawEnv.robots[i].orientation;
-        env.robots[i].kickerDistance = rawEnv.robots[i].kickerDistance;
-        env.robots[i].color = rawEnv.robots[i].color;
-        env.robots[i].valid = rawEnv.robots[i].valid;
-    }
-    env.field = rawEnv.field;
     env.received = rawEnv.received;
+    for(int i=0;i<messaging::MAX_BALLS;i++) {
+        env.balls[i].positionX.store(rawEnv.balls[i].positionX);
+        env.balls[i].positionY.store(rawEnv.balls[i].positionY);
+        env.balls[i].radius.store(rawEnv.balls[i].radius);
+        env.balls[i].z.store(rawEnv.balls[i].z);
+        env.balls[i].valid.store(rawEnv.balls[i].valid);
+    }
+    for (int i = 0; i < messaging::MAX_ROBOTS; i++) {
+        env.robots[i].positionX.store(rawEnv.robots[i].positionX);
+        env.robots[i].positionY.store(rawEnv.robots[i].positionY);
+        env.robots[i].id.store(rawEnv.robots[i].id);
+        env.robots[i].radius.store(rawEnv.robots[i].radius);
+        env.robots[i].height.store(rawEnv.robots[i].height);
+        env.robots[i].orientation.store(rawEnv.robots[i].orientation);
+        env.robots[i].kickerDistance.store(rawEnv.robots[i].kickerDistance);
+        env.robots[i].color.store(rawEnv.robots[i].color);
+        env.robots[i].valid.store(rawEnv.robots[i].valid);
+    }
+    env.field.store(rawEnv.field);
     return env;
 }
 } // vision

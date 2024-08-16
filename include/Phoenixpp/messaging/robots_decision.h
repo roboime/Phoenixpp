@@ -9,18 +9,11 @@
 
 namespace phoenixpp {
 namespace messaging {
-struct RobotsDecision {
-
-};
-class RobotsDecisionWrapper : public Message{
-public:
+struct RobotsDecision : Message{
     void forwardTo(RobotsDecisionListener *listener) override;
-    RobotsDecision getRobotsDecision() const {return robotsDecision;}
-private:
-    RobotsDecision robotsDecision;
+    void store(const RobotsDecision& other){}
 };
-using RobotsDecisionWrapperPtr = std::shared_ptr<RobotsDecisionWrapper>;
-using RobotsDecisionPtr = std::shared_ptr<boost::atomic<RobotsDecision>>;
+using RobotsDecisionPtr = std::shared_ptr<RobotsDecision>;
 } // messaging
 } // phoenixpp
 

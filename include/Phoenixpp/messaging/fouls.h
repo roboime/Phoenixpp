@@ -10,17 +10,11 @@
 namespace phoenixpp {
 namespace messaging {
 
-struct Fouls {
-};
-class FoulsWrapper : public Message{
-public:
+struct Fouls : Message{
     void forwardTo(FoulsListener* listener) override;
-    Fouls getFouls() const {return fouls;}
-private:
-    Fouls fouls;
+    void store(const Fouls& other){}
 };
-using FoulsWrapperPtr = std::shared_ptr<FoulsWrapper>;
-using FoulsPtr = std::shared_ptr<boost::atomic<Fouls>>;
+using FoulsPtr = std::shared_ptr<Fouls>;
 
 } // messaging
 } // phoenixpp

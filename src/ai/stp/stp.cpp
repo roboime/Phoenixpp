@@ -10,7 +10,7 @@ namespace ai {
 
 STP::STP(const string &type) : Strategy(type) {}
 void STP::execute() {
-    messaging::Environment env = environment->load();
+    // messaging::Environment env = environment->load();
 }
 
 } // ai

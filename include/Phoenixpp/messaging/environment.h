@@ -9,10 +9,11 @@
 #include <boost/atomic.hpp>
 #include <complex>
 #include <array>
+#include <atomic>
 
 namespace phoenixpp {
 namespace messaging {
-
+using std::atomic;
 constexpr int MAX_ROBOTS = 32;
 constexpr int MAX_BALLS = 10;
 constexpr double BALL_RADIUS = 21.5;
@@ -22,7 +23,8 @@ enum class Color {BLUE, YELLOW};
 
 struct RawObject{
     bool valid;
-    std::complex<double> position;
+    double positionX;
+    double positionY;
     double radius;
     double confidence;
 };
@@ -32,7 +34,7 @@ struct RawBall : RawObject{
 };
 
 struct RawRobot : RawObject{
-    int id;
+    unsigned int id;
     double orientation;
     double height;
     double kickerDistance; // distance between center of the robot to the kicker
@@ -40,22 +42,39 @@ struct RawRobot : RawObject{
 };
 
 struct Field {
-    int field_length; // x axis
-    int field_width; // y axis
-    int goal_depth; // x axis
-    int goal_width; // y axis
-    int boundary_width;
-    int penalty_area_depth; // x axis
-    int penalty_area_width; // y axis
-    double penaltyDistance;
-    std::complex<double> blueGoalPosition; // [x,y]
-    std::complex<double> yellowGoalPosition; // [x,y]
+    atomic<int> field_length; // x axis
+    atomic<int> field_width; // y axis
+    atomic<int> goal_depth; // x axis
+    atomic<int> goal_width; // y axis
+    atomic<int> boundary_width;
+    atomic<int> penalty_area_depth; // x axis
+    atomic<int> penalty_area_width; // y axis
+    atomic<double> penaltyDistance;
+    atomic<double> blueGoalPositionX; // [x,y]
+    atomic<double> blueGoalPositionY; // [x,y]
+    atomic<double> yellowGoalPositionX;
+    atomic<double> yellowGoalPositionY;
+
+    void store(const Field& other) {
+        field_length.store(other.field_length.load());
+        field_width.store(other.field_width.load());
+        goal_depth.store(other.goal_depth.load());
+        goal_width.store(other.goal_width.load());
+        boundary_width.store(other.boundary_width.load());
+        penalty_area_depth.store(other.penalty_area_depth.load());
+        penalty_area_width.store(other.penalty_area_width.load());
+        penaltyDistance.store(other.penaltyDistance.load());
+        blueGoalPositionX.store(other.blueGoalPositionX.load());
+        blueGoalPositionY.store(other.blueGoalPositionY.load());
+        yellowGoalPositionX.store(other.yellowGoalPositionX.load());
+        yellowGoalPositionY.store(other.yellowGoalPositionY.load());
+    }
 };
 
 struct RawEnvironment{
     bool received;
-    std::array<RawBall, MAX_BALLS> balls;
-    std::array<RawRobot, MAX_ROBOTS> robots;
+    RawBall balls[MAX_BALLS];
+    RawRobot robots[MAX_ROBOTS];
     Field field;
     void insertBall(RawBall ball){
         for(int i = 0; i < MAX_BALLS; i++){
@@ -84,44 +103,94 @@ struct RawEnvironment{
 };
 
 struct Object{
-    bool valid;
-    double radius;
-    double confidence;
-    std::complex<double> position;
-    std::complex<double> velocity;
-    std::complex<double> acceleration;
+    Object() :
+        valid(false),
+        radius(0),
+        confidence(0),
+        positionX(0),
+        positionY(0),
+        velocityX(0),
+        velocityY(0),
+        accelerationX(0),
+        accelerationY(0) {};
+    atomic<bool> valid;
+    atomic<double> radius;
+    atomic<double> confidence;
+    atomic<double> positionX;
+    atomic<double> positionY;
+    atomic<double> velocityX;
+    atomic<double> velocityY;
+    atomic<double> accelerationX;
+    atomic<double> accelerationY;
+    void store(const Object& other) {
+        valid.store(other.valid.load());
+        radius.store(other.radius.load());
+        confidence.store(other.confidence.load());
+        positionX.store(other.positionX.load());
+        positionY.store(other.positionY.load());
+        velocityX.store(other.velocityX.load());
+        velocityY.store(other.velocityY.load());
+        accelerationX.store(other.accelerationX.load());
+        accelerationY.store(other.accelerationY.load());
+    }
 };
 
 struct Ball : Object{
-    double z;
+    Ball() : z(0) {};
+    atomic<double> z;
+    void store(const Ball& other) {
+        Object::store(other);
+        z = other.z.load();
+    }
 };
 
 struct Robot : Object{
-    int id;
-    double orientation;
-    double height;
-    double kickerDistance; // distance between center of the robot to the kicker
-    Color color;
+    Robot() :
+        id(99),
+        orientation(0),
+        height(0),
+        kickerDistance(0),
+        color(Color::BLUE) {};
+    atomic<unsigned int> id;
+    atomic<double> orientation;
+    atomic<double> height;
+    atomic<double> kickerDistance;
+    atomic<Color> color;
+    void store(const Robot& other) {
+        Object::store(other);
+        id.store(other.id.load());
+        orientation.store(other.orientation.load());
+        height.store(other.height.load());
+        kickerDistance.store(other.kickerDistance.load());
+        color.store(other.color.load());
+    }
 };
 
-struct Environment{
-    bool received;
-    std::array<Ball, MAX_BALLS> balls;
-    std::array<Robot, MAX_ROBOTS> robots;
+struct Environment: Message{
+    Environment() : received(false) {};
+    Environment(const Environment& other) { store(other); };
+    Environment(Environment&& other) noexcept { store(other); }
+    Environment& operator=(const Environment& other) {
+        if(this != &other) store(other);
+        return *this;
+    };
+    atomic<bool> received;
+    Ball balls[MAX_BALLS];
+    Robot robots[MAX_ROBOTS];
     Field field;
-};
-class EnvironmentWrapper : public Message {
-public:
-    explicit EnvironmentWrapper(const Environment env) : environment(env) {};
-    ~EnvironmentWrapper() override = default;
+    void store(const Environment& other) {
+        received.store(other.received.load());
+        field.store(other.field);
+        for(int i=0;i<MAX_ROBOTS;i++) {
+            robots[i].store(other.robots[i]);
+        }
+        for(int i=0;i<MAX_BALLS;i++) {
+            balls[i].store(other.balls[i]);
+        }
+    }
     void forwardTo(EnvironmentListener* listener) override;
-    [[nodiscard]] Environment getEnvironment() const {return environment;}
-private:
-    Environment environment;
 };
-using EnvironmentWrapperPtr = std::shared_ptr<EnvironmentWrapper>;
-using EnvironmentPtr = std::shared_ptr<boost::atomic<Environment>>;
-
+using EnvironmentPtr = std::shared_ptr<Environment>;
 } // messaging
 } // phoenixpp
 

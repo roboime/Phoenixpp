@@ -13,7 +13,7 @@ namespace ai {
 
 Strategy::Strategy(const std::string &type) : Agent(type){}
 void Strategy::execute() {
-    messaging::Environment env = environment->load();
+    // messaging::Environment env = environment->load();
 }
 messaging::ListenerPtr Strategy::createListener(const std::string &key) {
     if(key == "vision") {

@@ -40,9 +40,6 @@ set(PROTO_FILES
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES} PROTOC_OUT_DIR ${GENERATED_PROTO_DIR})
 add_library(ssl_proto STATIC ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(ssl_proto PUBLIC protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
-############## Adding Boost Library #############
-find_package(Boost 1.85 REQUIRED COMPONENTS atomic)
-include_directories(${Boost_INCLUDE_DIRS})
 ############## Adding QT LIBRARY #############
 set(Qt6_DIR "C:/Qt/6.7.0/mingw_64/lib/cmake/Qt6")
 find_package(Qt6 COMPONENTS

@@ -10,14 +10,14 @@ namespace phoenixpp {
 namespace messaging {
 
 MessageCollection::MessageCollection() :
-    environment(std::make_shared<boost::atomic<Environment>>()),
-    fouls(std::make_shared<boost::atomic<Fouls>>()),
-    robotsFeedback(std::make_shared<boost::atomic<RobotsFeedback>>()),
-    blueDecision(std::make_shared<boost::atomic<RobotsDecision>>()),
-    yellowDecision(std::make_shared<boost::atomic<RobotsDecision>>()),
-    robotsPath(std::make_shared<boost::atomic<RobotsPath>>()),
-    robotsCommands(std::make_shared<boost::atomic<RobotsCommands>>()),
-    robotsOutput(std::make_shared<boost::atomic<RobotsOutput>>()){}
+    environment(std::make_shared<Environment>()),
+    fouls(std::make_shared<Fouls>()),
+    robotsFeedback(std::make_shared<RobotsFeedback>()),
+    blueDecision(std::make_shared<RobotsDecision>()),
+    yellowDecision(std::make_shared<RobotsDecision>()),
+    robotsPath(std::make_shared<RobotsPath>()),
+    robotsCommands(std::make_shared<RobotsCommands>()),
+    robotsOutput(std::make_shared<RobotsOutput>()){}
 
 ListenerPtr MessageCollection::createListener(const std::string &key) {
     if(key == "vision") {

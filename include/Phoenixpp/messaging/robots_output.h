@@ -9,17 +9,11 @@
 
 namespace phoenixpp {
 namespace messaging {
-struct RobotsOutput {
-};
-class RobotsOutputWrapper : public Message{
-public:
+struct RobotsOutput : Message{
     void forwardTo(RobotsOutputListener *listener) override;
-    RobotsOutput getRobotsOutput() const {return robotsOutput;}
-private:
-    RobotsOutput robotsOutput;
+    void store(const RobotsOutput& other){}
 };
-using RobotsOutputWrapperPtr = std::shared_ptr<RobotsOutputWrapper>;
-using RobotsOutputPtr = std::shared_ptr<boost::atomic<RobotsOutput>>;
+using RobotsOutputPtr = std::shared_ptr<RobotsOutput>;
 } // messaging
 } // phoenixpp
 

@@ -41,7 +41,7 @@ public slots:
 private:
     void retryConnection();
     UdpData data;
-    boost::atomic<bool> received;
+    std::atomic<bool> received;
     char * buffer;
     QUdpSocket *udpSocket;
     QThread *receiveThread;
