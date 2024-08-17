@@ -15,9 +15,8 @@ namespace phoenixpp {
 namespace core {
 using std::string;
 
-const string AgentController::configFile = "main_settings.json";
-
-AgentController::AgentController() : stopSign(false) {
+AgentController::AgentController(const string& configFile) :
+    stopSign(false), configFile(configFile) {
     initializeAgents();
     initializeThreads();
 }

@@ -6,9 +6,6 @@
 #define ENVIRONMENT_H
 
 #include "message.h"
-#include <boost/atomic.hpp>
-#include <complex>
-#include <array>
 #include <atomic>
 
 namespace phoenixpp {

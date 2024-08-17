@@ -34,18 +34,27 @@ public:
     explicit UdpHandler(UdpData data);
     [[nodiscard]] bool getReceived() const;
     ~UdpHandler() override;
+signals:
+    void startRetryTimer();
+    void stopRetryTimer();
+    void startTimeoutTimer();
+    void stopTimeoutTimer();
 public slots:
-    void start();
+    void initializeTimers();
     void processPendingDatagrams();
     void handleError(QAbstractSocket::SocketError socketError);
+    void onStartRetryTimer();
+    void onStopRetryTimer();
+    void onStartTimeoutTimer();
+    void onStopTimeoutTimer();
 private:
     void retryConnection();
     UdpData data;
     std::atomic<bool> received;
     char * buffer;
     QUdpSocket *udpSocket;
-    QThread *receiveThread;
-    QTimer *retryTimer, *receiveTimeoutTimer;
+    QThread *timersThread;
+    QTimer *retryTimer, *timeoutTimer;
 };
 
 } // io

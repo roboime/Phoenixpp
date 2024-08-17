@@ -8,11 +8,7 @@
 using namespace phoenixpp::core;
 
 TEST(ControllerTest, LoopAgentsTest) {
-    AgentController controller;
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    controller.setAgent("blue_ai", "blabla");
-    std::cout << "switching strategy" << std::endl;
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    AgentController controller("test_settings.json");
 }
 
 int main(int argc, char **argv) {

@@ -17,9 +17,10 @@
 namespace phoenixpp {
 namespace core {
 using std::unordered_map, std::atomic, std::string;
+const string MAIN_CONFIG_FILE = "main_settings.json";
 class AgentController{
 public:
-    AgentController();
+    explicit AgentController(const std::string& configFile = MAIN_CONFIG_FILE);
     ~AgentController();
     void setAgent(const string &key,const string &implementation);
     void subscribe(const string &agentKey, const messaging::ListenerPtr &);
@@ -36,7 +37,7 @@ private:
     std::vector<std::thread> threads;
     atomic<bool> stopSign;
     std::mutex agentsMutex;
-    static const string configFile;
+    const string configFile;
     messaging::MessageCollection messageCollection;
 };
 

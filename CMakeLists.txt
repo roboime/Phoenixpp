@@ -79,13 +79,16 @@ endfunction()
 ############# Source and Executable #############
 include_directories(include)
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/resources/qt)
-add_executable(Phoenixpp
-    apps/Phoenixpp.cpp
+set (QTFILES
     src/qt/gui.cpp
     src/io/udp_handler.cpp
     resources/qt/gui.ui
     include/Phoenixpp/qt/gui.h
     include/Phoenixpp/io/udp_handler.h
+)
+add_executable(Phoenixpp
+    apps/Phoenixpp.cpp
+    ${QTFILES}
 )
 copy_qt_dlls(Phoenixpp)
 #target_link_libraries(Phoenixpp PRIVATE ssl_proto)
