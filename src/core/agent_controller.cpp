@@ -70,7 +70,7 @@ void AgentController::loopAgent(const std::string &key) {
     auto end = std::chrono::high_resolution_clock::now();
     while(!stopSign.load()) {
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-        if(elapsed > 100) {
+        if(elapsed > 16) {
             lock.lock();
             agentMap[key]->execute();
             lock.unlock();

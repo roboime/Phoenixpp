@@ -16,15 +16,13 @@ Gui::Gui(core::AgentController &controller, QWidget *parent) :
     QMainWindow(parent), ui(new Ui::Gui), controller(controller) {
     ui->setupUi(this);
     this->showMaximized();
-    QTimer *timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &Gui::updateEnvironmentValue);
-    timer->start(100);
+    QTimer *fieldTimer = new QTimer(this);
+    connect(fieldTimer, &QTimer::timeout, this, &Gui::updateField);
+    fieldTimer->start(16);
 }
 
-void Gui::updateEnvironmentValue() {
-    // displayEnvironment(*controller.getMessageCollection().environment);
+void Gui::updateField() {
     ui->fieldWidget->updateField(controller.getMessageCollection().environment);
-
 }
 
 void Gui::displayEnvironment(const messaging::Environment& env) {

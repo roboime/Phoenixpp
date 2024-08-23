@@ -14,7 +14,7 @@ using std::atomic;
 constexpr int MAX_ROBOTS = 32;
 constexpr int MAX_BALLS = 10;
 constexpr double BALL_RADIUS = 21.5;
-constexpr double ROBOT_RADIUS = 90;
+constexpr double ROBOT_RADIUS = 85;
 constexpr double KICKER_DISTANCE = 73;
 enum class Color {BLUE, YELLOW};
 

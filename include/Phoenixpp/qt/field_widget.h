@@ -6,6 +6,7 @@
 #define FIELD_WIDGET_H
 
 #include <QWidget>
+#include <QResizeEvent>
 #include <Phoenixpp/messaging/environment.h>
 
 namespace phoenixpp::qt {
@@ -23,9 +24,15 @@ public:
 protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 private:
     messaging::EnvironmentPtr environment;
-    void updateAspectRatio();
+    void drawField(QPainter& painter);
+    void drawRobots(QPainter& painter);
+    void drawBalls(QPainter& painter);
+    void updateFPS();
+    double fps;
 //    Ui::FieldWidget *ui;
 };
 } // phoenixpp::qt

@@ -21,7 +21,7 @@ Q_OBJECT
 public:
     Gui(core::AgentController &controller, QWidget *parent = nullptr);
     ~Gui() override;
-    void updateEnvironmentValue();
+    void updateField();
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 private:
