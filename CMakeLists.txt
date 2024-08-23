@@ -41,7 +41,8 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES} PROTOC_OUT_DIR ${GENE
 add_library(ssl_proto STATIC ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(ssl_proto PUBLIC protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
 ############## Adding QT LIBRARY #############
-set(Qt6_DIR "C:/Qt/6.7.0/mingw_64/lib/cmake/Qt6")
+set(QT6_DIR "C:/Qt/6.7.0/mingw_64/lib/cmake/Qt6")
+set(CMAKE_PREFIX_PATH "C:/Qt/6.7.0/mingw_64" ${CMAKE_PREFIX_PATH})
 find_package(Qt6 COMPONENTS
         Core
         Gui
@@ -50,7 +51,7 @@ find_package(Qt6 COMPONENTS
         REQUIRED
 )
 function(copy_qt_dlls target)
-    if (WIN32)
+    if (WIN32) # AND NOT DEFINED CMAKE_TOOLCHAIN_FILE
         set(QT_DLLS
                 "Qt6Core.dll"
                 "Qt6Gui.dll"
@@ -81,9 +82,12 @@ include_directories(include)
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/resources/qt)
 set (QTFILES
     src/qt/gui.cpp
+    src/qt/field_widget.cpp
     src/io/udp_handler.cpp
     resources/qt/gui.ui
+#    resources/qt/field_widget.ui
     include/Phoenixpp/qt/gui.h
+    include/Phoenixpp/qt/field_widget.h
     include/Phoenixpp/io/udp_handler.h
 )
 add_executable(Phoenixpp

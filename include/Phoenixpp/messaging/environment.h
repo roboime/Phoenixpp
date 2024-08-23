@@ -39,6 +39,7 @@ struct RawRobot : RawObject{
 };
 
 struct Field {
+    atomic<bool> valid;
     atomic<int> field_length; // x axis
     atomic<int> field_width; // y axis
     atomic<int> goal_depth; // x axis
@@ -46,11 +47,8 @@ struct Field {
     atomic<int> boundary_width;
     atomic<int> penalty_area_depth; // x axis
     atomic<int> penalty_area_width; // y axis
+    atomic<double> centerRadius;
     atomic<double> penaltyDistance;
-    atomic<double> blueGoalPositionX; // [x,y]
-    atomic<double> blueGoalPositionY; // [x,y]
-    atomic<double> yellowGoalPositionX;
-    atomic<double> yellowGoalPositionY;
 
     void store(const Field& other) {
         field_length.store(other.field_length.load());
@@ -61,10 +59,8 @@ struct Field {
         penalty_area_depth.store(other.penalty_area_depth.load());
         penalty_area_width.store(other.penalty_area_width.load());
         penaltyDistance.store(other.penaltyDistance.load());
-        blueGoalPositionX.store(other.blueGoalPositionX.load());
-        blueGoalPositionY.store(other.blueGoalPositionY.load());
-        yellowGoalPositionX.store(other.yellowGoalPositionX.load());
-        yellowGoalPositionY.store(other.yellowGoalPositionY.load());
+        centerRadius.store(other.centerRadius.load());
+        valid.store(other.valid);
     }
 };
 

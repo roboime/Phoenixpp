@@ -8,6 +8,8 @@
 #include <QMainWindow>
 #include <Phoenixpp/core/agent_controller.h>
 
+#include "field_widget.h"
+
 namespace phoenixpp::qt {
 QT_BEGIN_NAMESPACE
 namespace Ui { class Gui; }
@@ -20,9 +22,11 @@ public:
     Gui(core::AgentController &controller, QWidget *parent = nullptr);
     ~Gui() override;
     void updateEnvironmentValue();
-
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 private:
     void displayEnvironment(const messaging::Environment& env);
+    void toggleFullScreen();
     core::AgentController &controller;
     Ui::Gui *ui;
 };

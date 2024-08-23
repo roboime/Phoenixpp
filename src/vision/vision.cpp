@@ -68,7 +68,13 @@ void Vision::processPacket(const char *bufferPtr, int size) {
         field.field_length = fieldSize.field_length();
         field.field_width = fieldSize.field_width();
         field.goal_depth = fieldSize.goal_depth();
-        field.goal_width = fieldSize.goal_depth();
+        field.goal_width = fieldSize.goal_width();
+        field.boundary_width = fieldSize.boundary_width();
+        field.penalty_area_depth = fieldSize.penalty_area_depth();
+        field.penalty_area_width = fieldSize.penalty_area_width();
+        field.penaltyDistance = 7000; // temporary
+        field.centerRadius = 500; // temporary
+        field.valid = true;
         rawEnv.field.store(field);
     }
 }

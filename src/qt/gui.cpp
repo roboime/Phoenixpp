@@ -8,19 +8,23 @@
 #include <atomic>
 #include "Phoenixpp/qt/gui.h"
 #include "ui_Gui.h"
+#include "Phoenixpp/qt/field_widget.h"
+#include <QKeyEvent>
 
 namespace phoenixpp::qt {
 Gui::Gui(core::AgentController &controller, QWidget *parent) :
     QMainWindow(parent), ui(new Ui::Gui), controller(controller) {
     ui->setupUi(this);
-
+    this->showMaximized();
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Gui::updateEnvironmentValue);
     timer->start(100);
 }
 
 void Gui::updateEnvironmentValue() {
-    displayEnvironment(*controller.getMessageCollection().environment);
+    // displayEnvironment(*controller.getMessageCollection().environment);
+    ui->fieldWidget->updateField(controller.getMessageCollection().environment);
+
 }
 
 void Gui::displayEnvironment(const messaging::Environment& env) {
@@ -57,10 +61,24 @@ void Gui::displayEnvironment(const messaging::Environment& env) {
             .arg(QString::number(robot.height, 'f', 2))
             .arg(QString::number(robot.kickerDistance, 'f', 2));
     }
-    ui->textBox->setText(text);
+    // ui->textBox->setText(text);
 }
 
+void Gui::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_F11) {
+        toggleFullScreen();
+    } else {
+        QMainWindow::keyPressEvent(event);
+    }
+}
 
+void Gui::toggleFullScreen() {
+    if (isFullScreen()) {
+        showNormal();
+    } else {
+        showFullScreen();
+    }
+}
 Gui::~Gui() {
     delete ui;
 }

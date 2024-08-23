@@ -73,9 +73,7 @@ void UdpHandler::processPendingDatagrams() {
 void UdpHandler::handleError(QAbstractSocket::SocketError socketError) {
     std::cerr << "Udp Receiving Error: " << socketError << std::endl;
     received.store(false);
-    if(udpSocket->state() == QAbstractSocket::ConnectedState) {
-        udpSocket->abort();
-    }
+    udpSocket->abort();
     emit startRetryTimer();
 }
 
@@ -98,8 +96,11 @@ bool UdpHandler::getReceived() const {
 }
 
 UdpHandler::~UdpHandler() {
-    if(timeoutTimer->isActive()) emit stopTimeoutTimer();
-    if(retryTimer->isActive()) emit stopRetryTimer();
+    // if(timeoutTimer->isActive()) emit stopTimeoutTimer();
+    // if(retryTimer->isActive()) emit stopRetryTimer();
+    QMetaObject::invokeMethod(retryTimer, "stop", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(timeoutTimer, "stop", Qt::QueuedConnection);
+
     timersThread->quit();
     timersThread->wait();
     if (udpSocket->state() == QAbstractSocket::ConnectedState) {
