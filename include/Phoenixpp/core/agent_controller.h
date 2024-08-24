@@ -22,7 +22,7 @@ class AgentController{
 public:
     explicit AgentController(const std::string& configFile = MAIN_CONFIG_FILE);
     ~AgentController();
-    void setAgent(const string &key,const string &implementation);
+    void setAgent(const string &key,const string &implementation, const int &fps);
     void subscribe(const string &agentKey, const messaging::ListenerPtr &);
     messaging::MessageCollection &getMessageCollection() {return messageCollection;}
 private:

@@ -14,7 +14,7 @@ namespace vision {
 constexpr int NUM_CAMERAS = 4;
 class SSLVision : public Vision{
 public:
-    SSLVision();
+    explicit SSLVision(const int &fps);
     ~SSLVision() override;
     void execute() override;
 private:

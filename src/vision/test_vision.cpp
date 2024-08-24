@@ -9,8 +9,9 @@
 namespace phoenixpp {
 namespace vision {
 
-void TestVision::execute() {
-}
+TestVision::TestVision(const int &fps) : Vision(fps) {}
+
+void TestVision::execute() {}
 
 } // vision
 } // phoenixpp

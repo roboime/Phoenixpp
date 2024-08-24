@@ -8,7 +8,7 @@
 namespace phoenixpp {
 namespace ai {
 
-STP::STP(const string &type) : Strategy(type) {}
+STP::STP(const string &type, const int &fps) : Strategy(type, fps) {}
 void STP::execute() {
     // messaging::Environment env = environment->load();
 }

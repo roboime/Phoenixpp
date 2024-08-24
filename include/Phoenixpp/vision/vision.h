@@ -14,7 +14,7 @@ namespace vision {
 
 class Vision : public core::Agent{
 public:
-    Vision();
+    explicit Vision(const int &fps);
     ~Vision() override;
     void execute() override;
 protected:

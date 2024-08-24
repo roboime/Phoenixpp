@@ -12,11 +12,12 @@ namespace phoenixpp {
 namespace core {
 class Agent {
 public:
-    explicit Agent(std::string type);
+    explicit Agent(std::string type, const int &fps);
     Agent(const Agent &agent);
     void subscribe(const messaging::ListenerPtr &listener);
     messaging::Publisher getPublisher() const;
     void setPublisher(const messaging::Publisher &pub);
+    [[nodiscard]] int getFPS() const { return fps; }
     const std::string &getType() const;
     virtual messaging::ListenerPtr createListener(const std::string &key);
     virtual void execute() {};
@@ -24,6 +25,7 @@ public:
 protected:
     messaging::Publisher publisher;
     std::string type;
+    int fps;
 };
 using AgentPtr = std::shared_ptr<Agent>;
 

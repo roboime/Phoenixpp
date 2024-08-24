@@ -37,9 +37,10 @@ void FieldWidget::drawRobots(QPainter& painter) {
     if (environment.get() == nullptr || !environment->received.load()) {
         return;
     }
-
-    double scaleX = static_cast<double>(width()) / environment->field.field_length.load();
-    double scaleY = static_cast<double>(height()) / environment->field.field_width.load();
+    int boundaryWidth = environment->field.boundary_width.load();
+    int fieldLength = environment->field.field_length.load(), fieldWidth = environment->field.field_width.load();
+    double scaleX = static_cast<double>(width()) / (fieldLength + 2 * boundaryWidth);
+    double scaleY = static_cast<double>(height()) / (fieldWidth + 2 * boundaryWidth);
 
     painter.setPen(QPen(Qt::black, 1));
     for (const auto& robot : environment->robots) {
@@ -50,7 +51,7 @@ void FieldWidget::drawRobots(QPainter& painter) {
         double kickerDistance = robot.kickerDistance.load() * scaleX;
         QColor robotColor = (robot.color.load() == messaging::Color::BLUE) ? Qt::blue : Qt::yellow;
         double theta = 2 * std::acos(kickerDistance / robotRadius);
-        double orientation = robot.orientation.load();
+        double orientation = -robot.orientation.load();
         double startAngle = orientation + theta / 2;
         double endAngle = orientation + 2 * M_PI - theta / 2;
         double startX = robotX + robotRadius * cos(startAngle);
@@ -81,8 +82,10 @@ void FieldWidget::drawBalls(QPainter& painter) {
     if (environment.get() == nullptr || !environment->received.load()) {
         return;
     }
-    double scaleX = static_cast<double>(width()) / environment->field.field_length.load();
-    double scaleY = static_cast<double>(height()) / environment->field.field_width.load();
+    int boundaryWidth = environment->field.boundary_width.load();
+    int fieldLength = environment->field.field_length.load(), fieldWidth = environment->field.field_width.load();
+    double scaleX = static_cast<double>(width()) / (fieldLength + 2 * boundaryWidth);
+    double scaleY = static_cast<double>(height()) / (fieldWidth + 2 * boundaryWidth);
     painter.setPen(QPen(Qt::black, 1));
     QColor orangeColor(255, 165, 0);
     painter.setBrush(orangeColor); // Set the color to orange for the balls

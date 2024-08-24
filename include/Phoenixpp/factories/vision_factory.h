@@ -13,7 +13,7 @@ namespace factories {
 class VisionFactory : public AgentFactory{
 public:
     ~VisionFactory() override = default;
-    core::AgentPtr createAgent(const std::string &implementation) override;
+    core::AgentPtr createAgent(const std::string &implementation, const int &fps) override;
 };
 
 } // vision

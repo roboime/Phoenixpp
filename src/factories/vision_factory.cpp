@@ -9,14 +9,14 @@
 namespace phoenixpp {
 namespace factories {
 
-std::shared_ptr<core::Agent> VisionFactory::createAgent(const std::string &implementation) {
+std::shared_ptr<core::Agent> VisionFactory::createAgent(const std::string &implementation, const int &fps) {
     if(implementation == "ssl"){
-        return std::make_shared<vision::SSLVision>();
+        return std::make_shared<vision::SSLVision>(fps);
     }
     if(implementation == "test"){
-        return std::make_shared<vision::TestVision>();
+        return std::make_shared<vision::TestVision>(fps);
     }
-    return std::make_shared<vision::Vision>();
+    return std::make_shared<vision::Vision>(fps);
 }
 
 } // vision

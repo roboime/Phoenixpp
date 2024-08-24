@@ -8,7 +8,7 @@
 namespace phoenixpp {
 namespace core {
 
-Agent::Agent(std::string type) : type(std::move(type)) {}
+Agent::Agent(std::string type, const int &fps) : type(std::move(type)), fps(fps) {}
 Agent::Agent(const Agent &agent) : type(agent.type) {}
 const std::string &Agent::getType() const { return type; }
 void Agent::subscribe(const messaging::ListenerPtr &listener) {

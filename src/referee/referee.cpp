@@ -8,7 +8,7 @@
 namespace phoenixpp {
 namespace referee {
 
-Referee::Referee() : Agent("referee") {}
+Referee::Referee(const int &fps) : Agent("referee", fps) {}
 
 void Referee::execute() {
     std::cout << "Executing Default Referee" << std::endl;

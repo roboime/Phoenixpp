@@ -18,7 +18,7 @@ Gui::Gui(core::AgentController &controller, QWidget *parent) :
     this->showMaximized();
     QTimer *fieldTimer = new QTimer(this);
     connect(fieldTimer, &QTimer::timeout, this, &Gui::updateField);
-    fieldTimer->start(16);
+    fieldTimer->start(7);
 }
 
 void Gui::updateField() {

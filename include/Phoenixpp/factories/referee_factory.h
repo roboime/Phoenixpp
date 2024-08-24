@@ -13,7 +13,7 @@ namespace factories {
 class RefereeFactory : public AgentFactory {
 public:
     ~RefereeFactory() override = default;
-    core::AgentPtr createAgent(const std::string &implementation) override;
+    core::AgentPtr createAgent(const std::string &implementation, const int &fps) override;
 };
 
 } // factories

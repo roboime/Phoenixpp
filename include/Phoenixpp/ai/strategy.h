@@ -15,7 +15,7 @@ using std::string;
 
 class Strategy : public core::Agent{
 public:
-    explicit Strategy(const string &type);
+    explicit Strategy(const string &type, const int &fps);
     ~Strategy() override;
     void execute() override;
     messaging::ListenerPtr createListener(const string &type) override;

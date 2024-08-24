@@ -16,9 +16,9 @@ class StrategyFactory final : public AgentFactory {
 public:
     explicit StrategyFactory(std::string type);
     ~StrategyFactory() override = default;
-    core::AgentPtr createAgent(const std::string &implementation) override;
+    core::AgentPtr createAgent(const std::string &implementation, const int &fps) override;
 private:
-    std::shared_ptr<ai::Strategy> _createAgent(const std::string &implementation);
+    std::shared_ptr<ai::Strategy> _createAgent(const std::string &implementation, const int &fps);
     std::string type;
     messaging::EnvironmentPtr environment;
     messaging::FoulsPtr fouls;

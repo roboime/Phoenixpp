@@ -12,7 +12,7 @@
 namespace phoenixpp {
 namespace vision {
 
-Vision::Vision() : Agent("vision"), rawEnv(messaging::RawEnvironment{}),
+Vision::Vision(const int &fps) : Agent("vision", fps), rawEnv(messaging::RawEnvironment{}),
     filter(std::make_shared<Filter>()){}
 Vision::~Vision() {
     std::cout << "Destroying Vision" << std::endl;
@@ -20,15 +20,18 @@ Vision::~Vision() {
 
 void Vision::execute() {
     messaging::Environment environment = filter->execute(rawEnv);
-    rawEnv.clear();
-    distributeEnvironment(environment);}
+    distributeEnvironment(environment);
+}
 
 void Vision::processPacket(const char *bufferPtr, int size) {
     SSL_WrapperPacket packet;
     packet.ParseFromArray(bufferPtr, size);
     if(packet.has_detection()){
         const SSL_DetectionFrame detection = packet.detection();
-        for(int i=0;i<detection.balls_size();i++) {
+        int balls_size = detection.balls_size(),
+            robots_blue_size = detection.robots_blue_size(),
+            robots_yellow_size = detection.robots_yellow_size();
+        for(int i=0;i<balls_size;i++) {
             messaging::RawBall ball;
             ball.positionX = detection.balls().Get(i).x();
             ball.positionY = detection.balls().Get(i).y();
@@ -36,7 +39,7 @@ void Vision::processPacket(const char *bufferPtr, int size) {
             ball.radius = messaging::BALL_RADIUS;
             rawEnv.insertBall(ball);
         }
-        for(int i=0;i<detection.robots_blue_size();i++) {
+        for(int i=0;i<robots_blue_size;i++) {
             messaging::RawRobot robot;
             robot.positionX = detection.robots_blue().Get(i).x();
             robot.positionY = detection.robots_blue().Get(i).y();
@@ -48,7 +51,7 @@ void Vision::processPacket(const char *bufferPtr, int size) {
             robot.color = messaging::Color::BLUE;
             rawEnv.insertRobot(robot);
         }
-        for(int i=0;i<detection.robots_yellow_size();i++) {
+        for(int i=0;i<robots_yellow_size;i++) {
             messaging::RawRobot robot;
             robot.positionX = detection.robots_yellow().Get(i).x();
             robot.positionY = detection.robots_yellow().Get(i).y();

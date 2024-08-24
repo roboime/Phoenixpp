@@ -3,7 +3,7 @@
     "vision" : {
       "implementation" : "ssl",
       "subscriptions" : [],
-      "fps" : 240
+      "fps" : 144
     },
     "referee" : {
       "implementation" : "ssl",

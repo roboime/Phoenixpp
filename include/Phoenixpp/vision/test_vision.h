@@ -11,7 +11,7 @@ namespace vision {
 
 class TestVision : public Vision {
 public:
-    TestVision() = default;
+    explicit TestVision(const int &fps);
     ~TestVision() override = default;
     void execute() override;
 };

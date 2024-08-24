@@ -10,7 +10,7 @@ namespace ai {
 
 class STP : public Strategy{
 public:
-    explicit STP(const string &type);
+    explicit STP(const string &type, const int &fps);
     ~STP() override = default;
     void execute() override;
 };

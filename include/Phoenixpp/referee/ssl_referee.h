@@ -11,7 +11,7 @@ namespace referee {
 
 class SSLReferee : public Referee {
 public:
-    SSLReferee() = default;
+    explicit SSLReferee(const int &fps);
     ~SSLReferee() override = default;
     void execute() override;
 };

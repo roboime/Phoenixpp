@@ -11,7 +11,7 @@ namespace phoenixpp {
 namespace vision {
 using std::cout, std::endl;
 
-SSLVision::SSLVision() {
+SSLVision::SSLVision(const int &fps) : Vision(fps) {
     std::string multicastAddress = "224.5.23.2";
     unsigned short port = 10020;
     int bufferSizeMax = 2048;
@@ -29,9 +29,16 @@ SSLVision::SSLVision() {
 
 void SSLVision::execute() {
     std::unique_lock lock(bufferQueue_mtx);
+    bool cleared = false;
     for(int i = 0; i < NUM_CAMERAS; i++) {
         if(bufferQueue.empty()){
             continue;
+        }
+        if(!cleared){
+            rawEnv.clearBalls();
+            rawEnv.clearRobots(messaging::Color::BLUE);
+            rawEnv.clearRobots(messaging::Color::YELLOW);
+            cleared = true;
         }
         auto [buffer_ptr, size] = bufferQueue.front();
         bufferQueue.pop();

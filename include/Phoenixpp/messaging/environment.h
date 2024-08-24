@@ -85,10 +85,12 @@ struct RawEnvironment{
             return;
         }
     }
-    void clear() {
+    void clearRobots(Color color) {
         for(auto &robot : robots) {
-            robot.valid = false;
+            if(robot.color == color) robot.valid = false;
         }
+    }
+    void clearBalls() {
         for(auto &ball : balls) {
             ball.valid = false;
         }

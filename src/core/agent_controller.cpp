@@ -35,9 +35,9 @@ void AgentController::subscribeAgentPair(const std::string &publisherAgent,
     }
 }
 
-void AgentController::setAgent(const std::string &key, const std::string &implementation) {
+void AgentController::setAgent(const std::string &key, const std::string &implementation, const int &fps) {
     const std::shared_ptr<factories::AgentFactory> factory = agentFactoryRegistry.getFactory(key);
-    AgentPtr agent = factory->createAgent(implementation);
+    AgentPtr agent = factory->createAgent(implementation, fps);
     string type = agent->getType();
     std::unique_lock lock(agentsMutex);
     auto agentIt = agentMap.find(type);
@@ -68,9 +68,12 @@ void AgentController::loopAgent(const std::string &key) {
     std::unique_lock lock(agentsMutex, std::defer_lock);
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
+    lock.lock();
+    int fps =  agentMap[key]->getFPS();
+    lock.unlock();
     while(!stopSign.load()) {
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-        if(elapsed > 16) {
+        if(elapsed > 1000/fps) {
             lock.lock();
             agentMap[key]->execute();
             lock.unlock();
@@ -100,7 +103,7 @@ void AgentController::initializeAgents() {
         if(element.value().find("implementation") == element.value().end()) {
             throw std::runtime_error("Missing 'agents.implementation' key in main_settings.json");
         }
-        setAgent(element.key(), element.value().at("implementation"));
+        setAgent(element.key(), element.value().at("implementation"), element.value().at("fps"));
     }
     for (auto& element : jObject.at("agents").items()) {
         if(element.value().find("subscriptions") == element.value().end()) {

@@ -11,7 +11,7 @@ namespace referee {
 
 class Referee : public core::Agent {
 public:
-    Referee();
+    Referee(const int &fps);
     ~Referee() override = default;
     void execute() override;
 };

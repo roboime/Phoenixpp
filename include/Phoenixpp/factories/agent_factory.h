@@ -12,7 +12,7 @@ namespace factories {
 class AgentFactory {
 public:
     virtual ~AgentFactory() = default;
-    virtual core::AgentPtr createAgent(const std::string &implementation) = 0;
+    virtual core::AgentPtr createAgent(const std::string &implementation, const int &fps) = 0;
 };
 
 } // core

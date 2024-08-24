@@ -9,11 +9,11 @@
 namespace phoenixpp {
 namespace factories {
 
-core::AgentPtr RefereeFactory::createAgent(const std::string &implementation) {
+core::AgentPtr RefereeFactory::createAgent(const std::string &implementation, const int& fps) {
     if(implementation == "ssl"){
-        return std::make_shared<referee::SSLReferee>();
+        return std::make_shared<referee::SSLReferee>(fps);
     }
-    return std::make_shared<referee::Referee>();
+    return std::make_shared<referee::Referee>(fps);
 }
 
 } // factories
