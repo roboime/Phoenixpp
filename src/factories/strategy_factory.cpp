@@ -7,10 +7,9 @@
 #include <memory>
 #include <utility>
 #include <Phoenixpp/ai/strategy.h>
-#include <Phoenixpp/ai/stp/stp.h>
+#include <Phoenixpp/ai/stp/PlaySelection.h>
 
-namespace phoenixpp {
-namespace factories {
+namespace phoenixpp::factories {
 
 StrategyFactory::StrategyFactory(std::string type) : type(std::move(type)),
     environment(std::make_shared<messaging::Environment>()),
@@ -19,7 +18,7 @@ StrategyFactory::StrategyFactory(std::string type) : type(std::move(type)),
 
 std::shared_ptr<ai::Strategy> StrategyFactory::_createAgent(const std::string &implementation, const int &fps) {
     if(implementation == "stp"){
-        return std::make_shared<ai::STP>(type, fps);
+        return std::make_shared<ai::PlaySelection>(type, fps);
     }
     return std::make_shared<ai::Strategy>(type, fps);
 }
@@ -32,4 +31,4 @@ core::AgentPtr StrategyFactory::createAgent(const std::string &implementation, c
 }
 
 } // factories
-} // phoenixpp
+// phoenixpp

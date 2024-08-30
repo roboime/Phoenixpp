@@ -35,7 +35,7 @@ add_library(referee
 add_library(ai
         STATIC
         ai/strategy.cpp
-        ai/stp/stp.cpp
+        ai/stp/PlaySelection.cpp
 )
 add_library(io
     STATIC

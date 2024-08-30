@@ -1,0 +1,64 @@
+@startuml teste
+class Robot {
+
+}
+
+class Skill {
+    StateMachine stateMachine
+}
+
+class Tactic {
+    vector<<Skill>> skills
+}
+
+class Role {
+    vector<<Tactic>> tactics
+}
+
+class Play {
+    vector<<Role>> roles
+}
+
+class PlayLibrary {
+    vector<<Play>> allPlays
+    void cadastrarPlay(Play play)
+}
+
+class RoleAssigner {
+    Play actualPlay
+    void assignRoles(Play play)
+}
+
+class PlaySelection {
+    vector<<Play>> allPlays
+    Play actualPlay
+    bool shouldUpdatePlay(FieldState fieldState)
+    vector<<Play>> selectPlays(FieldState fieldState)
+}
+
+class FieldState {
+    vector<<Ball>> balls
+    vector<<Robot>> blueRobots
+    vector<<Robot>> yellowRobots
+    FieldGeometry fieldGeometry
+}
+
+interface ITeam
+
+class OurTeam implements ITeam {
+    enum color
+    vector<<Robot>> robot
+}
+
+PlayLibrary "1" --o "*" Play
+PlaySelection -- FieldState
+PlaySelection -- RoleAssigner
+PlaySelection -- PlayLibrary
+RoleAssigner -- OurTeam
+Skill "1..*" o-- "1" Tactic
+Tactic "1..*" o-- "1" Role
+Role "1..*" o-- "1" Play
+
+note "Each Play, Role, Tactic and Skill implements\nIPlay, IRole, ITactic and ISkill" as N1
+note top of PlaySelection: Queremos selecionar ao mesmo\n tempo uma ou mais plays?
+@enduml

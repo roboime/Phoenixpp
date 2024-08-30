@@ -41,8 +41,11 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES} PROTOC_OUT_DIR ${GENE
 add_library(ssl_proto STATIC ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(ssl_proto PUBLIC protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
 ############## Adding QT LIBRARY #############
-set(QT6_DIR "C:/Qt/6.7.0/mingw_64/lib/cmake/Qt6")
-set(CMAKE_PREFIX_PATH "C:/Qt/6.7.0/mingw_64" ${CMAKE_PREFIX_PATH})
+
+set(QT6_DIR "C:/Qt/6.7.2/mingw_64/lib/cmake/Qt6")
+set(CMAKE_PREFIX_PATH "C:/Qt/6.7.2/mingw_64" ${CMAKE_PREFIX_PATH})
+# set(QT6_DIR "C:/Users/lucas/.vcpkg-clion/vcpkg3/installed/x64-windows/share/Qt6")
+# set(CMAKE_PREFIX_PATH "C:/Users/lucas/.vcpkg-clion/vcpkg3/installed/x64-windows" ${CMAKE_PREFIX_PATH})
 find_package(Qt6 COMPONENTS
         Core
         Gui

@@ -8,8 +8,8 @@
 #include <memory>
 #include <Phoenixpp/factories/listener_factory.h>
 
-namespace phoenixpp {
-namespace ai {
+
+namespace phoenixpp::ai {
 
 Strategy::Strategy(const std::string &type, const int &fpsa) : Agent(type, fps){}
 void Strategy::execute() {
@@ -32,4 +32,4 @@ Strategy::~Strategy() {
 }
 
 } // ai
-} // phoenix
+// phoenix
