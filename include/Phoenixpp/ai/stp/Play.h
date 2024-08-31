@@ -6,14 +6,14 @@
 #define PLAY_H
 
 #include <utility>
-
+#include <vector>
 #include "Phoenixpp/ai/stp/Role.h"
 
 
 namespace phoenixpp::ai {
 
     class Play {
-        Role roles[6];
+        std::vector<Role> roles;
 
     public:
         std::string name;

@@ -6,11 +6,12 @@
 #define ROLE_H
 
 #include "Phoenixpp/ai/stp/Tactic.h"
+#include <vector>
 
 namespace phoenixpp::ai {
 
     class Role {
-        Tactic tactics[10]; // TODO: alterar esse size para ficar dinamico
+        std::vector<Tactic> tactics;
 
     };
 }

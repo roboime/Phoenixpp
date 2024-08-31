@@ -6,6 +6,7 @@
 #define PLAYSELECTION_H
 
 #include "Phoenixpp/ai/stp/Play.h"
+#include <map>
 #include "Phoenixpp/ai/strategy.h"
 
 namespace phoenixpp::ai {
@@ -17,6 +18,8 @@ public:
     ~PlaySelection() override = default;
     void execute() override;
     static bool shouldUpdatePlay();
+    std::map<std::string, Play> playDictionary;
+    void registerPlay(const Play& newPlay);
 };
 
 } // ai

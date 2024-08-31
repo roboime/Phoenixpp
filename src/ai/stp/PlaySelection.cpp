@@ -11,18 +11,23 @@
 
 namespace phoenixpp::ai {
 
-    bool temporaryFunctionToChangePlay() {
-        bool flag = false;
+    PlaySelection::PlaySelection(const string &type, const int &fps) : Strategy(type, fps) {
+    }
 
+    int getSecondsOfTheActualHour() { // TODO: função temporaria para mudar play de 5 em 5 segundos
         auto now = std::chrono::system_clock::now();
         std::time_t now_c = std::chrono::system_clock::to_time_t(now);
         std::tm* parts = std::localtime(&now_c);
 
         // Extract the current second of the minute
-        int current_second = parts->tm_sec;
+        return parts->tm_sec;
 
-        // Set the flag to true every 5 seconds
-        if (current_second % 5 == 0) {
+    }
+
+    bool temporaryFunctionToChangePlay() { // TODO: função temporaria para mudar play de 5 em 5 segundos
+        bool flag = false;
+
+        if (getSecondsOfTheActualHour() % 5 == 0) {
             flag = true;
         } else {
             flag = false;
@@ -30,22 +35,16 @@ namespace phoenixpp::ai {
 
         return flag;
     }
-
-    PlaySelection::PlaySelection(const string &type, const int &fps) : Strategy(type, fps) {
-    }
     void PlaySelection::execute() {
-        // messaging::Environment env = environment->load();
+
         if (shouldUpdatePlay()) {
-            auto now = std::chrono::system_clock::now();
-            std::time_t now_c = std::chrono::system_clock::to_time_t(now);
-            std::tm* parts = std::localtime(&now_c);
+            for(const auto& robot : environment->robots) {
+                std::cout << "ID: " << robot.id << " " ;
+            }
+            std::cout << std::endl;
 
-            // Extract the current second of the minute
-            int current_second = parts->tm_sec;
-
-            std::string playName = std::format("{} {}","New play number ", std::to_string(current_second));
+            std::string playName = std::format("{} {}","New play number ", std::to_string(getSecondsOfTheActualHour()));
             if(playName != actualPlay.name) {
-
                 actualPlay = Play(playName);
                 std::cout << "New play is: " << actualPlay.name << std::endl;
             }
@@ -56,6 +55,9 @@ namespace phoenixpp::ai {
         return temporaryFunctionToChangePlay();
     }
 
+    void PlaySelection::registerPlay(const Play& newPlay) {
+        playDictionary.try_emplace(newPlay.name, newPlay);
+    }
 
 } // ai
 // phoenixpp
