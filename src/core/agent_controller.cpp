@@ -73,6 +73,11 @@ void AgentController::loopAgent(const std::string &key) {
     lock.unlock();
     while(!stopSign.load()) {
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+        if(fps == 0) {
+            fps = 144; //TODO: solução temporaria ate achar o erro de pq o FPS as vezes fica como lixo
+        }
+
         if(elapsed > 1000/fps) {
             lock.lock();
             agentMap[key]->execute();
