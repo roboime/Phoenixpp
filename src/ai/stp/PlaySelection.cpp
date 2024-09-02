@@ -38,7 +38,7 @@ namespace phoenixpp::ai {
     void PlaySelection::execute() {
 
         if (shouldUpdatePlay()) {
-            for(const auto& robot : environment->robots) {
+            for(const auto& robot : environment->blueRobots) {
                 std::cout << "ID: " << robot.id << " " ;
             }
             std::cout << std::endl;

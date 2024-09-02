@@ -67,7 +67,8 @@ struct Field {
 struct RawEnvironment{
     bool received;
     RawBall balls[MAX_BALLS];
-    RawRobot robots[MAX_ROBOTS];
+    RawRobot blueRobots[MAX_ROBOTS];
+    RawRobot yellowRobots[MAX_ROBOTS];
     Field field;
     void insertBall(RawBall ball){
         for(int i = 0; i < MAX_BALLS; i++){
@@ -78,16 +79,31 @@ struct RawEnvironment{
         }
     }
     void insertRobot(RawRobot robot) {
-        for(int i = 0; i < MAX_ROBOTS; i++){
-            if(robots[i].valid) continue;
-            robot.valid = true;
-            robots[i] = robot;
-            return;
+        if(robot.color == Color::YELLOW) {
+            for(int i = 0; i < MAX_ROBOTS; i++){
+                if(yellowRobots[i].valid) continue;
+                robot.valid = true;
+                yellowRobots[i] = robot;
+                return;
+            }
+        } else {
+            for(int i = 0; i < MAX_ROBOTS; i++){
+                if(blueRobots[i].valid) continue;
+                robot.valid = true;
+                blueRobots[i] = robot;
+                return;
+            }
         }
     }
-    void clearRobots(Color color) {
-        for(auto &robot : robots) {
-            if(robot.color == color) robot.valid = false;
+    void clearRobots(const Color color) {
+        if(color == Color::YELLOW) {
+            for(auto &robot : yellowRobots) {
+                robot.valid = false;
+            }
+        } else {
+            for(auto &robot : blueRobots) {
+                robot.valid = false;
+            }
         }
     }
     void clearBalls() {
@@ -171,13 +187,15 @@ struct Environment: Message{
     };
     atomic<bool> received;
     Ball balls[MAX_BALLS];
-    Robot robots[MAX_ROBOTS];
+    Robot blueRobots[MAX_ROBOTS];
+    Robot yellowRobots[MAX_ROBOTS];
     Field field;
     void store(const Environment& other) {
         received.store(other.received.load());
         field.store(other.field);
         for(int i=0;i<MAX_ROBOTS;i++) {
-            robots[i].store(other.robots[i]);
+            blueRobots[i].store(other.blueRobots[i]);
+            yellowRobots[i].store(other.yellowRobots[i]);
         }
         for(int i=0;i<MAX_BALLS;i++) {
             balls[i].store(other.balls[i]);

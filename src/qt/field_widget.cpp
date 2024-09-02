@@ -43,38 +43,40 @@ void FieldWidget::drawRobots(QPainter& painter) {
     double scaleY = static_cast<double>(height()) / (fieldWidth + 2 * boundaryWidth);
 
     painter.setPen(QPen(Qt::black, 1));
-    for (const auto& robot : environment->robots) {
-        if (!robot.valid.load()) continue;
-        double robotX = width() / 2 + robot.positionX.load() * scaleX;
-        double robotY = height() / 2 - robot.positionY.load() * scaleY;
-        double robotRadius = robot.radius.load() * scaleX;
-        double kickerDistance = robot.kickerDistance.load() * scaleX;
-        QColor robotColor = (robot.color.load() == messaging::Color::BLUE) ? Qt::blue : Qt::yellow;
-        double theta = 2 * std::acos(kickerDistance / robotRadius);
-        double orientation = -robot.orientation.load();
-        double startAngle = orientation + theta / 2;
-        double endAngle = orientation + 2 * M_PI - theta / 2;
-        double startX = robotX + robotRadius * cos(startAngle);
-        double startY = robotY + robotRadius * sin(startAngle);
-        double endX = robotX + robotRadius * cos(endAngle);
-        double endY = robotY + robotRadius * sin(endAngle);
-        QRectF robotRect(robotX - robotRadius, robotY - robotRadius, 2 * robotRadius, 2 * robotRadius);
-        QPainterPath robotPath;
-        robotPath.moveTo(startX, startY);
-        robotPath.arcTo(robotRect, -startAngle * 180.0 / M_PI, -(endAngle - startAngle) * 180.0 / M_PI);
-        robotPath.lineTo(endX, endY);
-        painter.setBrush(robotColor);
-        painter.setPen(Qt::NoPen);
-        painter.drawPath(robotPath);
-        painter.setPen(QPen(Qt::black, 1));
-        painter.drawPath(robotPath);
-        painter.drawLine(QPointF(startX, startY), QPointF(endX, endY));
-        QRectF textRect(robotX - robotRadius, robotY - robotRadius, 2 * robotRadius, 2 * robotRadius);
-        QFont font = painter.font();
-        font.setPointSize(10);
-        font.setBold(true);
-        painter.setFont(font);
-        painter.drawText(textRect, Qt::AlignCenter, QString::number(robot.id.load()));
+    for (const auto& robotGroup : {std::ref(environment->blueRobots), std::ref(environment->yellowRobots)}) {
+        for (const auto& robot : robotGroup.get()) {
+            if (!robot.valid.load()) continue;
+            const double robotX = width() / 2 + robot.positionX.load() * scaleX;
+            const double robotY = height() / 2 - robot.positionY.load() * scaleY;
+            const double robotRadius = robot.radius.load() * scaleX;
+            const double kickerDistance = robot.kickerDistance.load() * scaleX;
+            QColor robotColor = (robot.color.load() == messaging::Color::BLUE) ? Qt::blue : Qt::yellow;
+            const double theta = 2 * std::acos(kickerDistance / robotRadius);
+            const double orientation = -robot.orientation.load();
+            const double startAngle = orientation + theta / 2;
+            const double endAngle = orientation + 2 * M_PI - theta / 2;
+            const double startX = robotX + robotRadius * cos(startAngle);
+            const double startY = robotY + robotRadius * sin(startAngle);
+            const double endX = robotX + robotRadius * cos(endAngle);
+            const double endY = robotY + robotRadius * sin(endAngle);
+            QRectF robotRect(robotX - robotRadius, robotY - robotRadius, 2 * robotRadius, 2 * robotRadius);
+            QPainterPath robotPath;
+            robotPath.moveTo(startX, startY);
+            robotPath.arcTo(robotRect, -startAngle * 180.0 / M_PI, -(endAngle - startAngle) * 180.0 / M_PI);
+            robotPath.lineTo(endX, endY);
+            painter.setBrush(robotColor);
+            painter.setPen(Qt::NoPen);
+            painter.drawPath(robotPath);
+            painter.setPen(QPen(Qt::black, 1));
+            painter.drawPath(robotPath);
+            painter.drawLine(QPointF(startX, startY), QPointF(endX, endY));
+            QRectF textRect(robotX - robotRadius, robotY - robotRadius, 2 * robotRadius, 2 * robotRadius);
+            QFont font = painter.font();
+            font.setPointSize(10);
+            font.setBold(true);
+            painter.setFont(font);
+            painter.drawText(textRect, Qt::AlignCenter, QString::number(robot.id.load()));
+        }
     }
 }
 
