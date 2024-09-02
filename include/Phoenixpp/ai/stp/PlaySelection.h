@@ -19,6 +19,7 @@ public:
     void execute() override;
     static bool shouldUpdatePlay();
     std::map<std::string, Play> playDictionary;
+    void fillDictionary();
     void registerPlay(const Play& newPlay);
 };
 

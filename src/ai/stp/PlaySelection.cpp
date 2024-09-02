@@ -13,7 +13,6 @@ namespace phoenixpp::ai {
 
     PlaySelection::PlaySelection(const string &type, const int &fps) : Strategy(type, fps) {
     }
-
     int getSecondsOfTheActualHour() { // TODO: função temporaria para mudar play de 5 em 5 segundos
         auto now = std::chrono::system_clock::now();
         std::time_t now_c = std::chrono::system_clock::to_time_t(now);
@@ -35,14 +34,16 @@ namespace phoenixpp::ai {
 
         return flag;
     }
+
+    void PlaySelection::fillDictionary() {
+        auto idlePlay = Play("IDLE");
+        playDictionary.try_emplace(idlePlay.name, idlePlay);
+    }
+
+
     void PlaySelection::execute() {
 
         if (shouldUpdatePlay()) {
-            for(const auto& robot : environment->blueRobots) {
-                std::cout << "ID: " << robot.id << " " ;
-            }
-            std::cout << std::endl;
-
             std::string playName = std::format("{} {}","New play number ", std::to_string(getSecondsOfTheActualHour()));
             if(playName != actualPlay.name) {
                 actualPlay = Play(playName);

@@ -6,47 +6,36 @@
 #define SKILLSTATEMACHINE_H
 
 #include <iostream>
+#include <map>
 
 namespace phoenixpp::ai {
     enum class State {
-        Idle,
-        Move,
+        IDLE,
+        RUNNING,
+        COMPLETED,
+        FAILED,
     };
 
     class SkillStateMachine {
     public:
-        SkillStateMachine() : currentState(State::Idle) {}
+        SkillStateMachine() : currentState(State::Idle) {};
 
-        void setState(State newState) {
+        State getCurrentState() const {
+            return currentState;
+        }
+
+    protected:
+        void setState(const State newState) {
             currentState = newState;
-            onEnterState(currentState);
         }
 
-        void onEnterState(State state) {
-            switch (state) {
-                case State::Idle:
-                    std::cout << "Entering Idle State.\n";
-                break;
-                case State::Move:
-                    std::cout << "Entering Running State.\n";
-                break;
-            }
-        }
-
-        void processEvent(const std::string& event) {
-            if (event == "move") {
-                if (currentState == State::Idle) {
-                    setState(State::Move);
-                }
-            } else if (event == "idle") {
-                setState(State::Idle);
-            } else {
-                std::cout << "Unknown event: " << event << std::endl;
-            }
+        void addTransition(const State fromState, const State toState) {
+            transitions[fromState] = toState;
         }
 
     private:
-        State currentState;
+        State currentState{};
+        std::map<State, State> transitions;
     };
 }
 
