@@ -6,6 +6,7 @@
 #define AGENT_CONTROLLER_H
 
 #include <condition_variable>
+#include <shared_mutex>
 #include <thread>
 #include <unordered_map>
 #include <vector>
@@ -36,7 +37,7 @@ private:
     unordered_map<string, double> fpsMap;
     std::vector<std::thread> threads;
     atomic<bool> stopSign;
-    std::mutex agentsMutex;
+    std::shared_mutex agentsMutex;
     const string configFile;
     messaging::MessageCollection messageCollection;
 };
