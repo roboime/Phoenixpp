@@ -10,9 +10,11 @@
 namespace phoenixpp {
 namespace io {
 
-UdpHandler::UdpHandler(UdpData data) : data(data), received(false),
+UdpHandler::UdpHandler(UdpData &data)
+    : data(data), received(false),
     buffer(new char[data.bufferSizeMax]), udpSocket(new QUdpSocket(this)),
-    timersThread(new QThread(this)) {
+    timersThread(new QThread(this))
+    {
     connect(
         udpSocket,
         &QUdpSocket::readyRead,
@@ -96,8 +98,8 @@ bool UdpHandler::getReceived() const {
 }
 
 UdpHandler::~UdpHandler() {
-    // if(timeoutTimer->isActive()) emit stopTimeoutTimer();
-    // if(retryTimer->isActive()) emit stopRetryTimer();
+    if(timeoutTimer->isActive()) emit stopTimeoutTimer();
+    if(retryTimer->isActive()) emit stopRetryTimer();
     QMetaObject::invokeMethod(retryTimer, "stop", Qt::QueuedConnection);
     QMetaObject::invokeMethod(timeoutTimer, "stop", Qt::QueuedConnection);
 

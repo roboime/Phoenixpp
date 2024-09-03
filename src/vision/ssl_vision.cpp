@@ -28,8 +28,8 @@ SSLVision::SSLVision(const int &fps) : Vision(fps) {
 }
 
 void SSLVision::execute() {
-    std::unique_lock lock(bufferQueue_mtx);
     bool cleared = false;
+    std::unique_lock lock(bufferQueue_mtx);
     for(int i = 0; i < NUM_CAMERAS; i++) {
         if(bufferQueue.empty()){
             continue;

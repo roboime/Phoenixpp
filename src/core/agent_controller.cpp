@@ -68,14 +68,16 @@ void AgentController::loopAgent(const std::string &key) {
     std::unique_lock lock(agentsMutex, std::defer_lock);
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
+    int fps = 60;
     lock.lock();
-    int fps =  agentMap[key]->getFPS();
+    if(agentMap.contains(key))
+        fps = agentMap[key]->getFPS();
     lock.unlock();
     while(!stopSign.load()) {
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         if(elapsed > 1000/fps) {
             lock.lock();
-            agentMap[key]->execute();
+            if(agentMap.contains(key)) agentMap[key]->execute();
             lock.unlock();
             start = std::chrono::high_resolution_clock::now();
         }
@@ -120,6 +122,7 @@ AgentController::~AgentController() {
     stopSign.store(true);
     std::unique_lock lock(agentsMutex);
     agentMap.clear();
+    std::cout << "Agent Map Cleared" << std::endl;
     lock.unlock();
     for(auto& thread : threads) {
         thread.join();
