@@ -28,9 +28,9 @@ void Vision::processPacket(const char *bufferPtr, int size) {
     packet.ParseFromArray(bufferPtr, size);
     if(packet.has_detection()){
         const SSL_DetectionFrame detection = packet.detection();
-        int balls_size = detection.balls_size(),
-            robots_blue_size = detection.robots_blue_size(),
-            robots_yellow_size = detection.robots_yellow_size();
+        int balls_size = detection.balls_size();
+        int robots_blue_size = detection.robots_blue_size();
+        int robots_yellow_size = detection.robots_yellow_size();
         for(int i=0;i<balls_size;i++) {
             messaging::RawBall ball;
             ball.positionX = detection.balls().Get(i).x();

@@ -2,10 +2,10 @@
 
 note as N1
 Here is the expanded version. Now There is the
-RobotsDecision Message, that is sent by Strategy.
+DecisionsStore Message, that is sent by Strategy.
 PathPlanner is an Agent that receives both
-RobotsDecision and Environment Messages with
-RobotsDecisionListener and EnvironmentListener
+DecisionsStore and Environment Messages with
+DecisionsStoreListener and EnvironmentListener
 respectively.
 end note
 
@@ -24,11 +24,11 @@ abstract class Message {
     +forwardTo(EnvironmentListener)
 }
 
-class RobotsDecision{
-    +forwardTo(RobotsDecisionListener)
+class DecisionsStore{
+    +forwardTo(DecisionsStoreListener)
 }
 
-RobotsDecision --u|> Message
+DecisionsStore --u|> Message
 
 
 class EnvironmentListener {
@@ -36,18 +36,18 @@ class EnvironmentListener {
     +update(Message)
 }
 
-class RobotsDecisionListener {
-    +updateRobotsDecision(RobotsDecision)
+class DecisionsStoreListener {
+    +updateDecisionsStore(DecisionsStore)
     +update(Message)
 }
 
-RobotsDecisionListener ..u|> Listener
+DecisionsStoreListener ..u|> Listener
 
 note bottom of EnvironmentListener
     message->forwardTo(this)
 end note
 
-note bottom of RobotsDecisionListener
+note bottom of DecisionsStoreListener
     message->forwardTo(this)
 end note
 
@@ -92,9 +92,9 @@ PathPlanner *-d- Listener
 PathPlanner *-- Message
 
 note left of Strategy::execute
-RobotsDecision newRobotsDecision;
+DecisionsStore newDecisionsStore;
 ...
-publisher.distribute(newRobotsDecision);
+publisher.distribute(newDecisionsStore);
 end note
 
 note left of Publisher::distribute
@@ -107,8 +107,8 @@ note bottom of Environment
 listener->updateEnvironment(this)
 end note
 
-note bottom of RobotsDecision
-listener->updateRobotsDecision(this)
+note bottom of DecisionsStore
+listener->updateDecisionsStore(this)
 end note
 
 Strategy -[hidden]r- PathPlanner

@@ -11,7 +11,7 @@ namespace phoenixpp{
 namespace messaging {
 class EnvironmentListener;
 class FoulsListener;
-class RobotsDecisionListener;
+class DecisionsStoreListener;
 class RobotsFeedbackListener;
 class RobotsCommandsListener;
 class RobotsPathListener;
@@ -21,7 +21,7 @@ class Message {
 public:
     virtual void forwardTo(EnvironmentListener *listener);
     virtual void forwardTo(FoulsListener *listener);
-    virtual void forwardTo(RobotsDecisionListener *listener);
+    virtual void forwardTo(DecisionsStoreListener *listener);
     virtual void forwardTo(RobotsFeedbackListener *listener);
     virtual void forwardTo(RobotsCommandsListener *listener);
     virtual void forwardTo(RobotsPathListener *listener);

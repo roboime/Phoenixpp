@@ -10,6 +10,7 @@
 namespace phoenixpp::ai {
 
     class Skill {
+    protected:
         SkillStateMachine ssm;
 
     };

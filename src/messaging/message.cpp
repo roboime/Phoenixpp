@@ -19,8 +19,8 @@ void Message::forwardTo(EnvironmentListener *listener) {
 void Message::forwardTo(FoulsListener *listener) {
     logWarning("Fouls");
 }
-void Message::forwardTo(RobotsDecisionListener *listener) {
-    logWarning("RobotsDecision");
+void Message::forwardTo(DecisionsStoreListener *listener) {
+    logWarning("DecisionsStore");
 }
 void Message::forwardTo(RobotsFeedbackListener *listener) {
     logWarning("RobotsFeedback");
@@ -47,8 +47,8 @@ void RobotsFeedback::forwardTo(RobotsFeedbackListener *listener) {
     listener->updateRobotsFeedback(this);
 }
 
-void RobotsDecision::forwardTo(RobotsDecisionListener *listener) {
-    listener->updateRobotsDecision(this);
+void DecisionsStore::forwardTo(DecisionsStoreListener *listener) {
+    listener->updateDecisionsStore(this);
 }
 
 void RobotsPath::forwardTo(RobotsPathListener *listener) {

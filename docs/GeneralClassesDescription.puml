@@ -139,7 +139,7 @@ abstract class Message {
     +forwardTo(EnvironmentListener)
     +forwardTo(FoulsListener)
     +forwardTo(RobotsFeedbackListener)
-    +forwardTo(RobotsDecisionListener)
+    +forwardTo(DecisionsStoreListener)
     +forwardTo(RobotsPathListener)
     +forwardTo(RobotsCommandsListener)
     +forwardTo(RobotsOutputListener)

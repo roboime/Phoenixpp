@@ -7,13 +7,15 @@
 
 #include "Phoenixpp/ai/stp/Play.h"
 #include <map>
+#include <Phoenixpp/messaging/DecisionsStore.h>
+
 #include "Phoenixpp/ai/strategy.h"
 
 namespace phoenixpp::ai {
 
 class PlaySelection : public Strategy{
 public:
-    Play actualPlay = Play("Initial play");
+    Play* actualPlay = new Play("Initial play");
     explicit PlaySelection(const string &type, const int &fps);
     ~PlaySelection() override = default;
     void execute() override;
@@ -21,6 +23,8 @@ public:
     std::map<std::string, Play> playDictionary;
     void fillDictionary();
     void registerPlay(const Play& newPlay);
+    void fillDecisionsFromPlay(Play* play);
+    messaging::DecisionsStore decisionsStore;
 };
 
 } // ai

@@ -35,14 +35,14 @@ void RobotsFeedbackListener::updateRobotsFeedback(RobotsFeedback *newFeedback) c
     robotsFeedback->store(*newFeedback);
 }
 
-RobotsDecisionListener::RobotsDecisionListener(const RobotsDecisionPtr &decision) : robotsDecision(decision) {}
+DecisionsStoreListener::DecisionsStoreListener(const DecisionsStorePtr &decision) : decisionsStore(decision) {}
 
-void RobotsDecisionListener::update(MessagePtr message) {
+void DecisionsStoreListener::update(MessagePtr message) {
     message->forwardTo(this);
 }
 
-void RobotsDecisionListener::updateRobotsDecision(RobotsDecision *newDecision) const{
-    robotsDecision->store(*newDecision);
+void DecisionsStoreListener::updateDecisionsStore(DecisionsStore *newDecision) const{
+    decisionsStore->store(*newDecision);
 }
 
 RobotsPathListener::RobotsPathListener(const RobotsPathPtr &path) : robotsPath(path) {}

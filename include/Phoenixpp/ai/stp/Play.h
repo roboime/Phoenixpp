@@ -13,12 +13,15 @@
 namespace phoenixpp::ai {
 
     class Play {
-        std::vector<Role> roles;
+    protected:
+
 
     public:
+        std::vector<Role> roles;
         std::string name;
         explicit Play(std::string name) : name(std::move(name)) {
         }
+
 
     };
 }

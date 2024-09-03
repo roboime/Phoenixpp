@@ -9,16 +9,19 @@
 #include <map>
 
 namespace phoenixpp::ai {
-    enum class State {
-        IDLE,
-        RUNNING,
-        COMPLETED,
-        FAILED,
-    };
+    // enum class State {
+    //     IDLE,
+    //     RUNNING,
+    //     COMPLETED,
+    //     FAILED,
+    // };
 
+    template <typename State>
     class SkillStateMachine {
     public:
-        SkillStateMachine() : currentState(State::Idle) {};
+        explicit SkillStateMachine(State initialState) {
+            setState(initialState);
+        }
 
         State getCurrentState() const {
             return currentState;
@@ -34,7 +37,7 @@ namespace phoenixpp::ai {
         }
 
     private:
-        State currentState{};
+        State currentState;
         std::map<State, State> transitions;
     };
 }

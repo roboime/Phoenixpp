@@ -11,6 +11,7 @@
 namespace phoenixpp::ai {
 
     class Role {
+    protected:
         std::vector<Tactic> tactics;
 
     };

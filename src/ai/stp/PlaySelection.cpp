@@ -3,7 +3,8 @@
 //
 
 #include "Phoenixpp/ai/stp/PlaySelection.h"
-
+#include "Phoenixpp/messaging/DecisionsStore.h"
+#include "Phoenixpp/ai/stp/plays/DumbAttackerPlay.h"
 #include <chrono>
 
 #include "Phoenixpp/ai/stp/Play.h"
@@ -42,14 +43,24 @@ namespace phoenixpp::ai {
 
 
     void PlaySelection::execute() {
-
         if (shouldUpdatePlay()) {
             std::string playName = std::format("{} {}","New play number ", std::to_string(getSecondsOfTheActualHour()));
-            if(playName != actualPlay.name) {
-                actualPlay = Play(playName);
-                std::cout << "New play is: " << actualPlay.name << std::endl;
+            if(playName != actualPlay->name) {
+                actualPlay = new Play(playName);
+                std::cout << "New play is: " << actualPlay->name << std::endl;
             }
         }
+
+        auto dumbAttackerPlay = DumbAttackerPlay();
+        actualPlay = &dumbAttackerPlay;
+        fillDecisionsFromPlay(actualPlay);
+
+        messaging::MessagePtr message = std::make_shared<messaging::DecisionsStore>(decisionsStore);
+        publisher.distribute(message);
+    }
+
+    void PlaySelection::fillDecisionsFromPlay(Play* play) {
+        for(auto role : play)
     }
 
     bool PlaySelection::shouldUpdatePlay() {

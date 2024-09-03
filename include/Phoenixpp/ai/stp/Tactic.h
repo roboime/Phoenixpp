@@ -10,7 +10,8 @@
 namespace phoenixpp::ai {
 
     class Tactic {
-        Skill skills[10]; // TODO: alterar esse size para ficar dinamico
+    protected:
+        std::vector<Skill> skills;
 
 
     };

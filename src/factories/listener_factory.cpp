@@ -16,8 +16,8 @@ messaging::ListenerPtr ListenerFactory::createListener(messaging::FoulsPtr &foul
 messaging::ListenerPtr ListenerFactory::createListener(messaging::RobotsFeedbackPtr &robotsFeedback) {
     return std::make_shared<messaging::RobotsFeedbackListener>(robotsFeedback);
 }
-messaging::ListenerPtr ListenerFactory::createListener(messaging::RobotsDecisionPtr &robotsDecision) {
-    return std::make_shared<messaging::RobotsDecisionListener>(robotsDecision);
+messaging::ListenerPtr ListenerFactory::createListener(messaging::DecisionsStorePtr &decisionsStore) {
+    return std::make_shared<messaging::DecisionsStoreListener>(decisionsStore);
 }
 messaging::ListenerPtr ListenerFactory::createListener(messaging::RobotsPathPtr &robotsPath) {
     return std::make_shared<messaging::RobotsPathListener>(robotsPath);

@@ -18,7 +18,7 @@ namespace messaging{
 class Environment
 class Fouls
 class RobotsFeedback
-class RobotsDecision
+class DecisionsStore
 class RobotsPath
 class RobotsCommands
 class RobotsOutput
@@ -26,8 +26,8 @@ class RobotsOutput
 
 Fouls -[hidden]r- Feedback
 Feedback -[hidden]r- Environment
-Environment -[hidden]r- RobotsDecision
-RobotsDecision -[hidden]r- RobotsPath
+Environment -[hidden]r- DecisionsStore
+DecisionsStore -[hidden]r- RobotsPath
 RobotsPath -[hidden]r- RobotsCommands
 RobotsCommands -[hidden]r- RobotsOutput
 
@@ -42,16 +42,16 @@ DecisionMaker <--u Environment #darkblue
 DecisionMaker <--u Fouls #darkblue
 DecisionMaker <--u RobotsFeedback #darkblue
 PathPlanner <--u Environment #darkblue
-PathPlanner <--u RobotsDecision #darkblue
+PathPlanner <--u DecisionsStore #darkblue
 Controller <--u Environment #darkblue
-Controller <--u RobotsDecision #darkblue
+Controller <--u DecisionsStore #darkblue
 Controller <--u RobotsPath #darkblue
 Communicator <--u RobotsPath #darkblue
 
 Vision --u> Environment #red
 Referee --u> Fouls #red
 Feedback --u> RobotsFeedback #red
-DecisionMaker --u> RobotsDecision #red
+DecisionMaker --u> DecisionsStore #red
 PathPlanner --u> RobotsPath #red
 Controller --u> RobotsCommands #red
 Communicator --u> RobotsOutput #red
@@ -59,7 +59,7 @@ Communicator --u> RobotsOutput #red
 AgentController <--d Environment #darkblue
 AgentController <--d Fouls #darkblue
 AgentController <--d RobotsFeedback #darkblue
-AgentController <--d RobotsDecision #darkblue
+AgentController <--d DecisionsStore #darkblue
 AgentController <--d RobotsPath #darkblue
 AgentController <--d RobotsCommands #darkblue
 AgentController <--d RobotsOutput #darkblue

@@ -17,7 +17,7 @@ public:
     static messaging::ListenerPtr createListener(messaging::EnvironmentPtr &environment);
     static messaging::ListenerPtr createListener(messaging::FoulsPtr &fouls);
     static messaging::ListenerPtr createListener(messaging::RobotsFeedbackPtr &robotsFeedback);
-    static messaging::ListenerPtr createListener(messaging::RobotsDecisionPtr &robotsDecision);
+    static messaging::ListenerPtr createListener(messaging::DecisionsStorePtr &decisionsStore);
     static messaging::ListenerPtr createListener(messaging::RobotsPathPtr &robotsPath);
     static messaging::ListenerPtr createListener(messaging::RobotsCommandsPtr &robotsCommands);
     static messaging::ListenerPtr createListener(messaging::RobotsOutputPtr &robotsOutput);

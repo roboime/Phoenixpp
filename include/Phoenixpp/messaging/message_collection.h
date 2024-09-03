@@ -21,8 +21,8 @@ struct MessageCollection {
     EnvironmentPtr environment;
     FoulsPtr fouls;
     RobotsFeedbackPtr robotsFeedback;
-    RobotsDecisionPtr blueDecision;
-    RobotsDecisionPtr yellowDecision;
+    DecisionsStorePtr blueDecision;
+    DecisionsStorePtr yellowDecision;
     RobotsPathPtr robotsPath;
     RobotsCommandsPtr robotsCommands;
     RobotsOutputPtr robotsOutput;

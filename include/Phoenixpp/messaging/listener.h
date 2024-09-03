@@ -49,14 +49,14 @@ private:
     RobotsFeedbackPtr robotsFeedback;
 };
 
-class RobotsDecisionListener : public Listener {
+class DecisionsStoreListener : public Listener {
 public:
-    explicit RobotsDecisionListener(const RobotsDecisionPtr &decision);
+    explicit DecisionsStoreListener(const DecisionsStorePtr &decision);
     void update(MessagePtr message) override;
-    void updateRobotsDecision(RobotsDecision* newDecision) const;
+    void updateDecisionsStore(DecisionsStore* newDecision) const;
 
 private:
-    RobotsDecisionPtr robotsDecision;
+    DecisionsStorePtr decisionsStore;
 };
 
 class RobotsPathListener : public Listener {

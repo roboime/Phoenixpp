@@ -13,8 +13,8 @@ MessageCollection::MessageCollection() :
     environment(std::make_shared<Environment>()),
     fouls(std::make_shared<Fouls>()),
     robotsFeedback(std::make_shared<RobotsFeedback>()),
-    blueDecision(std::make_shared<RobotsDecision>()),
-    yellowDecision(std::make_shared<RobotsDecision>()),
+    blueDecision(std::make_shared<DecisionsStore>()),
+    yellowDecision(std::make_shared<DecisionsStore>()),
     robotsPath(std::make_shared<RobotsPath>()),
     robotsCommands(std::make_shared<RobotsCommands>()),
     robotsOutput(std::make_shared<RobotsOutput>()){}
