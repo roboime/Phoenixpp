@@ -31,7 +31,7 @@ struct UdpData {
 class UdpHandler : public QObject{
     Q_OBJECT
 public:
-    explicit UdpHandler(UdpData data);
+    explicit UdpHandler(UdpData &data);
     [[nodiscard]] bool getReceived() const;
     ~UdpHandler() override;
 signals:

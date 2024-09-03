@@ -11,7 +11,7 @@
 namespace phoenixpp {
 namespace ai {
 
-Strategy::Strategy(const std::string &type, const int &fpsa) : Agent(type, fps){}
+Strategy::Strategy(const std::string &type, const int &fps) : Agent(type, fps){}
 void Strategy::execute() {
     // messaging::Environment env = environment->load();
 }
