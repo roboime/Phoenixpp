@@ -5,6 +5,7 @@
 #ifndef ROBOTS_DECISION_H
 #define ROBOTS_DECISION_H
 
+#include "environment.h"
 #include "message.h"
 #include "Phoenixpp/messaging/RobotDecision.h"
 

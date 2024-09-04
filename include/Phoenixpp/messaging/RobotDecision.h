@@ -6,6 +6,7 @@
 #define ROBOTDECISION_H
 
 #include <optional>
+#include <atomic>
 using std::atomic;
 
 struct RobotDecision{

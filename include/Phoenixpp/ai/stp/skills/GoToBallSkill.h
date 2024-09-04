@@ -15,7 +15,7 @@ namespace phoenixpp::ai {
         GO_TO_BALL
     };
 
-    class GoToBallSkill : public Skill {
+    class GoToBallSkill : public Skill<GoToBallSkillState> {
     public:
         GoToBallSkill(){
             auto ssm = SkillStateMachine<GoToBallSkillState>(GoToBallSkillState::IDLE);

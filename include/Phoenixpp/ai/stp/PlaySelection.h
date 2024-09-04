@@ -23,7 +23,8 @@ public:
     std::map<std::string, Play> playDictionary;
     void fillDictionary();
     void registerPlay(const Play& newPlay);
-    void fillDecisionsFromPlay(Play* play);
+    void assignRolesFromPlay(Play* play);
+    std::map<unsigned int, Role> rolesMap;
     messaging::DecisionsStore decisionsStore;
 };
 

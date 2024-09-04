@@ -8,8 +8,8 @@
 #include "message.h"
 #include <atomic>
 
-namespace phoenixpp {
-namespace messaging {
+
+namespace phoenixpp::messaging {
 using std::atomic;
 constexpr int MAX_ROBOTS = 32;
 constexpr int MAX_BALLS = 10;
@@ -205,6 +205,6 @@ struct Environment: Message{
 };
 using EnvironmentPtr = std::shared_ptr<Environment>;
 } // messaging
-} // phoenixpp
+// phoenixpp
 
 #endif //ENVIRONMENT_H

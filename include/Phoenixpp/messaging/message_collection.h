@@ -8,14 +8,13 @@
 #include <Phoenixpp/messaging/environment.h>
 #include <Phoenixpp/messaging/fouls.h>
 #include <Phoenixpp/messaging/robots_feedback.h>
-#include <Phoenixpp/messaging/robots_decision.h>
+#include <Phoenixpp/messaging/DecisionsStore.h>
 #include <Phoenixpp/messaging/robots_path.h>
 #include <Phoenixpp/messaging/robots_commands.h>
 #include <Phoenixpp/messaging/robots_output.h>
 #include <Phoenixpp/messaging/listener.h>
 
-namespace phoenixpp {
-namespace messaging {
+namespace phoenixpp::messaging {
 
 struct MessageCollection {
     EnvironmentPtr environment;
@@ -31,6 +30,6 @@ struct MessageCollection {
 };
 
 } // messaging
-} // phoenixpp
+// phoenixpp
 
 #endif //MESSAGE_COLLECTION_H

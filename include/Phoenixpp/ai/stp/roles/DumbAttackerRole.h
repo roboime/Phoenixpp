@@ -16,8 +16,13 @@ namespace phoenixpp::ai {
             auto dumbAttackerTactic = DumbAttackerTactic();
             tactics.push_back(dumbAttackerTactic);
         }
-
+        friend std::ostream& operator<<(std::ostream& os, const DumbAttackerRole& dt);
     };
+
+    std::ostream& operator<<(std::ostream& os, const DumbAttackerRole& obj) {
+        os << "Dumb attacker role";
+        return os;
+    }
 }
 
 #endif //DUMBATTACKER_H

@@ -27,13 +27,13 @@ namespace phoenixpp::ai {
             return currentState;
         }
 
+        void addTransition(const State fromState, const State toState) {
+            transitions[fromState] = toState;
+        }
+
     protected:
         void setState(const State newState) {
             currentState = newState;
-        }
-
-        void addTransition(const State fromState, const State toState) {
-            transitions[fromState] = toState;
         }
 
     private:

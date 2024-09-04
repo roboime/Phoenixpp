@@ -9,8 +9,7 @@
 #include "Phoenixpp/messaging/message.h"
 #include "Phoenixpp/messaging/environment.h"
 
-namespace phoenixpp {
-namespace ai {
+namespace phoenixpp::ai {
 using std::string;
 
 class Strategy : public core::Agent{
@@ -29,6 +28,6 @@ protected:
 };
 
 } // ai
-} // phoenix
+// phoenix
 
 #endif //STRATEGY_H

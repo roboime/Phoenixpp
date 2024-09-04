@@ -53,14 +53,34 @@ namespace phoenixpp::ai {
 
         auto dumbAttackerPlay = DumbAttackerPlay();
         actualPlay = &dumbAttackerPlay;
-        fillDecisionsFromPlay(actualPlay);
+
+        assignRolesFromPlay(actualPlay);
+
+        std::cout << "The roles are: " << std::endl;
+
+        for (const auto& [key, value] : rolesMap) {
+            std::cout << "Key: " << key << ", Value: " << value << std::endl;
+        }
 
         messaging::MessagePtr message = std::make_shared<messaging::DecisionsStore>(decisionsStore);
         publisher.distribute(message);
     }
 
-    void PlaySelection::fillDecisionsFromPlay(Play* play) {
-        for(auto role : play)
+    void PlaySelection::assignRolesFromPlay(Play* play) {
+        for(const auto& role : play->roles) {
+            for(const auto& robot : environment->blueRobots) {
+                if(robot.valid == true && !rolesMap.contains(robot.id)) {
+                    std::cout << "Robot " << robot.id << " gained role " << role << std::endl;
+                    rolesMap[robot.id] = role;
+                }
+            }
+        }
+
+        for(const auto& robot : environment->blueRobots) {
+            if(robot.valid == true && !rolesMap.contains(robot.id)) {
+                rolesMap[robot.id] = Role();
+            }
+        }
     }
 
     bool PlaySelection::shouldUpdatePlay() {
