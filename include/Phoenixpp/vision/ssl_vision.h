@@ -19,8 +19,8 @@ public:
     void execute() override;
 private:
     std::shared_ptr<io::UdpHandler> udpReceiver;
-    std::queue<std::pair<char*,int>> bufferQueue;
-    std::mutex bufferQueue_mtx;
+    boost::circular_buffer<std::string> ringBuffer;
+    std::mutex ringBuffer_mtx;
 };
 
 } // vision

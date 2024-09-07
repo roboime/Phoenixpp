@@ -95,6 +95,12 @@ struct RawEnvironment{
             ball.valid = false;
         }
     }
+    void clear() {
+        clearBalls();
+        clearRobots(Color::BLUE);
+        clearRobots(Color::YELLOW);
+    }
+
 };
 
 struct Object{

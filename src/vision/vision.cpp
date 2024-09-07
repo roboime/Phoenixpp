@@ -21,16 +21,15 @@ Vision::~Vision() {
 void Vision::execute() {
     messaging::Environment environment = filter->execute(rawEnv);
     distributeEnvironment(environment);
+    rawEnv.clear();
 }
 
-void Vision::processPacket(const char *bufferPtr, int size) {
-    SSL_WrapperPacket packet;
-    packet.ParseFromArray(bufferPtr, size);
+void Vision::processPacket(SSL_WrapperPacket &packet) {
     if(packet.has_detection()){
         const SSL_DetectionFrame detection = packet.detection();
-        int balls_size = detection.balls_size(),
-            robots_blue_size = detection.robots_blue_size(),
-            robots_yellow_size = detection.robots_yellow_size();
+        int balls_size = detection.balls_size();
+        int robots_blue_size = detection.robots_blue_size();
+        int robots_yellow_size = detection.robots_yellow_size();
         for(int i=0;i<balls_size;i++) {
             messaging::RawBall ball;
             ball.positionX = detection.balls().Get(i).x();
