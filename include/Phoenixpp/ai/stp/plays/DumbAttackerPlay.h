@@ -10,11 +10,16 @@
 namespace phoenixpp::ai {
 
     class DumbAttackerPlay : public Play {
+
     public:
         DumbAttackerPlay() : Play("DumbAttackerPlay") {
             DumbAttackerRole dumbAttackerRole;
             roles.push_back(dumbAttackerRole);
         }
+        bool stopConditionReached() override{
+            return false;
+        }
+
 
     };
 }

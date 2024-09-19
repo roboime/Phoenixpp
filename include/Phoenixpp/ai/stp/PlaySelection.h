@@ -15,15 +15,16 @@ namespace phoenixpp::ai {
 
 class PlaySelection : public Strategy{
 public:
-    Play* actualPlay = new Play("Initial play");
+    std::unique_ptr<Play> actualPlay = std::make_unique<Play>("Initial default play");
     explicit PlaySelection(const string &type, const int &fps);
+    std::unique_ptr<Play> playSelector();
     ~PlaySelection() override = default;
     void execute() override;
     static bool shouldUpdatePlay();
     std::map<std::string, Play> playDictionary;
     void fillDictionary();
     void registerPlay(const Play& newPlay);
-    void assignRolesFromPlay(Play* play);
+    void assignRolesFromPlay(const Play& play);
     std::map<unsigned int, Role> rolesMap;
     messaging::DecisionsStore decisionsStore;
 };

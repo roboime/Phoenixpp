@@ -16,10 +16,12 @@ namespace phoenixpp::ai {
     public:
         std::vector<Role> roles;
         std::string name;
+        virtual bool stopConditionReached() {
+            return true;
+        };
         explicit Play(std::string name) : name(std::move(name)) {
         }
-
-
+        virtual ~Play() = default;
     };
 }
 
