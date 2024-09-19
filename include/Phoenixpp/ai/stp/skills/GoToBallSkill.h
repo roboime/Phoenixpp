@@ -10,21 +10,19 @@
 
 namespace phoenixpp::ai {
 
-    enum class GoToBallSkillState{
-        IDLE,
-        GO_TO_BALL
-    };
-
-    class GoToBallSkill : public Skill<GoToBallSkillState> {
+    class GoToBallSkill : public Skill {
     public:
         GoToBallSkill(){
-            auto ssm = SkillStateMachine<GoToBallSkillState>(GoToBallSkillState::IDLE);
+            auto ssm = SkillStateMachine();
             addTransitions();
         }
     private:
        void addTransitions() {
-           ssm.addTransition(GoToBallSkillState::IDLE, GoToBallSkillState::GO_TO_BALL);
-           ssm.addTransition(GoToBallSkillState::GO_TO_BALL, GoToBallSkillState::IDLE);
+           ssm.addState("Idle", []() { std::cout << "State: Idle\n"; });
+           ssm.addState("Running", []() { std::cout << "State: Running\n"; });
+
+           ssm.addTransition("Idle", "Running");
+           ssm.addTransition("Running", "Idle");
        }
     };
 }

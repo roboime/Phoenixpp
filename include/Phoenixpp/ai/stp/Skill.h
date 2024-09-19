@@ -9,10 +9,9 @@
 
 namespace phoenixpp::ai {
 
-    template <typename State>
     class Skill {
     protected:
-        SkillStateMachine<State> ssm = SkillStateMachine(State::IDLE);
+        SkillStateMachine ssm = SkillStateMachine();
 
     };
 }

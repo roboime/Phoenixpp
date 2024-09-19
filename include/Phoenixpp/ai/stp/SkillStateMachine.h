@@ -5,40 +5,54 @@
 #ifndef SKILLSTATEMACHINE_H
 #define SKILLSTATEMACHINE_H
 
+#include <functional>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 
 namespace phoenixpp::ai {
-    // enum class State {
-    //     IDLE,
-    //     RUNNING,
-    //     COMPLETED,
-    //     FAILED,
-    // };
-
-    template <typename State>
     class SkillStateMachine {
     public:
-        explicit SkillStateMachine(State initialState) {
-            setState(initialState);
+        using StateAction = std::function<void()>;
+
+        // Add a new state with an action
+        void addState(const std::string& stateName, StateAction action) {
+            states[stateName] = action;
         }
 
-        State getCurrentState() const {
-            return currentState;
-        }
-
-        void addTransition(const State fromState, const State toState) {
+        // Add a transition between two states
+        void addTransition(const std::string& fromState, const std::string& toState) {
             transitions[fromState] = toState;
         }
 
-    protected:
-        void setState(const State newState) {
-            currentState = newState;
+        // Set the initial state
+        void setInitialState(const std::string& stateName) {
+            currentState = stateName;
+        }
+
+        // Trigger the transition to the next state
+        void nextState() {
+            if (transitions.contains(currentState)) {
+                currentState = transitions[currentState];
+                executeState();
+            } else {
+                std::cerr << "No transition from current state: " << currentState << std::endl;
+            }
+        }
+
+        // Execute the current state's action
+        void executeState() const {
+            if (states.contains(currentState)) {
+                std::cout << "Executing state: " << currentState << std::endl;
+                states.at(currentState)();
+            } else {
+                std::cerr << "State not found: " << currentState << std::endl;
+            }
         }
 
     private:
-        State currentState;
-        std::map<State, State> transitions;
+        std::unordered_map<std::string, StateAction> states;   // Map of state names to actions
+        std::unordered_map<std::string, std::string> transitions;  // Map of transitions (fromState -> toState)
+        std::string currentState;  // Current active state
     };
 }
 
