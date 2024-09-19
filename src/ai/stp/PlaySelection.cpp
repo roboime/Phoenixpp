@@ -14,7 +14,7 @@ namespace phoenixpp::ai {
 
     PlaySelection::PlaySelection(const string &type, const int &fps) : Strategy(type, fps) {
     }
-    int getSecondsOfTheActualHour() { // TODO: função temporaria para mudar play de 5 em 5 segundos
+    int getSecondsOfTheActualHour() { // TODO: função temporaria para mudar play de 15 em 15 segundos
         auto now = std::chrono::system_clock::now();
         std::time_t now_c = std::chrono::system_clock::to_time_t(now);
         std::tm* parts = std::localtime(&now_c);
@@ -24,10 +24,10 @@ namespace phoenixpp::ai {
 
     }
 
-    bool temporaryFunctionToChangePlay() { // TODO: função temporaria para mudar play de 5 em 5 segundos
+    bool temporaryFunctionToChangePlay() { // TODO: função temporaria para mudar play de 15 em 15 segundos
         bool flag = false;
 
-        if (getSecondsOfTheActualHour() % 5 == 0) {
+        if (getSecondsOfTheActualHour() % 15 == 0) {
             flag = true;
         } else {
             flag = false;
