@@ -12,7 +12,7 @@ namespace phoenixpp::ai {
     class DumbAttackerPlay : public Play {
     public:
         DumbAttackerPlay() : Play("DumbAttackerPlay") {
-            const auto dumbAttackerRole = DumbAttackerRole();
+            DumbAttackerRole dumbAttackerRole;
             roles.push_back(dumbAttackerRole);
         }
 

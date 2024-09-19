@@ -68,10 +68,13 @@ namespace phoenixpp::ai {
 
     void PlaySelection::assignRolesFromPlay(Play* play) {
         for(const auto& role : play->roles) {
+            std::cout << "Passou pelo play->roles com a role:" << role << std::endl;
             for(const auto& robot : environment->blueRobots) {
+                std::cout << "Acessou o robo:" << robot.id << std::endl;
                 if(robot.valid == true && !rolesMap.contains(robot.id)) {
                     std::cout << "Robot " << robot.id << " gained role " << role << std::endl;
                     rolesMap[robot.id] = role;
+                    break;
                 }
             }
         }
