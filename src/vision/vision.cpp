@@ -21,11 +21,10 @@ Vision::~Vision() {
 void Vision::execute() {
     messaging::Environment environment = filter->execute(rawEnv);
     distributeEnvironment(environment);
+    rawEnv.clear();
 }
 
-void Vision::processPacket(const char *bufferPtr, int size) {
-    SSL_WrapperPacket packet;
-    packet.ParseFromArray(bufferPtr, size);
+void Vision::processPacket(SSL_WrapperPacket &packet) {
     if(packet.has_detection()){
         const SSL_DetectionFrame detection = packet.detection();
         int balls_size = detection.balls_size();

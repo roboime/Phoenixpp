@@ -13,6 +13,7 @@
 #include <QHostAddress>
 #include <QThread>
 #include <QTimer>
+#include <boost/circular_buffer.hpp>
 
 namespace phoenixpp {
 namespace io {
@@ -20,18 +21,17 @@ namespace io {
 using std::queue, std::pair, std::mutex, std::string;
 
 struct UdpData {
-    queue<pair<char*,int>> &bufferQueue;
-	mutex &bufferQueue_mtx;
-    string multicastAddress;
-	unsigned short port;
-	int bufferSizeMax;
-	int queueSizeMax;
+    boost::circular_buffer<std::string> &ringBuffer;
+	mutex &ringBuffer_mtx;
+    QHostAddress multicastAddress;
+    unsigned short port;
+    int packetMaxSize;
 };
 
 class UdpHandler : public QObject{
     Q_OBJECT
 public:
-    explicit UdpHandler(UdpData data);
+    explicit UdpHandler(const UdpData &data);
     [[nodiscard]] bool getReceived() const;
     ~UdpHandler() override;
 signals:

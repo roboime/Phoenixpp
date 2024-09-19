@@ -80,6 +80,9 @@ function(copy_qt_dlls target)
         endforeach ()
     endif ()
 endfunction()
+############# Adding Boost#############
+find_package(Boost REQUIRED COMPONENTS circular_buffer)
+include_directories(${Boost_INCLUDE_DIRS})
 ############# Source and Executable #############
 include_directories(include)
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/resources/qt)

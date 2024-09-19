@@ -4,14 +4,16 @@
 
 #include "Phoenixpp/ai/strategy.h"
 
+#include <chrono>
 #include <iostream>
 #include <memory>
+#include <thread>
 #include <Phoenixpp/factories/listener_factory.h>
 
 
 namespace phoenixpp::ai {
 
-Strategy::Strategy(const std::string &type, const int &fpsa) : Agent(type, fps){}
+Strategy::Strategy(const std::string &type, const int &fps) : Agent(type, fps){}
 void Strategy::execute() {
     // messaging::Environment env = environment->load();
 }

@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <shared_mutex>
 #include <nlohmann/json.hpp>
 #include <Phoenixpp/factories/agent_factory.h>
 #include <Phoenixpp/factories/agent_factory_registry.h>
@@ -39,13 +40,12 @@ void AgentController::setAgent(const std::string &key, const std::string &implem
     const std::shared_ptr<factories::AgentFactory> factory = agentFactoryRegistry.getFactory(key);
     AgentPtr agent = factory->createAgent(implementation, fps);
     string type = agent->getType();
-    std::unique_lock lock(agentsMutex);
+    std::unique_lock<std::shared_mutex> lock(agentsMutex);
     auto agentIt = agentMap.find(type);
     if(agentIt != agentMap.end()) {
         agent->setPublisher(agentIt->second->getPublisher());
     } else {
         agent->subscribe(messageCollection.createListener(key));
-
     }
     agentMap[type] = agent;
     lock.unlock();
@@ -65,11 +65,13 @@ void AgentController::initializeThreads() {
     std::cout << "Threads initialized: " << threads.size() << std::endl;
 }
 void AgentController::loopAgent(const std::string &key) {
-    std::unique_lock lock(agentsMutex, std::defer_lock);
+    std::shared_lock<std::shared_mutex> lock(agentsMutex, std::defer_lock);
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
+    int fps = 60;
     lock.lock();
-    int fps =  agentMap[key]->getFPS();
+    if(agentMap.contains(key))
+        fps = agentMap[key]->getFPS();
     lock.unlock();
     while(!stopSign.load()) {
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
@@ -80,7 +82,7 @@ void AgentController::loopAgent(const std::string &key) {
 
         if(elapsed > 1000/fps) {
             lock.lock();
-            agentMap[key]->execute();
+            if(agentMap.contains(key)) agentMap[key]->execute();
             lock.unlock();
             start = std::chrono::high_resolution_clock::now();
         }
@@ -125,6 +127,7 @@ AgentController::~AgentController() {
     stopSign.store(true);
     std::unique_lock lock(agentsMutex);
     agentMap.clear();
+    std::cout << "Agent Map Cleared" << std::endl;
     lock.unlock();
     for(auto& thread : threads) {
         thread.join();

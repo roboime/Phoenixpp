@@ -1,5 +1,9 @@
 macro(package_add_test TESTNAME FILES LIBRARIES)
-    add_executable(${TESTNAME} ${FILES})
+    set(PREFIXED)
+    foreach(FILE ${QTFILES})
+        list(APPEND PREFIXED "../${FILE}")
+    endforeach()
+    add_executable(${TESTNAME} ${FILES} ${PREFIXED})
     target_link_libraries(${TESTNAME} GTest::gtest GTest::gmock GTest::gtest_main ${LIBRARIES}
             Qt6::Core
             Qt6::Gui

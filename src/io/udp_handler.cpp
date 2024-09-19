@@ -10,9 +10,11 @@
 namespace phoenixpp {
 namespace io {
 
-UdpHandler::UdpHandler(UdpData data) : data(data), received(false),
-    buffer(new char[data.bufferSizeMax]), udpSocket(new QUdpSocket(this)),
-    timersThread(new QThread(this)) {
+UdpHandler::UdpHandler(const UdpData &data)
+    : data(data), received(false),
+    buffer(new char[data.packetMaxSize]), udpSocket(new QUdpSocket(this)),
+    timersThread(new QThread(this))
+    {
     connect(
         udpSocket,
         &QUdpSocket::readyRead,
@@ -53,20 +55,13 @@ void UdpHandler::processPendingDatagrams() {
         QHostAddress sender;
         quint16 senderPort;
         qint64 datagramSize = udpSocket->pendingDatagramSize();
-        datagramSize = std::min(datagramSize, static_cast<qint64>(data.bufferSizeMax));
-        udpSocket->readDatagram(buffer, data.bufferSizeMax, &sender, &senderPort);
+        datagramSize = std::min(datagramSize, static_cast<qint64>(data.packetMaxSize));
+        udpSocket->readDatagram(buffer, datagramSize, &sender, &senderPort);
         emit startTimeoutTimer();
+        std::unique_lock lock(data.ringBuffer_mtx);
+        data.ringBuffer.push_back(std::string(buffer, datagramSize));
+        lock.unlock();
         received.store(true);
-        auto buffer_ptr = new char[datagramSize];
-        std::unique_lock lock(data.bufferQueue_mtx);
-        if (static_cast<int>(data.bufferQueue.size()) <= data.queueSizeMax) {
-            std::memcpy(buffer_ptr, buffer, static_cast<size_t>(datagramSize));
-            data.bufferQueue.push(std::make_pair(buffer_ptr, datagramSize));
-            lock.unlock();
-        } else {
-            lock.unlock();
-            delete[] buffer_ptr;
-        }
     }
 }
 
@@ -83,7 +78,7 @@ void UdpHandler::retryConnection() {
         return;
     }
     if (udpSocket->bind(QHostAddress::AnyIPv4, data.port, QUdpSocket::ShareAddress)) {
-        if (!udpSocket->joinMulticastGroup(QHostAddress(QString::fromStdString(data.multicastAddress)))) {
+        if (!udpSocket->joinMulticastGroup(data.multicastAddress)) {
             std::cerr << "Failed to join multicast group." << std::endl;
         }
     } else {
@@ -96,8 +91,8 @@ bool UdpHandler::getReceived() const {
 }
 
 UdpHandler::~UdpHandler() {
-    // if(timeoutTimer->isActive()) emit stopTimeoutTimer();
-    // if(retryTimer->isActive()) emit stopRetryTimer();
+    if(timeoutTimer->isActive()) emit stopTimeoutTimer();
+    if(retryTimer->isActive()) emit stopRetryTimer();
     QMetaObject::invokeMethod(retryTimer, "stop", Qt::QueuedConnection);
     QMetaObject::invokeMethod(timeoutTimer, "stop", Qt::QueuedConnection);
 
@@ -105,7 +100,7 @@ UdpHandler::~UdpHandler() {
     timersThread->wait();
     if (udpSocket->state() == QAbstractSocket::ConnectedState) {
         udpSocket->leaveMulticastGroup(
-            QHostAddress(QString::fromStdString(data.multicastAddress)));
+            QHostAddress(data.multicastAddress));
     }
     delete[] buffer;
 }

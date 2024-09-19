@@ -8,7 +8,7 @@
     "referee" : {
       "implementation" : "test",
       "subscriptions" : [],
-      "fps" : 60
+      "fps" : 10
     },
     "feedback" : {
       "implementation" : "test",

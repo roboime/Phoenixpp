@@ -9,7 +9,7 @@ namespace phoenixpp {
 namespace core {
 
 Agent::Agent(std::string type, const int &fps) : type(std::move(type)), fps(fps) {}
-Agent::Agent(const Agent &agent) : type(agent.type) {}
+Agent::Agent(const Agent &agent) : type(agent.getType()), fps(agent.getFPS()) {}
 const std::string &Agent::getType() const { return type; }
 void Agent::subscribe(const messaging::ListenerPtr &listener) {
     publisher.addListener(listener);

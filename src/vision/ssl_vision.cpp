@@ -6,58 +6,74 @@
 #include "Phoenixpp/io/udp_handler.h"
 #include <iostream>
 #include <memory>
+#include <messages_robocup_ssl_wrapper.pb.h>
 
 namespace phoenixpp {
 namespace vision {
 using std::cout, std::endl;
 
-SSLVision::SSLVision(const int &fps) : Vision(fps) {
-    std::string multicastAddress = "224.5.23.2";
+SSLVision::SSLVision(const int &fps) : Vision(fps){
+    //temporary values
+    QHostAddress multicastAddress("224.5.23.2");
     unsigned short port = 10020;
-    int bufferSizeMax = 2048;
-    int queueSizeMax = 4;
+    int packetMaxSize = 2048;
+    int ringBufferSize = 32;
+    ringBuffer.set_capacity(ringBufferSize);
     io::UdpData data{
-        bufferQueue,
-        bufferQueue_mtx,
+        ringBuffer,
+        ringBuffer_mtx,
         multicastAddress,
         port,
-        bufferSizeMax,
-        queueSizeMax
+        packetMaxSize
     };
     udpReceiver = std::make_shared<io::UdpHandler>(data);
 }
 
 void SSLVision::execute() {
-    std::unique_lock lock(bufferQueue_mtx);
-    bool cleared = false;
-    for(int i = 0; i < NUM_CAMERAS; i++) {
-        if(bufferQueue.empty()){
+    SSL_WrapperPacket packet;
+    std::unique_lock lock(ringBuffer_mtx, std::defer_lock);
+    bool ok = true;
+    unsigned int frameNumber = 0;
+    unsigned int id = 0;
+    lock.lock();
+    if(ringBuffer.size() <= NUM_CAMERAS) {
+        ok = false;
+    }
+    while(ok && id < NUM_CAMERAS) {
+        packet.MergeFromString(ringBuffer.front());
+        if(!packet.has_detection()) {
+            ok = false;
             continue;
         }
-        if(!cleared){
-            rawEnv.clearBalls();
-            rawEnv.clearRobots(messaging::Color::BLUE);
-            rawEnv.clearRobots(messaging::Color::YELLOW);
-            cleared = true;
+        SSL_DetectionFrame detection = packet.detection();
+        if(detection.camera_id() != id) {
+            ok= false;
+            while(!ringBuffer.empty() &&
+                (!packet.has_detection() || packet.detection().camera_id() != 0)) {
+                ringBuffer.pop_front();
+                packet.MergeFromString(ringBuffer.front());
+            }
+            continue;
         }
-        auto [buffer_ptr, size] = bufferQueue.front();
-        bufferQueue.pop();
-        processPacket(buffer_ptr, size);
-        delete[] buffer_ptr;
+        if(id == 0) frameNumber = detection.frame_number();
+        else if(detection.frame_number() != frameNumber) {
+            ok = false;
+            continue;
+        }
+        ringBuffer.pop_front();
+        id++;
+    }
+    if(!ok) {
+        return;
     }
     lock.unlock();
+    processPacket(packet);
     rawEnv.received = udpReceiver->getReceived();
     Vision::execute();
 }
 
 SSLVision::~SSLVision() {
     std::cout << "Destroying SSL Vision" << std::endl;
-    std::unique_lock lock(bufferQueue_mtx);
-    while(!bufferQueue.empty()) {
-        delete[] bufferQueue.front().first;
-        bufferQueue.pop();
-    }
-    lock.unlock();
 }
 
 } // vision
