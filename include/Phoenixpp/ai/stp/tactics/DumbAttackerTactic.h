@@ -13,7 +13,7 @@ namespace phoenixpp::ai {
     public:
         DumbAttackerTactic() {
             auto goToBallSKill = GoToBallSkill();
-            skills.push_back(goToBallSKill);
+            ssms.push_back(goToBallSKill.getSSM());
         }
     };
 }

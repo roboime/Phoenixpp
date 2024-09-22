@@ -8,14 +8,20 @@
 #include "Phoenixpp/ai/stp/Tactic.h"
 #include <vector>
 #include <iostream>
+#include <Phoenixpp/messaging/environment.h>
 
 namespace phoenixpp::ai {
 
     class Role {
     protected:
+        Tactic* currentTactic;
         std::vector<Tactic> tactics;
-        std::string name = "Empty default role";
     public:
+        std::string name = "Empty default role";
+        void execute(messaging::EnvironmentPtr environment) {
+            tactics[0].execute(environment); //TODO: consertar o currentTactic, está indo para o espaço
+            // currentTactic->execute(environment);
+        }
         std::string getName() {
             return name;
         }

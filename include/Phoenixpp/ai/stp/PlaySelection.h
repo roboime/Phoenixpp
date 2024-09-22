@@ -8,16 +8,17 @@
 #include "Phoenixpp/ai/stp/Play.h"
 #include <map>
 #include <Phoenixpp/messaging/DecisionsStore.h>
-
+#include "Phoenixpp/ai/SkillExecutor.h"
 #include "Phoenixpp/ai/strategy.h"
 
 namespace phoenixpp::ai {
 
 class PlaySelection : public Strategy{
 public:
-    std::unique_ptr<Play> actualPlay = std::make_unique<Play>("Initial default play");
+    std::shared_ptr<Play> actualPlay = std::make_shared<Play>("Initial default play");
+    SkillExecutor skillExecutor = SkillExecutor();
     explicit PlaySelection(const string &type, const int &fps);
-    std::unique_ptr<Play> playSelector();
+    std::shared_ptr<Play> playSelector();
     ~PlaySelection() override = default;
     void execute() override;
     static bool shouldUpdatePlay();
@@ -27,6 +28,7 @@ public:
     void assignRolesFromPlay(const Play& play);
     std::map<unsigned int, Role> rolesMap;
     messaging::DecisionsStore decisionsStore;
+    bool checkIfRoleIsPresentInRolesMap(const string& roleName);
 };
 
 } // ai

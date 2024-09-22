@@ -9,6 +9,7 @@
 
 #include "Phoenixpp/ai/stp/Play.h"
 #include <iostream>
+#include <bits/ranges_algo.h>
 
 namespace phoenixpp::ai {
 
@@ -29,9 +30,8 @@ namespace phoenixpp::ai {
 
         assignRolesFromPlay(*actualPlay);
 
-        // std::cout << "The roles are: " << std::endl;
-        for (const auto& [key, value] : rolesMap) {
-            // std::cout << "Key: " << key << ", Value: " << value << std::endl;
+        if(!rolesMap.empty()) {
+            SkillExecutor::executeSkills(rolesMap, environment);
         }
 
         messaging::MessagePtr message = std::make_shared<messaging::DecisionsStore>(decisionsStore);
@@ -41,19 +41,23 @@ namespace phoenixpp::ai {
     void PlaySelection::assignRolesFromPlay(const Play& play) { //TODO: create and inspect logic for roleAssigner
         for(const auto& role : play.roles) {
             for(const auto& robot : environment->blueRobots) {
-                if(robot.valid == true && !rolesMap.contains(robot.id)) {
+                if(robot.valid == true && !rolesMap.contains(robot.id) && role.name != "Empty default role") {
                     std::cout << "Robot " << robot.id << " gained role " << role << std::endl;
                     rolesMap[robot.id] = role;
                     break;
                 }
             }
         }
+    }
 
-        for(const auto& robot : environment->blueRobots) {
-            if(robot.valid == true && !rolesMap.contains(robot.id)) {
-                rolesMap[robot.id] = Role();
+    bool PlaySelection::checkIfRoleIsPresentInRolesMap(const string& roleName) {
+        for (const auto& [key, value] : rolesMap) {
+            if (value.name == roleName) {
+                return true;
             }
         }
+
+        return false;
     }
 
     bool PlaySelection::shouldUpdatePlay() {
@@ -61,8 +65,8 @@ namespace phoenixpp::ai {
         return false;
     }
 
-    std::unique_ptr<Play> PlaySelection::playSelector() { // TODO: create logic for play selector
-        return std::make_unique<DumbAttackerPlay>();
+    std::shared_ptr<Play> PlaySelection::playSelector() { // TODO: create logic for play selector
+        return std::make_shared<DumbAttackerPlay>();
     }
 
 

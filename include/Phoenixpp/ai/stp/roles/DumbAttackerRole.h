@@ -16,6 +16,7 @@ namespace phoenixpp::ai {
             name = "Dumb attacker role";
             DumbAttackerTactic dumbAttackerTactic;
             tactics.push_back(dumbAttackerTactic);
+            currentTactic = tactics.data();
         }
     };
 
