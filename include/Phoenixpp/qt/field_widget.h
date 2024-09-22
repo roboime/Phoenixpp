@@ -7,6 +7,7 @@
 
 #include <QWidget>
 #include <QResizeEvent>
+#include <Phoenixpp/messaging/DecisionsStore.h>
 #include <Phoenixpp/messaging/environment.h>
 
 namespace phoenixpp::qt {
@@ -20,7 +21,7 @@ Q_OBJECT
 public:
     explicit FieldWidget(QWidget *parent = nullptr);
     ~FieldWidget() override;
-    void updateField(const messaging::EnvironmentPtr& environment);
+    void updateField(const messaging::EnvironmentPtr& environment, const std::shared_ptr<messaging::DecisionsStore>& decisionsStore);
 protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
@@ -28,6 +29,7 @@ protected:
     QSize minimumSizeHint() const override;
 private:
     messaging::EnvironmentPtr environment;
+    std::shared_ptr<messaging::DecisionsStore> decisionsStore;
     void drawField(QPainter& painter);
     void drawRobots(QPainter& painter);
     void drawBalls(QPainter& painter);

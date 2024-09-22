@@ -18,11 +18,16 @@ FieldWidget::FieldWidget(QWidget *parent) : QWidget(parent)
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
-void FieldWidget::updateField(const messaging::EnvironmentPtr& environment) {
-    if(environment.get() == NULL) return;
+void FieldWidget::updateField(const messaging::EnvironmentPtr& environment, const std::shared_ptr<messaging::DecisionsStore>& decisionsStore) {
+    if(environment.get() == nullptr) return;
+    if(decisionsStore == nullptr) return;
     this->environment = environment;
+    this->decisionsStore = decisionsStore;
     update();
 }
+
+
+
 QSize FieldWidget::sizeHint() const {
     int widgetHeight = height();
     int widgetWidth = widgetHeight * 3 / 2;

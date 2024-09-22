@@ -22,7 +22,7 @@ Gui::Gui(core::AgentController &controller, QWidget *parent) :
 }
 
 void Gui::updateField() {
-    ui->fieldWidget->updateField(controller.getMessageCollection().environment);
+    ui->fieldWidget->updateField(controller.getMessageCollection().environment, controller.getMessageCollection().blueDecision);
 }
 
 void Gui::displayEnvironment(const messaging::Environment& env) {
