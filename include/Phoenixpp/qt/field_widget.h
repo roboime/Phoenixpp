@@ -33,6 +33,7 @@ private:
     void drawField(QPainter& painter);
     void drawRobots(QPainter& painter);
     void drawBalls(QPainter& painter);
+    void drawLineFromRobotToBall(QPainter& painter);
     void updateFPS();
     double fps;
 //    Ui::FieldWidget *ui;
