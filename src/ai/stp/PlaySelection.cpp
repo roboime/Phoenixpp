@@ -36,7 +36,6 @@ namespace phoenixpp::ai {
             SkillExecutor::executeSkills(rolesMap, environment, message);
         }
 
-
         publisher.distribute(message);
     }
 

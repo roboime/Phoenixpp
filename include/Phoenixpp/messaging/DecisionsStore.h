@@ -15,14 +15,14 @@ struct DecisionsStore : Message{
     DecisionsStore()= default;
     DecisionsStore(const DecisionsStore& other) { store(other); };
     DecisionsStore(DecisionsStore&& other) noexcept { store(other); }
-    RobotDecision robotDecision[MAX_ROBOTS];
+    RobotDecision robotsDecisions[MAX_ROBOTS];
     void forwardTo(DecisionsStoreListener *listener) override;
     void storeRobot(const RobotDecision& newRobotDecision) {
-        robotDecision[newRobotDecision.id].store(newRobotDecision);
+        robotsDecisions[newRobotDecision.id].store(newRobotDecision);
     }
     void store(const DecisionsStore& other) {
         for(int i=0;i<MAX_ROBOTS;i++) {
-            robotDecision[i].store(other.robotDecision[i]);
+            robotsDecisions[i].store(other.robotsDecisions[i]);
         }
     }
 };

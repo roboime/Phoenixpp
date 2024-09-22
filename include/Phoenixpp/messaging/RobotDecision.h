@@ -11,7 +11,7 @@ using std::atomic;
 
 struct RobotDecision{
     RobotDecision() :
-        id(0),
+        id(99),
         x(0),
         y(0),
         orientation(0),
@@ -27,6 +27,7 @@ struct RobotDecision{
     atomic<bool> drible;
 
     void store(const RobotDecision& other) {
+        id.store(other.id.load());
         x.store(other.x.load());
         y.store(other.y.load());
         orientation.store(other.orientation.load());
