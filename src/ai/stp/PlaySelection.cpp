@@ -30,11 +30,13 @@ namespace phoenixpp::ai {
 
         assignRolesFromPlay(*actualPlay);
 
+        auto message = std::make_shared<messaging::DecisionsStore>(decisionsStore);
+
         if(!rolesMap.empty()) {
-            SkillExecutor::executeSkills(rolesMap, environment);
+            SkillExecutor::executeSkills(rolesMap, environment, message);
         }
 
-        messaging::MessagePtr message = std::make_shared<messaging::DecisionsStore>(decisionsStore);
+
         publisher.distribute(message);
     }
 

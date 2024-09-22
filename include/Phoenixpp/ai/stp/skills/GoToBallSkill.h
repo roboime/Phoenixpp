@@ -23,11 +23,16 @@ namespace phoenixpp::ai {
         }
     private:
        void addTransitions() {
-           ssm.addState("IDLE", [](const messaging::EnvironmentPtr environment) {
+           ssm.addState("IDLE", [](const messaging::EnvironmentPtr environment, std::shared_ptr<messaging::DecisionsStore> message) {
                return RobotDecision();
            });
-           ssm.addState("RUNNING", [](const messaging::EnvironmentPtr environment) {
-               return RobotDecision();
+           ssm.addState("RUNNING", [](const messaging::EnvironmentPtr environment, std::shared_ptr<messaging::DecisionsStore> message) {
+               auto robotDecision = RobotDecision();
+
+               robotDecision.x.store(environment->balls[0].positionX);
+               robotDecision.y.store(environment->balls[0].positionY);
+
+                message->storeRobot(robotDecision);
            });
 
            ssm.addTransition("IDLE", "RUNNING", [](const messaging::EnvironmentPtr environment) {

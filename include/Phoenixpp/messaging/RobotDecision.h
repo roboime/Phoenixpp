@@ -35,6 +35,8 @@ struct RobotDecision{
         drible.store(other.drible.load());
     }
 
+    ~RobotDecision() = default;
+
 };
 
 #endif //ROBOTDECISION_H

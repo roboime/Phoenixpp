@@ -14,7 +14,7 @@
 namespace phoenixpp::ai {
     class SkillStateMachine {
     public:
-        using StateAction = std::function<RobotDecision(const messaging::EnvironmentPtr)>;
+        using StateAction = std::function<void(const messaging::EnvironmentPtr, std::shared_ptr<messaging::DecisionsStore> message)>;
         using TransitionCondition = std::function<bool(const messaging::EnvironmentPtr)>;
 
         // Add a new state with an action
@@ -37,7 +37,7 @@ namespace phoenixpp::ai {
             SkillStateMachine::currentState = stateName;
         }
 
-        RobotDecision update(const messaging::EnvironmentPtr env) {
+        void update(const messaging::EnvironmentPtr env, std::shared_ptr<messaging::DecisionsStore> message) {
             // Check for transitions
             if (transitions.contains(currentState)) {
                 for (const auto& transition : transitions[currentState]) {
@@ -50,17 +50,16 @@ namespace phoenixpp::ai {
             }
 
             // Execute the current state's action and return RobotDecision
-            return executeState(env);
+            executeState(env, message);
         }
 
         // Execute the current state's action
-        RobotDecision executeState(const messaging::EnvironmentPtr env) const {
+        void executeState(const messaging::EnvironmentPtr env, std::shared_ptr<messaging::DecisionsStore> message) const {
             if (states.contains(currentState)) {
                 std::cout << "Executing state: " << currentState << std::endl;
-                return states.at(currentState)(env);
+                states.at(currentState)(env, message);
             } else {
                 std::cerr << "State not found: " << currentState << std::endl;
-                return RobotDecision(); // Return default RobotDecision
             }
         }
 

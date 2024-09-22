@@ -8,6 +8,7 @@
 #include "Phoenixpp/ai/stp/Tactic.h"
 #include <vector>
 #include <iostream>
+#include <Phoenixpp/messaging/DecisionsStore.h>
 #include <Phoenixpp/messaging/environment.h>
 
 namespace phoenixpp::ai {
@@ -18,8 +19,8 @@ namespace phoenixpp::ai {
         std::vector<Tactic> tactics;
     public:
         std::string name = "Empty default role";
-        void execute(messaging::EnvironmentPtr environment) {
-            tactics[0].execute(environment); //TODO: consertar o currentTactic, está indo para o espaço
+        void execute(messaging::EnvironmentPtr environment, std::shared_ptr<messaging::DecisionsStore> message) {
+            tactics[0].execute(environment, message); //TODO: consertar o currentTactic, está indo para o espaço
             // currentTactic->execute(environment);
         }
         std::string getName() {

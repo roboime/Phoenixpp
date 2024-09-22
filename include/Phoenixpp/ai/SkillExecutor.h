@@ -9,10 +9,11 @@ namespace phoenixpp::ai {
 
     class SkillExecutor {
     public:
-        static void executeSkills(const std::map<unsigned int, Role>& rolesMap, messaging::EnvironmentPtr environment) {
+        static void executeSkills(const std::map<unsigned int, Role>& rolesMap, messaging::EnvironmentPtr environment, std::shared_ptr<messaging::
+                           DecisionsStore> message) {
             for (auto& pair : rolesMap) {
                 Role role = pair.second;
-                role.execute(environment);
+                role.execute(environment, message);
             }
         }
     };
