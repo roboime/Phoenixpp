@@ -56,7 +56,6 @@ namespace phoenixpp::ai {
         // Execute the current state's action
         void executeState(const messaging::EnvironmentPtr env, std::shared_ptr<messaging::DecisionsStore> message) const {
             if (states.contains(currentState)) {
-                std::cout << "Executing state: " << currentState << std::endl;
                 states.at(currentState)(env, message);
             } else {
                 std::cerr << "State not found: " << currentState << std::endl;

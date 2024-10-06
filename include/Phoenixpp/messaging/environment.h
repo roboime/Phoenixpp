@@ -195,6 +195,8 @@ struct Environment: Message{
     Ball balls[MAX_BALLS];
     Robot blueRobots[MAX_ROBOTS];
     Robot yellowRobots[MAX_ROBOTS];
+    Robot* ourRobots = blueRobots;
+    Robot* enemyRobots = yellowRobots;
     Field field;
     void store(const Environment& other) {
         received.store(other.received.load());

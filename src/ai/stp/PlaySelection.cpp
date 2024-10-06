@@ -41,7 +41,7 @@ namespace phoenixpp::ai {
 
     void PlaySelection::assignRolesFromPlay(const Play& play) { //TODO: create and inspect logic for roleAssigner
         for(const auto& role : play.roles) {
-            for(const auto& robot : environment->blueRobots) {
+            for(const auto& robot : environment->ourRobots) {
                 if(robot.valid == true && !rolesMap.contains(robot.id) && role.name != "Empty default role") {
                     std::cout << "Robot " << robot.id << " gained role " << role << std::endl;
                     rolesMap[robot.id] = role;

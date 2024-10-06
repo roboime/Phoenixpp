@@ -32,6 +32,7 @@ namespace phoenixpp::ai {
                robotDecision.id.store(0);
                robotDecision.x.store(environment->balls[0].positionX);
                robotDecision.y.store(environment->balls[0].positionY);
+               robotDecision.validDecision.store(true);
 
                 message->storeRobot(robotDecision);
            });

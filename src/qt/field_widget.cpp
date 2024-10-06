@@ -173,49 +173,45 @@ namespace phoenixpp::qt {
         );
     }
 
-    void FieldWidget::drawLineFromRobotToBall(QPainter &painter) {
+    void FieldWidget::drawLineToTargetFromRobot(QPainter &painter) {
         if (environment.get() == nullptr || !environment->received.load()) {
             return;
         }
 
-        // Find the robot with ID 0
-        const messaging::Robot* robot0 = nullptr;
-        for (const auto& robotGroup : {std::ref(environment->blueRobots)}) {
-            for (const auto& robot : robotGroup.get()) {
-                if (robot.valid.load() && robot.id.load() == 0) {
-                    robot0 = &robot;
+        for(const auto& robotDecision : decisionsStore->robotsDecisions) {
+            if (robotDecision.validDecision == false) {
+                continue;
+            }
+
+            const messaging::Robot* actualRobot = nullptr;
+            for(const auto& blueRobot : environment->ourRobots) {
+                if(robotDecision.id == blueRobot.id) {
+                    actualRobot = &blueRobot;
                     break;
                 }
             }
-            if (robot0 != nullptr) break;
+
+            if(actualRobot == nullptr) {
+                return;
+            }
+
+            int boundaryWidth = environment->field.boundary_width.load();
+            int fieldLength = environment->field.field_length.load();
+            int fieldWidth = environment->field.field_width.load();
+            double scaleX = static_cast<double>(width()) / (fieldLength + 2 * boundaryWidth);
+            double scaleY = static_cast<double>(height()) / (fieldWidth + 2 * boundaryWidth);
+
+            double robotX = width() / 2 + actualRobot->positionX.load() * scaleX;
+            double robotY = height() / 2 - actualRobot->positionY.load() * scaleY;
+
+            double targetX = width() / 2 + robotDecision.x.load() * scaleX;
+            double targetY = height() / 2 - robotDecision.y.load() * scaleY;
+
+            painter.setPen(QPen(Qt::red, 2));
+
+            painter.drawLine(QPointF(robotX, robotY), QPointF(targetX, targetY));
+
         }
-
-        // Make sure robot 0 and the first ball are valid
-        if (robot0 == nullptr || !environment->balls[0].valid.load()) {
-            return;
-        }
-
-        // Scale and field information
-        int boundaryWidth = environment->field.boundary_width.load();
-        int fieldLength = environment->field.field_length.load();
-        int fieldWidth = environment->field.field_width.load();
-        double scaleX = static_cast<double>(width()) / (fieldLength + 2 * boundaryWidth);
-        double scaleY = static_cast<double>(height()) / (fieldWidth + 2 * boundaryWidth);
-
-        // Get robot 0's position
-        double robotX = width() / 2 + robot0->positionX.load() * scaleX;
-        double robotY = height() / 2 - robot0->positionY.load() * scaleY;
-
-        // Get the first ball's position
-        const messaging::Ball& firstBall = environment->balls[0];
-        double ballX = width() / 2 + firstBall.positionX.load() * scaleX;
-        double ballY = height() / 2 - firstBall.positionY.load() * scaleY;
-
-        // Set pen to draw the line
-        painter.setPen(QPen(Qt::red, 2));  // Red color for the line with width 2
-
-        // Draw the line from robot 0 to the first ball
-        painter.drawLine(QPointF(robotX, robotY), QPointF(ballX, ballY));
     }
 
     void FieldWidget::paintEvent(QPaintEvent *event) {
@@ -224,7 +220,7 @@ namespace phoenixpp::qt {
         drawField(painter);
         drawRobots(painter);
         drawBalls(painter);
-        drawLineFromRobotToBall(painter);
+        drawLineToTargetFromRobot(painter);
         updateFPS();
         QFont font = painter.font();
         font.setPointSize(12); // Set font size for FPS display
