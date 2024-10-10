@@ -28,15 +28,23 @@ Referee and Feedback from robots, send commands to the robots.
 - **PathPlanning**: 
 - **Navigation**: 
 - **Communicator**: 
-## Usage
+## Install dependencies
+We are using QT installed from the [official website](https://www.qt.io/download-dev), install the latest 6.x version with the QT installer along with the recommended dependencies in the default path. If you are using Windows QT will be installed on "C:/Qt/...", you'll need to write these lines to the CMakeLists.txt file or change if they are already in there:
+
+```cmake
+set(QT6_DIR "C:/Qt/6.7.2/mingw_64/lib/cmake/Qt6")
+set(CMAKE_PREFIX_PATH "C:/Qt/6.7.2/mingw_64" ${CMAKE_PREFIX_PATH})
+```
+These two lines are set in my computer for the version 6.7.2, if you installed other version change it accordingly.
+
 You need to install the following dependencies:
 - [CMake](https://cmake.org/)
 - [Protobuf](https://developers.google.com/protocol-buffers)
 - [nlohmann/json](https://github.com/nlohmann/json)
-- [Qt 6.7.0](https://www.qt.io/) Install the package qtbase via command line with the command `.\vcpkg.exe install qtbase` (you need to be on the vcpkg folder to have access to vcpkg.exe)
 - [GTest](https://github.com/google/googletest)
 
-Alternatively, if you are using CLion on windows, you can easily install the dependencies with [Vcpkg](https://www.jetbrains.com/help/clion/package-management.html#install-vcpkg).
+If you are using CLion on windows, you can easily install the dependencies with [Vcpkg](https://www.jetbrains.com/help/clion/package-management.html#install-vcpkg). If you are having problems instaling packages via the vcpkg plugin on Clion try installing them directly via terminal, for that you'll need to find where your vcpkg is installed, open a terminal in that folder and run the command to install the package. Example: `.\vcpkg.exe install qtbase`.
+
 I also recommend installing plantUml plugin on CLion to visualize the UML diagrams.
 
 To use Clion you need a [student license](https://www.jetbrains.com/shop/eform/students.) as well.
