@@ -37,15 +37,17 @@ set(CMAKE_PREFIX_PATH "C:/Qt/6.7.2/mingw_64" ${CMAKE_PREFIX_PATH})
 ```
 These two lines are set in my computer for the version 6.7.2, if you installed other version change it accordingly.
 
-You need to install the following dependencies:
+If you are using CLion on windows, you can easily install the dependencies with [Vcpkg](https://www.jetbrains.com/help/clion/package-management.html#install-vcpkg). If you are having problems instaling packages via the vcpkg plugin on Clion try installing them directly via terminal, for that you'll need to find where your vcpkg is installed, open a terminal in that folder and run the command to install the package. Example: `.\vcpkg.exe install qtbase`.
+
+Before installing each dependency make sure to select the triplet *x64-mingw-dynamic*, here are the dependencies that'll need to install:
 - [CMake](https://cmake.org/)
 - [Protobuf](https://developers.google.com/protocol-buffers)
 - [nlohmann/json](https://github.com/nlohmann/json)
 - [GTest](https://github.com/google/googletest)
 - boost-atomic
 
-If you are using CLion on windows, you can easily install the dependencies with [Vcpkg](https://www.jetbrains.com/help/clion/package-management.html#install-vcpkg). If you are having problems instaling packages via the vcpkg plugin on Clion try installing them directly via terminal, for that you'll need to find where your vcpkg is installed, open a terminal in that folder and run the command to install the package. Example: `.\vcpkg.exe install qtbase`.
+You'll need to configure CMake to run using the *x64-mingw-dynamic*, to do that go to the cmake tab, click in settings, change the VCPKG_TARGET_TRIPLET to *x64-mingw-dynamic*.
 
-I also recommend installing plantUml plugin on CLion to visualize the UML diagrams.
+Also install the plantUml plugin on CLion to visualize the UML diagrams.
 
 To use Clion you need a [student license](https://www.jetbrains.com/shop/eform/students.) as well.
